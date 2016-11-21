@@ -46,4 +46,6 @@ extern "C" void __cxa_pure_virtual() {;}
 #undef cli
 #define cli()
 #include "ArduinoMega.ino"
+#include "Brightness.ino"
+#include "ReadBinary.ino"
 #endif

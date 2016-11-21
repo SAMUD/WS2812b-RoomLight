@@ -80,8 +80,11 @@
     <None Include="ArduinoMega.ino">
       <FileType>CppCode</FileType>
     </None>
+    <None Include="Brightness.ino" />
+    <None Include="ReadBinary.ino" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

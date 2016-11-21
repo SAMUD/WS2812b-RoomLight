@@ -10,6 +10,7 @@ D:\Win10\Temp\VMicroBuilds\ArduinoMega\mega2560\ArduinoMega.cpp.o:  \
   C:\Program\ Files\ (x86)\Arduino\hardware\arduino\cores\arduino/Printable.h \
   C:\Program\ Files\ (x86)\Arduino\hardware\arduino\cores\arduino/new.h \
   C:\Program\ Files\ (x86)\Arduino\hardware\arduino\variants\mega/pins_arduino.h \
+  D:\Win10\Temp\VMicroBuilds\ArduinoMega\mega2560\/GlobalVar.h \
   C:\Program\ Files\ (x86)\Arduino\libraries\FastLED/FastLED.h \
   C:\Program\ Files\ (x86)\Arduino\libraries\FastLED/fastled_config.h \
   C:\Program\ Files\ (x86)\Arduino\libraries\FastLED/led_sysdefs.h \

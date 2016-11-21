@@ -22,13 +22,14 @@ uint32_t tempresult;
 bool ValueChanged;							//will change its state at every value change
 bool multiplePresses;						//when holding down the key on the Remote
 unsigned long tempmillis;
+uint8_t delayMultiple;
 
 
 void setup()
 {
 	Serial.begin(9600);
 	irrecv.enableIRIn();					// Start the receiver
-	Serial.println("Started - Waiting - V1.0");
+	Serial.println("Started - Waiting - V1.1");
 	pinMode(PINLED, OUTPUT);				// set pins to Output
 	pinMode(PINValueChanged, OUTPUT);
 	pinMode(PINMultiplePresses, OUTPUT);
@@ -46,15 +47,17 @@ void loop() {
 	if (irrecv.decode(&results)) {
 		//Serial.println(results.value, HEX);
 		tempresult = results.value;
-		irrecv.resume(); // Continue receiving	
+		irrecv.resume(); // Continue receiving
+		delayMultiple++;
 	}
+	
 
 	//write the ValueChanged pin and set the LED
 	digitalWrite(PINValueChanged, ValueChanged);
-	digitalWrite(PINLED, ValueChanged);
 
 	//write the repeat PIN
 	digitalWrite(PINMultiplePresses, multiplePresses);
+	digitalWrite(PINLED, multiplePresses);
 	
 	//printing status
 	if (tempresult != 0)
@@ -63,6 +66,8 @@ void loop() {
 		Serial.print(tempresult, HEX);
 		Serial.print("  multiple presses: ");
 		Serial.print(multiplePresses);
+		Serial.print(" i: ");
+		Serial.print(delayMultiple);
 		Serial.print("  ValueChanged: ");
 		Serial.println(ValueChanged);
 	}
@@ -73,14 +78,23 @@ void loop() {
 	//checking for key hold down - multiplePresses
 	if (millis() - tempmillis < 500)
 	{
-		multiplePresses = 1;
+		//delayMultiple++;
 	}
 	else
+	{
 		multiplePresses = 0;
+		delayMultiple = 0;
+	}
 	if (tempresult == 0xFFFFFFFF)
 	{
 		tempmillis = millis();
-	}	
+	}
+
+	if (delayMultiple == 3)
+	{
+		delayMultiple = 2;
+		multiplePresses = 1;
+	}
 
 	//checking for changed value - ValueChanged
 	if (tempresult != 0 && tempresult != 0xFFFFFFFF)
