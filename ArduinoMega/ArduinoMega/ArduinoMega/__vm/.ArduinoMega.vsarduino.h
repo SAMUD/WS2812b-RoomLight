@@ -47,5 +47,9 @@ extern "C" void __cxa_pure_virtual() {;}
 #define cli()
 #include "ArduinoMega.ino"
 #include "Brightness.ino"
+#include "DisplayEffect.ino"
+#include "Functions.ino"
+#include "HueSaturation.ino"
+#include "ModeSelection.ino"
 #include "ReadBinary.ino"
 #endif

@@ -59,14 +59,16 @@ void BrightnessFade(uint8_t Setpoint)
 	
 	//when Setpoint is not the same as actual brightness
 	incrementor = 1;
-	if (FastLED.getBrightness() - Setpoint > 5 || FastLED.getBrightness() - Setpoint < -5)
-		incrementor = 2;
 	if (FastLED.getBrightness() - Setpoint > 10 || FastLED.getBrightness() - Setpoint < -10)
-		incrementor = 5;
+		incrementor = 2;
 	if (FastLED.getBrightness() - Setpoint > 20 || FastLED.getBrightness() - Setpoint < -20)
-		incrementor = 10;
+		incrementor = 4;
+	if (FastLED.getBrightness() - Setpoint > 30 || FastLED.getBrightness() - Setpoint < -30)
+		incrementor = 8;
 	if (FastLED.getBrightness() - Setpoint > 40 || FastLED.getBrightness() - Setpoint < -40)
-		incrementor = 20;
+		incrementor = 16;
+	if (FastLED.getBrightness() - Setpoint > 70 || FastLED.getBrightness() - Setpoint < -70)
+		incrementor = 32;
 
 	if (FastLED.getBrightness() < Setpoint)
 		FastLED.setBrightness(FastLED.getBrightness() + incrementor);
@@ -79,13 +81,15 @@ void BrightnessFade(uint8_t Setpoint)
 //Turning off the LED-Strip
 void BrightnessTurnOff()
 {
+	
 	while (FastLED.getBrightness() > 0)
 	{
 		//run BrightnessFade until brightness is 0
 		BrightnessFade(0);
 		FastLED.show();
-		delay(40);
-		Serial.print("-");
+		delay(35);
+		//Serial.print("-");
+		BlinkLed(5, 5);
 	}
 	Serial.println("Powered down now");
 }
@@ -99,7 +103,8 @@ void BrightnessTurnOn()
 		BrightnessFade(LEDSettings.BrightnessSetpoint);
 		FastLED.show();
 		delay(40);
-		Serial.print("+");
+		//Serial.print("+");
+		BlinkLed(5, 5);
 	}
 	Serial.println("Powered on now");
 }

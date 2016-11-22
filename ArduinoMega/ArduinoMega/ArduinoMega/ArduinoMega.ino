@@ -29,10 +29,12 @@ void setup() {
 	pinMode(PINInput3, INPUT);
 	pinMode(PINInput4, INPUT);
 	pinMode(PINInput5, INPUT);
+	pinMode(13, OUTPUT);
 
 	//this part is only needed until I will implement the EEPROM-Code to save settings
-	LEDSettings.BrightnessSetpoint=255;
+	LEDSettings.BrightnessSetpoint=128;
 	LEDSettings.PowerState = 1;
+	LEDSettings.DisplayMode = WhiteAll;
 }
 
 // the loop function runs over and over again until power down or reset
@@ -40,6 +42,9 @@ void loop() {
 	
 	//reading given data
 	ReadBinaryMain();
+
+	//Select display mode
+	ModeSelectionMain();
 
 	//turn on/off
 	if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
@@ -59,30 +64,25 @@ void loop() {
 	if (LEDSettings.PowerState)
 	{
 		//LEDs are on
-		BrightnessMain();	
+		
+		DisplayEffectMain();
+
+		BrightnessMain();
+
+		HueSaturationMain();
+
+		FastLED.show();
+
+		BlinkLed(10, 3000);
 	}
 	else
 	{
 		//LEDs are off
+		BlinkLed(3000,2);
 	}
 
 	//no new values anymore.
-	ReadValues.newValues = 0;
-		
-
-
-	
-
-		
-	FastLED.show();
-	
-	for (int dot = 0; dot < NUM_LEDS; dot++) {
-		leds[dot] = CRGB::PapayaWhip;
-		FastLED.show();
-		 //clear this led for the next time around the loop
-		//leds[dot] = CRGB::Black;
-		//delay(30);
-	}
-		
+	ReadValues.newValues = 0;	
 	
 }
+

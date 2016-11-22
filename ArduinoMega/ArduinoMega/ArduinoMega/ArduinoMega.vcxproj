@@ -81,6 +81,10 @@
       <FileType>CppCode</FileType>
     </None>
     <None Include="Brightness.ino" />
+    <None Include="DisplayEffect.ino" />
+    <None Include="Functions.ino" />
+    <None Include="HueSaturation.ino" />
+    <None Include="ModeSelection.ino" />
     <None Include="ReadBinary.ino" />
   </ItemGroup>
   <ItemGroup>

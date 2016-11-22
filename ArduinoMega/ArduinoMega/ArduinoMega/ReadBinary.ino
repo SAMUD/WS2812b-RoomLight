@@ -1,4 +1,4 @@
-static bool ValueChanged = 1;
+static bool ValueChanged = 0;
 
 
 void ReadBinaryMain()
