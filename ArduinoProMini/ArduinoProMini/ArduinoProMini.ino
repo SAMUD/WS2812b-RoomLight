@@ -21,15 +21,17 @@ decode_results results;
 uint32_t tempresult;
 bool ValueChanged;							//will change its state at every value change
 bool multiplePresses;						//when holding down the key on the Remote
+bool changeValueChanged;
 unsigned long tempmillis;
 uint8_t delayMultiple;
+
 
 
 void setup()
 {
 	Serial.begin(9600);
 	irrecv.enableIRIn();					// Start the receiver
-	Serial.println("Started - Waiting - V1.1");
+	Serial.println("Started - Waiting - V1.2 RC");
 	pinMode(PINLED, OUTPUT);				// set pins to Output
 	pinMode(PINValueChanged, OUTPUT);
 	pinMode(PINMultiplePresses, OUTPUT);
@@ -60,7 +62,7 @@ void loop() {
 	digitalWrite(PINLED, multiplePresses);
 	
 	//printing status
-	if (tempresult != 0)
+	/*if (tempresult != 0)
 	{
 		Serial.print("Key: ");
 		Serial.print(tempresult, HEX);
@@ -70,7 +72,7 @@ void loop() {
 		Serial.print(delayMultiple);
 		Serial.print("  ValueChanged: ");
 		Serial.println(ValueChanged);
-	}
+	}*/
 	
 	//Translating results in binary outputs
 	Translate();
@@ -97,7 +99,7 @@ void loop() {
 	}
 
 	//checking for changed value - ValueChanged
-	if (tempresult != 0 && tempresult != 0xFFFFFFFF)
+	if (tempresult != 0 && tempresult != 0xFFFFFFFF && changeValueChanged)
 		ValueChanged = !ValueChanged;
 	
 	//reseting to 0 and waiting for the next keypress
@@ -106,194 +108,180 @@ void loop() {
 
 void Translate()
 {
-	if (tempresult == 0xFD00FF) // Power
+	changeValueChanged = 1;
+	switch (tempresult)
 	{
-		Serial.println("Detected: Power");
+	case 0xFD00FF:
+		//Serial.println("Detected: Power");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD807F) // Vol+
-	{
-		Serial.println("Detected: Vol+");
+		break;
+	case 0xFD807F:
+		//Serial.println("Detected: Vol+");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD40BF) // FUNC/Stop
-	{
-		Serial.println("Detected: FUNC/STOP");
+		break;
+	case 0xFD40BF:
+		//Serial.println("Detected: FUNC/STOP");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD20DF) // Reward
-	{
-		Serial.println("Detected: <--");
+		break;
+	case 0xFD20DF:
+		//Serial.println("Detected: <--");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFDA05F) // Play/Pause
-	{
-		Serial.println("Detected: Play/Pause");
+		break;
+	case 0xFDA05F:
+		//Serial.println("Detected: Play/Pause");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD609F) // Forward
-	{
-		Serial.println("Detected: -->");
+		break;
+	case 0xFD609F:
+		//Serial.println("Detected: -->");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD10EF) // Down
-	{
-		Serial.println("Detected: Down");
+		break;
+	case 0xFD10EF:
+		//Serial.println("Detected: Down");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD906F) // Vol-
-	{
-		Serial.println("Detected: Vol-");
+		break;
+	case 0xFD906F:
+		//Serial.println("Detected: Vol-");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD50AF) // Up
-	{
-		Serial.println("Detected: Up");
+		break;
+	case 0xFD50AF:
+		//Serial.println("Detected: Up");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD30CF) // 0
-	{
-		Serial.println("Detected: 0");
+		break;
+	case 0xFD30CF:
+		//Serial.println("Detected: 0");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFDB04F) // EQ
-	{
-		Serial.println("Detected: EQ");
+		break;
+	case 0xFDB04F:
+		//Serial.println("Detected: EQ");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD708F) // ST/REPT
-	{
-		Serial.println("Detected: ST/REPT");
+		break;
+	case 0xFD708F:
+		//Serial.println("Detected: ST/REPT");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD08F7) // 1
-	{
-		Serial.println("Detected: 1");
+		break;
+	case 0xFD08F7:
+		//Serial.println("Detected: 1");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD8877) // 2
-	{
-		Serial.println("Detected: 2");
+		break;
+	case 0xFD8877:
+		//Serial.println("Detected: 2");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD48B7) // 3
-	{
-		Serial.println("Detected: 3");
+		break;
+	case 0xFD48B7:
+		//Serial.println("Detected: 3");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFD28D7) // 4
-	{
-		Serial.println("Detected: 4"); 
+		break;
+	case 0xFD28D7:
+		//Serial.println("Detected: 4");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 1);
 		digitalWrite(PINOutput5, 0);
-	}
-	if (tempresult == 0xFDA857) // 5
-	{
-		Serial.println("Detected: 5"); 
+		break;
+	case 0xFDA857:
+		//Serial.println("Detected: 5");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 1);
-	}
-	if (tempresult == 0xFD6897) // 6
-	{
-		Serial.println("Detected: 6"); 
+		break;
+	case 0xFD6897:
+		//Serial.println("Detected: 6");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 1);
-	}
-	if (tempresult == 0xFD18E7) // 7
-	{
-		Serial.println("Detected: 7"); 
+		break;
+	case 0xFD18E7:
+		//Serial.println("Detected: 7");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 1);
-	}
-	if (tempresult == 0xFD9867) // 8
-	{
-		Serial.println("Detected: 8");
+		break;
+	case 0xFD9867:
+		//Serial.println("Detected: 8");
 		digitalWrite(PINOutput1, 1);
 		digitalWrite(PINOutput2, 1);
 		digitalWrite(PINOutput3, 0);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 1);
-	}
-	if (tempresult == 0xFD58A7) // 9
-	{
-		Serial.println("Detected: 9"); 
+		break;
+	case 0xFD58A7:
+		//Serial.println("Detected: 9");
 		digitalWrite(PINOutput1, 0);
 		digitalWrite(PINOutput2, 0);
 		digitalWrite(PINOutput3, 1);
 		digitalWrite(PINOutput4, 0);
 		digitalWrite(PINOutput5, 1);
+		break;
+	default:
+		//Do nothing and block value changed var
+		changeValueChanged = 0;
+		break;
 	}
-
 }
