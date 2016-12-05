@@ -7,7 +7,7 @@ void DisplayEffectMain()
 		LEDSettings.ChangesToEffectMade = 1;
 	}
 
-	if (LEDSettings.DisplayMode == WhiteAll && LEDSettings.ChangesToEffectMade )
+	if (LEDSettings.DisplayMode == WhiteAll && LEDSettings.ChangesToEffectMade)
 		DisplayEffectWhiteAll();
 	else if (LEDSettings.DisplayMode == WhiteLeft && LEDSettings.ChangesToEffectMade)
 		DisplayEffectWhiteLeft();
@@ -15,6 +15,8 @@ void DisplayEffectMain()
 		DisplayEffectWhiteRight();
 	else if (LEDSettings.DisplayMode == Confetti && LEDSettings.ChangesToEffectMade)
 		DisplayEffectConfetti();
+	else if (LEDSettings.DisplayMode == RainbowMarch && LEDSettings.ChangesToEffectMade)
+		DisplayEffectRainbowMarch();
 
 	
 }
@@ -133,5 +135,19 @@ void DisplayEffectConfetti()
 		leds[pos] += CHSV((thishue + random16(huediff)) / 4, thissat, thisbri);  // I use 12 bits for hue so that the hue increment isn't too quick.
 		thishue = thishue + thisinc;
 	}
+
+	LEDSettings.ChangesToEffectMade = 1;
 	
+}
+
+void DisplayEffectRainbowMarch()
+{
+	uint8_t thisdelay = 5;                                        // A delay value for the sequence(s)
+	uint8_t thishue = 0;                                          // Starting hue value.
+	uint8_t deltahue = 10;                                        // Hue change between pixels.
+
+	thishue++;                                                  // Increment the starting hue.
+	fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
+
+	LEDSettings.ChangesToEffectMade = 1;
 }

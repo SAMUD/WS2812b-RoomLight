@@ -45,11 +45,11 @@ void ModeSelectionMain()
 				/*case WhiteAll:
 					LEDSettings.DisplayMode = WhiteLeft;
 					Serial.println("ModeSelectionMain | Changed to WhiteLeft-Mode");
-					break;
-				case WhiteLeft:
-					LEDSettings.DisplayMode = WhiteRight;
-					Serial.println("ModeSelectionMain | Changed to WhiteRight-Mode");
 					break;*/
+				case Confetti:
+					LEDSettings.DisplayMode = RainbowMarch;
+					Serial.println("ModeSelectionMain | Changed to RainbowMarch-Mode");
+					break;
 				default:
 					LEDSettings.DisplayMode = Confetti;
 					Serial.println("ModeSelectionMain | Changed to Confetti-Mode");
