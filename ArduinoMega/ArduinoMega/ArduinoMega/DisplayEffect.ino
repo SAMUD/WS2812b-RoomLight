@@ -52,17 +52,13 @@ void DisplayEffectWhiteLeft()
 		}
 		else if (dot < NumberLEDLeft + NumberLEDTransition)
 		{
-			temp = ((NumberLEDLeft+NumberLEDTransition) - dot)/10.0;
-			//Serial.print("temp:");
-			//Serial.print(temp);
-			temp2 = (255);
-			//Serial.print(" temp2:");
-			//Serial.print(temp2);
-			temp = temp2 * temp;
-			//Serial.print(" final:");
-			//Serial.println(temp);
+			temp = 100 / NumberLEDTransition; //decrementor in percentage of full value
+			temp2 =((NumberLEDLeft+NumberLEDTransition) - dot);
+			temp = 255 * ((temp2*temp)/100);
+			if (temp < ValueLEDDarkside)
+					temp = ValueLEDDarkside;
 			
-			leds[dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, temp+ValueLEDDarkside);
+			leds[dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, temp2);
 		}
 		else
 		{
@@ -82,27 +78,24 @@ void DisplayEffectWhiteRight()
 	Serial.println("EffectWhiteRight");
 	for (int dot = 1; dot <= NUM_LEDS; dot++)
 	{
-		if (dot < NumberLEDRight)
+		if (dot < NUM_LEDS-(NumberLEDRight+NumberLEDTransition))
 		{
-			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, 255);
+			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, ValueLEDDarkside);
 		}
-		else if (dot < NumberLEDRight + NumberLEDTransition+1)
+		else if (dot < NUM_LEDS-NumberLEDRight)
 		{
-			temp3 = ((NumberLEDRight + NumberLEDTransition+1) - dot) / 10.0;
-			//Serial.print("temp:");
-			//Serial.print(temp);
-			temp4 = (255);
-			//Serial.print(" temp2:");
-			//Serial.print(temp2);
-			temp3 = temp4 * temp3;
-			//Serial.print(" final:");
-			//Serial.println(temp);
+			temp3 = 100 / NumberLEDTransition; //decrementor in percentage of full value
+			temp4 = NUM_LEDS - (NumberLEDRight + NumberLEDTransition); //LEDS on the left side with dark value
+			temp4 = (NumberLEDTransition+1) - ((temp4 + NumberLEDTransition) - dot);
+			temp3 = 255 * ((temp4*temp3) / 100);
+			if (temp3 < ValueLEDDarkside)
+				temp3= ValueLEDDarkside;
 
-			leds[NUM_LEDS-dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, temp3 + ValueLEDDarkside);
+			leds[NUM_LEDS-dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, temp3);
 		}
 		else
 		{
-			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, ValueLEDDarkside);
+			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, 255);
 		}
 
 

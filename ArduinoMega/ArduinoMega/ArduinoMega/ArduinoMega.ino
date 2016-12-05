@@ -50,8 +50,6 @@ void loop()
 	//reading given data
 	ReadBinaryMain();
 
-	
-
 	//turn on/off
 	EVERY_N_MILLISECONDS(50) //only every 50ms because the values from the other arduino are only aquired at this speed
 	{
