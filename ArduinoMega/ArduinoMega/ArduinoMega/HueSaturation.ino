@@ -40,7 +40,7 @@ void HueSaturationMain()
 			
 			if (Value > 150 && ReadValues.Repeat == 0)
 				Value = Value - 1; //slow Increase
-			else if (Value > 150 && ReadValues.Repeat)
+			else if (Value > 152 && ReadValues.Repeat)
 				Value = Value - 3; //fast Increase
 
 			//set the new values
