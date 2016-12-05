@@ -4,18 +4,32 @@ void BrightnessMain()
 	{
 		if (ReadValues.ButtonPressed == VolDown && (ReadValues.newValues || ReadValues.Repeat))
 		{
-			if (ReadValues.Repeat == 1 && LEDSettings.BrightnessSetpoint > 5)  //Fast scaling
+			if (ReadValues.Repeat == 1)  //Fast scaling
 			{
-				LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 10;
-				Serial.print("----  ");
+				if (LEDSettings.BrightnessSetpoint > 10)
+				{
+					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 10;
+					Serial.print("----  ");
+				}
+				else
+				{
+					LEDSettings.BrightnessSetpoint = 5;
+					Serial.print("oo  ");
+				}
 			}
-			else if (LEDSettings.BrightnessSetpoint > 5) //Slow scaling
+			else //Slow scaling
 			{
-				LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 5;
-				Serial.print("--    ");
+				if (LEDSettings.BrightnessSetpoint > 5)
+				{
+					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 5;
+					Serial.print("--    ");
+				}
+				else
+				{
+					LEDSettings.BrightnessSetpoint = 5;
+					Serial.print("oo    ");
+				}
 			}
-			else //Nothing because min value reached
-				Serial.print("oo    ");
 
 			LEDSettings.ChangesToEffectMade = 1;
 
@@ -27,19 +41,34 @@ void BrightnessMain()
 		}
 		if (ReadValues.ButtonPressed == VolUp && (ReadValues.newValues || ReadValues.Repeat))
 		{
-			if (ReadValues.Repeat == 1 && LEDSettings.BrightnessSetpoint < 251) //Fast scaling
+			if (ReadValues.Repeat == 1) //Fast scaling
 			{
-				LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 10;
-				Serial.print("++++  ");
-
-			}
-			else if (LEDSettings.BrightnessSetpoint < 251)
-			{
-				LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 5; //Slow scaling
-				Serial.print("++    ");
+				
+				if (LEDSettings.BrightnessSetpoint < 246)
+				{
+					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 10;
+					Serial.print("++++  ");
+				}
+				else
+				{
+					LEDSettings.BrightnessSetpoint = 255;
+					Serial.print("oo    ");
+				}
 			}
 			else
-				Serial.print("oo    "); //Nothing because min value reached
+			{
+				if (LEDSettings.BrightnessSetpoint < 240)
+				{
+					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 5; //Slow scaling
+					Serial.print("++    ");
+				}
+				else
+				{
+					LEDSettings.BrightnessSetpoint = 255; //Slow scaling
+					Serial.print("oo    ");
+				}
+				
+			}
 
 			LEDSettings.ChangesToEffectMade = 1;
 			
