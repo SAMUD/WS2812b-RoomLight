@@ -42,10 +42,10 @@ void ModeSelectionMain()
 				//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
 				switch (LEDSettings.DisplayMode)
 				{
-				/*case WhiteAll:
-					LEDSettings.DisplayMode = WhiteLeft;
-					Serial.println("ModeSelectionMain | Changed to WhiteLeft-Mode");
-					break;*/
+				case RainbowMarch:
+					LEDSettings.DisplayMode = RainbowBeat;
+					Serial.println("ModeSelectionMain | Changed to Rainbow-Beat-Mode");
+					break;
 				case Confetti:
 					LEDSettings.DisplayMode = RainbowMarch;
 					Serial.println("ModeSelectionMain | Changed to RainbowMarch-Mode");

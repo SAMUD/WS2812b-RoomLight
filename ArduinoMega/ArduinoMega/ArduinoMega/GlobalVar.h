@@ -57,7 +57,7 @@ enum Mode
 {
 	None,
 	WhiteLeft,WhiteRight,WhiteAll,
-	Confetti, RainbowMarch
+	Confetti, RainbowMarch, RainbowBeat
 };
 
 //structure with the values read from the other Arduino

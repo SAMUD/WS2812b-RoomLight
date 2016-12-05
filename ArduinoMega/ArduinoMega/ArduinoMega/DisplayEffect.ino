@@ -17,6 +17,8 @@ void DisplayEffectMain()
 		DisplayEffectConfetti();
 	else if (LEDSettings.DisplayMode == RainbowMarch && LEDSettings.ChangesToEffectMade)
 		DisplayEffectRainbowMarch();
+	else if (LEDSettings.DisplayMode == RainbowBeat && LEDSettings.ChangesToEffectMade)
+		DisplayEffectRainbowBeat();
 
 	
 }
@@ -148,6 +150,15 @@ void DisplayEffectRainbowMarch()
 
 	thishue++;                                                  // Increment the starting hue.
 	fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
+
+	LEDSettings.ChangesToEffectMade = 1;
+}
+
+void DisplayEffectRainbowBeat()
+{
+	uint8_t beatA = beatsin8(5, 0, 255);                        // Starting hue
+	uint8_t beatB = beatsin8(15, 4, 20);                        // Delta hue between LED's
+	fill_rainbow(leds, NUM_LEDS, beatA, beatB);                 // Use FastLED's fill_rainbow routine.
 
 	LEDSettings.ChangesToEffectMade = 1;
 }
