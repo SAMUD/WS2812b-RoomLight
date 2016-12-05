@@ -68,6 +68,7 @@ void ModeSelectionMain()
 			LEDSettings.BrightnessSetpoint = 255;
 			LEDSettings.Saturation = 0;
 			LEDSettings.Hue = 0;
+			LEDSettings.ChangesToEffectMade = 1;
 			if (!LEDSettings.PowerState)
 				LEDSettings.PowerState = 1;
 
