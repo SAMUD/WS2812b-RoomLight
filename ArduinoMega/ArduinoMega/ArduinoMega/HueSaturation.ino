@@ -1,83 +1,63 @@
-static uint16_t Value=255;
 
-//TODO: implement fast scaling 
 
 void HueSaturationMain()
 {
 	
 	EVERY_N_MILLISECONDS(50)
 	{
-		if (
-			(LEDSettings.DisplayMode == WhiteAll || LEDSettings.DisplayMode == WhiteLeft || LEDSettings.DisplayMode == WhiteRight) &&
-			(ReadValues.newValues == 1 || ReadValues.Repeat == 1) &&
-			ReadValues.ButtonPressed == Forward)
+		if (ReadValues.newValues == 1 && ReadValues.Repeat == 0 && ReadValues.ButtonPressed == PlayPause)
 		{
-
-			HueSaturationReadHueSaturation(); //read and write to 'Value'
 			
-			if (Value < (510 - 100) && ReadValues.Repeat == 0)
-				Value = Value + 1; //slow Increase
-			else if (Value < (510 - 100) && ReadValues.Repeat)
-				Value = Value + 3; //fast Increase
-			
-			//set the new values();
-			HueSaturationSetHue();
-			HueSaturationSetSaturation();
-			LEDSettings.ChangesToEffectMade = 1;
+			if (LEDSettings.DisplayMode == WhiteAll || LEDSettings.DisplayMode == WhiteLeft || LEDSettings.DisplayMode == WhiteRight)
+			{
+				//set next color temp
+				switch (LEDSettings.Temperature)
+				{
+					case Candle2:
+						LEDSettings.Temperature = Candle3;
+						break;
+					case Candle3:
+						LEDSettings.Temperature = Tungsten40W2;
+						break;
+					case Tungsten40W2:
+						LEDSettings.Temperature = Tungsten100W2;
+						break;
+					case Tungsten100W2:
+						LEDSettings.Temperature = Halogen2;
+						break;
+					case Halogen2:
+						LEDSettings.Temperature = CarbonArc2;
+						break;
+					case CarbonArc2:
+						LEDSettings.Temperature = HighNoonSun2;
+						break;
+					case HighNoonSun2:
+						LEDSettings.Temperature = DirectSunlight2;
+						break;
+					case DirectSunlight2:
+						LEDSettings.Temperature = OvercastSky2;
+						break;
+					case OvercastSky2:
+						LEDSettings.Temperature = ClearBlueSky2;
+						break;
+					default:
+						LEDSettings.Temperature = Candle2;
+					}
+					LEDSettings.ChangesToEffectMade = 1;
 
-			Serial.print("Increasing ColorTemp [Hue Saturation]  ");
-			Serial.print(LEDSettings.Hue);
-			Serial.print(" ");
-			Serial.println(LEDSettings.Saturation);
+					Serial.print("Changing ColorTemp to ");
+					Serial.println(LEDSettings.Temperature);
+			}
+			else
+			{
+
+			}
+			
+			ReadValues.newValues = 0;
 		}
 
-		if (
-			(LEDSettings.DisplayMode == WhiteAll || LEDSettings.DisplayMode == WhiteLeft || LEDSettings.DisplayMode == WhiteRight) &&
-			(ReadValues.newValues == 1 || ReadValues.Repeat == 1) &&
-			ReadValues.ButtonPressed == Reward)
-		{
-			HueSaturationReadHueSaturation(); //read and write to 'Value'
-			
-			if (Value > 150 && ReadValues.Repeat == 0)
-				Value = Value - 1; //slow Increase
-			else if (Value > 152 && ReadValues.Repeat)
-				Value = Value - 3; //fast Increase
-
-			//set the new values
-			HueSaturationSetHue();
-			HueSaturationSetSaturation();
-			LEDSettings.ChangesToEffectMade = 1;
-
-			Serial.print("Decreasing ColorTemp [Hue Saturation]  ");
-			Serial.print(LEDSettings.Hue);
-			Serial.print(" ");
-			Serial.println(LEDSettings.Saturation);
-		}
+		
 	}
 	
 
-}
-
-void HueSaturationSetHue()
-{
-	if (Value > 255)
-		LEDSettings.Hue = 0;
-	else
-		LEDSettings.Hue = 255 / 2;
-}
-
-void HueSaturationSetSaturation()
-{
-	if (Value > 255)
-		LEDSettings.Saturation = Value - 255;
-	else
-		LEDSettings.Saturation = 255 - Value;
-}
-
-void HueSaturationReadHueSaturation()
-{
-	Value = LEDSettings.Saturation;
-
-	if (LEDSettings.Hue == 0)
-		Value = Value + 255;
 }

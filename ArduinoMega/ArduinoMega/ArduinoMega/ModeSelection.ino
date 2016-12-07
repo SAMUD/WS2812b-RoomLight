@@ -29,7 +29,7 @@ void ModeSelectionMain()
 				}
 				LEDSettings.ChangesToEffectMade = 1;
 			}
-
+			ReadValues.newValues = 0;
 		}
 
 		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Eight)
@@ -42,6 +42,10 @@ void ModeSelectionMain()
 				//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
 				switch (LEDSettings.DisplayMode)
 				{
+				case RainbowBeat:
+					LEDSettings.DisplayMode = ColorPalBeat;
+					Serial.println("ModeSelectionMain | Changed to Color-Palette-Beat-Mode");
+					break;
 				case RainbowMarch:
 					LEDSettings.DisplayMode = RainbowBeat;
 					Serial.println("ModeSelectionMain | Changed to Rainbow-Beat-Mode");
@@ -57,9 +61,8 @@ void ModeSelectionMain()
 				}
 				LEDSettings.ChangesToEffectMade = 1;
 			}
-
+			ReadValues.newValues = 0;
 		}
-
 		//change to turn all on
 		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Nine)
 		{
@@ -71,8 +74,10 @@ void ModeSelectionMain()
 			LEDSettings.ChangesToEffectMade = 1;
 			if (!LEDSettings.PowerState)
 				LEDSettings.PowerState = 1;
+			ReadValues.newValues = 0;
 
 		}
+		
 	}
 	
 }

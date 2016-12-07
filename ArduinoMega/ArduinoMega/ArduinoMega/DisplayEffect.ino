@@ -1,3 +1,5 @@
+
+
 void DisplayEffectMain()
 {
 	if (LEDSettings.DisplayMode != LEDSettings.DisplayModeOld)
@@ -19,6 +21,8 @@ void DisplayEffectMain()
 		DisplayEffectRainbowMarch();
 	else if (LEDSettings.DisplayMode == RainbowBeat && LEDSettings.ChangesToEffectMade)
 		DisplayEffectRainbowBeat();
+	else if (LEDSettings.DisplayMode == ColorPalBeat && LEDSettings.ChangesToEffectMade)
+		DisplayEffectColorPalBeat();
 
 	
 }
@@ -31,16 +35,8 @@ void DisplayEffectTransition()
 void DisplayEffectWhiteAll()
 {
 	Serial.println("EffectWhiteAll");
-	for (int dot = 0; dot < NUM_LEDS; dot++)
-	{
-		leds[dot] = CHSV(LEDSettings.Hue+42, LEDSettings.Saturation,255);
-		//show_at_max_brightness_for_power();
-		//clear this led for the next time around the loop
-		//leds[dot] = CHSV(50, 255, 50);
-		//delay(5);
-		LEDSettings.ChangesToEffectMade = 0;
-		
-	}
+	fill_solid(leds, NUM_LEDS, LEDSettings.Temperature);
+	LEDSettings.ChangesToEffectMade = 0;
 }
 
 void DisplayEffectWhiteLeft()
@@ -48,58 +44,26 @@ void DisplayEffectWhiteLeft()
 	float temp;
 	uint8_t temp2;
 	Serial.println("EffectWhiteLeft");
-	for (int dot = 0; dot < NUM_LEDS; dot++)
-	{
-		if (dot < NumberLEDLeft)
-		{
-			leds[dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation,255);
-		}
-		else if (dot < NumberLEDLeft + NumberLEDTransition)
-		{
-			temp = 100 / NumberLEDTransition; //decrementor in percentage of full value
-			temp2 =((NumberLEDLeft+NumberLEDTransition) - dot);
-			temp = 255 * ((temp2*temp)/100);
-			if (temp < ValueLEDDarkside)
-					temp = ValueLEDDarkside;
-			
-			leds[dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, temp2);
-		}
-		else
-		{
-			leds[dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, ValueLEDDarkside);
-		}
 
-
-	}
+	fill_solid(leds, NUM_LEDS, CHSV(0, 0, ValueLEDDarkside));
+	fill_solid(leds, NumberLEDLeft, LEDSettings.Temperature);
+	
 
 	LEDSettings.ChangesToEffectMade = 0;
 }
 
 void DisplayEffectWhiteRight()
 {
-	float temp3;
-	uint8_t temp4;
 	Serial.println("EffectWhiteRight");
 	for (int dot = 1; dot <= NUM_LEDS; dot++)
 	{
-		if (dot < NUM_LEDS-(NumberLEDRight+NumberLEDTransition))
+		if (dot < NumberLEDRight)
 		{
-			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, ValueLEDDarkside);
-		}
-		else if (dot < NUM_LEDS-NumberLEDRight)
-		{
-			temp3 = 100 / NumberLEDTransition; //decrementor in percentage of full value
-			temp4 = NUM_LEDS - (NumberLEDRight + NumberLEDTransition); //LEDS on the left side with dark value
-			temp4 = (NumberLEDTransition+1) - ((temp4 + NumberLEDTransition) - dot);
-			temp3 = 255 * ((temp4*temp3) / 100);
-			if (temp3 < ValueLEDDarkside)
-				temp3= ValueLEDDarkside;
-
-			leds[NUM_LEDS-dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, temp3);
+			leds[NUM_LEDS - dot] = LEDSettings.Temperature;
 		}
 		else
 		{
-			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, 255);
+			leds[NUM_LEDS - dot] = CHSV(LEDSettings.Hue + 42, LEDSettings.Saturation, ValueLEDDarkside);
 		}
 
 
@@ -143,22 +107,61 @@ void DisplayEffectConfetti()
 }
 
 void DisplayEffectRainbowMarch()
-{
-	uint8_t thisdelay = 5;                                        // A delay value for the sequence(s)
-	uint8_t thishue = 0;                                          // Starting hue value.
-	uint8_t deltahue = 10;                                        // Hue change between pixels.
+{                                       
+	static uint8_t thishue = 0;                                          // Starting hue value.
+	uint8_t deltahue = 2;                                        // Hue change between pixels.
 
-	thishue++;                                                  // Increment the starting hue.
-	fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
+	EVERY_N_MILLISECONDS(30)
+	{
+		thishue++;                                                  // Increment the starting hue.
+		fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
 
-	LEDSettings.ChangesToEffectMade = 1;
+		LEDSettings.ChangesToEffectMade = 1;
+	}
+
+	
 }
 
 void DisplayEffectRainbowBeat()
 {
-	uint8_t beatA = beatsin8(5, 0, 255);                        // Starting hue
-	uint8_t beatB = beatsin8(15, 4, 20);                        // Delta hue between LED's
-	fill_rainbow(leds, NUM_LEDS, beatA, beatB);                 // Use FastLED's fill_rainbow routine.
+	//EVERY_N_MILLISECONDS(20)
+	{
+		static uint8_t beatA;
+		static uint8_t beatB;
+		
+		beatA = beatsin8(6, 0, 255);                        // Starting hue
+		beatB = 1;                      // Delta hue between LED's
+		fill_rainbow(leds, NUM_LEDS, beatA, beatB);                 // Use FastLED's fill_rainbow routine.
 
-	LEDSettings.ChangesToEffectMade = 1;
+		LEDSettings.ChangesToEffectMade = 1;
+	}
+	
+}
+
+void DisplayEffectColorPalBeat()
+{
+	static CRGBPalette16 currentPalette;
+	static CRGBPalette16 targetPalette;
+	uint8_t maxChanges = 24;
+	static TBlendType    currentBlending;
+
+	currentPalette = RainbowColors_p;                           // RainbowColors_p; CloudColors_p; PartyColors_p; LavaColors_p; HeatColors_p;
+	targetPalette = RainbowColors_p;                           // RainbowColors_p; CloudColors_p; PartyColors_p; LavaColors_p; HeatColors_p;
+	currentBlending = LINEARBLEND;
+
+	static uint8_t beatA = beatsin8(1, 0, 255);                        // Starting hue
+	static uint8_t beatB = beatsin8(2, 2, 7);                       // Delta hue between LED's
+	for (int i = 0; i < NUM_LEDS; i++) {
+		leds[i] = ColorFromPalette(currentPalette, beatA, 255, currentBlending);
+		beatA += beatB;
+	}                         // Power managed display.
+
+	EVERY_N_MILLISECONDS(100) {                                // FastLED based timer to update/display the sequence every 5 seconds.
+		nblendPaletteTowardPalette(currentPalette, targetPalette, maxChanges);
+	}
+
+	EVERY_N_MILLISECONDS(5000) {                                // FastLED based timer to update/display the sequence every 5 seconds.
+		targetPalette = CRGBPalette16(CHSV(random8(), 255, 32), CHSV(random8(), random8(64) + 192, 255), CHSV(random8(), 255, 32), CHSV(random8(), 255, 255));
+	}
+
 }

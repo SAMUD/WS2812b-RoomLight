@@ -37,7 +37,7 @@ void BrightnessMain()
 			Serial.print(LEDSettings.BrightnessSetpoint);
 			Serial.print(" ");
 			Serial.println(FastLED.getBrightness());
-
+			ReadValues.newValues = 0;
 		}
 		if (ReadValues.ButtonPressed == VolUp && (ReadValues.newValues || ReadValues.Repeat))
 		{
@@ -76,6 +76,7 @@ void BrightnessMain()
 			Serial.print(LEDSettings.BrightnessSetpoint);
 			Serial.print(" ");
 			Serial.println(FastLED.getBrightness());
+			ReadValues.newValues = 0;
 		}
 	}
 	

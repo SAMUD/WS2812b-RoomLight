@@ -8,7 +8,7 @@
 #include <FastLED.h>
 
 //FastLed-library
-#define NUM_LEDS 300
+#define NUM_LEDS 291
 #define DATA_PIN 51
 CRGB leds[NUM_LEDS];
 
@@ -41,6 +41,7 @@ void setup()
 	LEDSettings.DisplayMode = WhiteAll;
 	LEDSettings.DisplayModeOld = None;
 	LEDSettings.ChangesToEffectMade = 1;
+	LEDSettings.Temperature = Tungsten100W2;
 }
 
 // the loop function runs over and over again until power down or reset
@@ -60,6 +61,7 @@ void loop()
 			{
 				Serial.println("Power button pressed - Turning off");
 				BrightnessTurnOff();
+				
 			}
 			else
 			{
@@ -67,6 +69,7 @@ void loop()
 				BrightnessTurnOn();
 				LEDSettings.ChangesToEffectMade = 1;
 			}
+			ReadValues.newValues = 0;
 		}
 	}
 	//Select Mode
@@ -101,7 +104,7 @@ void loop()
 	}
 
 	//no new values anymore.
-	ReadValues.newValues = 0;	
+		
 	
 }
 
