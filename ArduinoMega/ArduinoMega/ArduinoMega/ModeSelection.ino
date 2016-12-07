@@ -42,10 +42,10 @@ void ModeSelectionMain()
 				//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
 				switch (LEDSettings.DisplayMode)
 				{
-				/*case RainbowBeat:
+				case RainbowBeat:
 					LEDSettings.DisplayMode = ColorPalBeat;
 					Serial.println("ModeSelectionMain | Changed to Color-Palette-Beat-Mode");
-					break;*/
+					break;
 				case RainbowMarch:
 					LEDSettings.DisplayMode = RainbowBeat;
 					Serial.println("ModeSelectionMain | Changed to Rainbow-Beat-Mode");
@@ -64,6 +64,40 @@ void ModeSelectionMain()
 			}
 			ReadValues.newValues = 0;
 		}
+
+		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Five)
+		{
+			//If LEDS are off, turn them on with the last mode. else get the new one
+			if (!LEDSettings.PowerState)
+				ModeSelectionTurnOn();
+			else
+			{
+				//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
+				switch (LEDSettings.DisplayMode)
+				{
+					/*case RainbowBeat:
+					LEDSettings.DisplayMode = ColorPalBeat;
+					Serial.println("ModeSelectionMain | Changed to Color-Palette-Beat-Mode");
+					break;*/
+		/*case RainbowMarch:
+					LEDSettings.DisplayMode = RainbowBeat;
+					Serial.println("ModeSelectionMain | Changed to Rainbow-Beat-Mode");
+					break;
+				case Confetti:
+					LEDSettings.DisplayMode = RainbowMarch;
+					Serial.println("ModeSelectionMain | Changed to RainbowMarch-Mode");
+					break;*/
+				default:
+					LEDSettings.DisplayMode = Fade;
+					Serial.println("ModeSelectionMain | Changed to Fade-Mode");
+					break;
+				}
+				LEDSettings.ChangesToEffectMade = 1;
+				LEDSettings.PlayPause = 1;
+			}
+			ReadValues.newValues = 0;
+		}
+
 		//change to turn all on
 		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Nine)
 		{

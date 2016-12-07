@@ -23,6 +23,8 @@ void DisplayEffectMain()
 		DisplayEffectRainbowBeat();
 	else if (LEDSettings.DisplayMode == ColorPalBeat && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
 		DisplayEffectColorPalBeat();
+	else if (LEDSettings.DisplayMode == Fade && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
+		DisplayEffectFade();
 
 	
 }
@@ -109,9 +111,9 @@ void DisplayEffectConfetti()
 void DisplayEffectRainbowMarch()
 {                                       
 	static uint8_t thishue = 0;                                          // Starting hue value.
-	uint8_t deltahue = 2;                                        // Hue change between pixels.
+	uint8_t deltahue = 1;                                        // Hue change between pixels.
 
-	EVERY_N_MILLISECONDS(30)
+	EVERY_N_MILLISECONDS(60)
 	{
 		thishue++;                                                  // Increment the starting hue.
 		fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
@@ -140,28 +142,35 @@ void DisplayEffectRainbowBeat()
 
 void DisplayEffectColorPalBeat()
 {
-	static CRGBPalette16 currentPalette;
-	static CRGBPalette16 targetPalette;
-	uint8_t maxChanges = 24;
-	static TBlendType    currentBlending;
+	EVERY_N_MILLISECONDS(400)
+	{
+		static CRGBPalette16 currentPalette;
+		static TBlendType    currentBlending;
+		currentPalette = PartyColors_p;
+		currentBlending = LINEARBLEND;
+		static uint8_t startIndex = 0;
+		static uint8_t colorIndex = 0;
+		startIndex = startIndex + 1; /* motion speed */
+		for (int i = 0; i < NUM_LEDS; i++) {
+			leds[i] = ColorFromPalette(currentPalette, colorIndex, 255, currentBlending);
 
-	currentPalette = RainbowColors_p;                           // RainbowColors_p; CloudColors_p; PartyColors_p; LavaColors_p; HeatColors_p;
-	targetPalette = RainbowColors_p;                           // RainbowColors_p; CloudColors_p; PartyColors_p; LavaColors_p; HeatColors_p;
-	currentBlending = LINEARBLEND;
-
-	static uint8_t beatA = beatsin8(1, 0, 255);                        // Starting hue
-	static uint8_t beatB = beatsin8(2, 2, 7);                       // Delta hue between LED's
-	for (int i = 0; i < NUM_LEDS; i++) {
-		leds[i] = ColorFromPalette(currentPalette, beatA, 255, currentBlending);
-		beatA += beatB;
-	}                         // Power managed display.
-
-	EVERY_N_MILLISECONDS(100) {                                // FastLED based timer to update/display the sequence every 5 seconds.
-		nblendPaletteTowardPalette(currentPalette, targetPalette, maxChanges);
+			colorIndex += 1;
+		}
 	}
 
-	EVERY_N_MILLISECONDS(5000) {                                // FastLED based timer to update/display the sequence every 5 seconds.
-		targetPalette = CRGBPalette16(CHSV(random8(), 255, 32), CHSV(random8(), random8(64) + 192, 255), CHSV(random8(), 255, 32), CHSV(random8(), 255, 255));
-	}
+}
 
+void DisplayEffectFade()
+{
+	EVERY_N_MILLISECONDS(42)
+	{
+		static uint8_t hue;
+
+
+
+		hue = hue + 1;
+		fill_solid(leds, NUM_LEDS, CHSV(hue, 255, 255));
+
+		LEDSettings.ChangesToEffectMade = 1;
+	}
 }

@@ -83,7 +83,8 @@
     <None Include="Brightness.ino" />
     <None Include="DisplayEffect.ino" />
     <None Include="Functions.ino" />
-    <None Include="Controls.ino" />
+    <None Include="SpeedForwardBackward.ino" />
+    <None Include="TempPlayPause.ino" />
     <None Include="ModeSelection.ino" />
     <None Include="ReadBinary.ino" />
   </ItemGroup>

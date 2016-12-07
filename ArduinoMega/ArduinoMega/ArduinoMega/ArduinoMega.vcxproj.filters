@@ -21,7 +21,8 @@
     <None Include="ModeSelection.ino" />
     <None Include="DisplayEffect.ino" />
     <None Include="Functions.ino" />
-    <None Include="Controls.ino" />
+    <None Include="TempPlayPause.ino" />
+    <None Include="SpeedForwardBackward.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">
