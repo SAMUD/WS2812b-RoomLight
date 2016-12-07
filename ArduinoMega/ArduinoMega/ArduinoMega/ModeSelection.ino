@@ -60,6 +60,7 @@ void ModeSelectionMain()
 					break;
 				}
 				LEDSettings.ChangesToEffectMade = 1;
+				LEDSettings.PlayPause = 1; 
 			}
 			ReadValues.newValues = 0;
 		}
@@ -72,6 +73,7 @@ void ModeSelectionMain()
 			LEDSettings.Saturation = 0;
 			LEDSettings.Hue = 0;
 			LEDSettings.ChangesToEffectMade = 1;
+			LEDSettings.Temperature = DirectSunlight2;
 			if (!LEDSettings.PowerState)
 				LEDSettings.PowerState = 1;
 			ReadValues.newValues = 0;

@@ -20,8 +20,8 @@
     <None Include="Brightness.ino" />
     <None Include="ModeSelection.ino" />
     <None Include="DisplayEffect.ino" />
-    <None Include="HueSaturation.ino" />
     <None Include="Functions.ino" />
+    <None Include="Controls.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">

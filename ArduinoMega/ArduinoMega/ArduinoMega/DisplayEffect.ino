@@ -15,13 +15,13 @@ void DisplayEffectMain()
 		DisplayEffectWhiteLeft();
 	else if (LEDSettings.DisplayMode == WhiteRight && LEDSettings.ChangesToEffectMade)
 		DisplayEffectWhiteRight();
-	else if (LEDSettings.DisplayMode == Confetti && LEDSettings.ChangesToEffectMade)
+	else if (LEDSettings.DisplayMode == Confetti && LEDSettings.ChangesToEffectMade  && LEDSettings.PlayPause)
 		DisplayEffectConfetti();
-	else if (LEDSettings.DisplayMode == RainbowMarch && LEDSettings.ChangesToEffectMade)
+	else if (LEDSettings.DisplayMode == RainbowMarch && LEDSettings.ChangesToEffectMade  && LEDSettings.PlayPause)
 		DisplayEffectRainbowMarch();
-	else if (LEDSettings.DisplayMode == RainbowBeat && LEDSettings.ChangesToEffectMade)
+	else if (LEDSettings.DisplayMode == RainbowBeat && LEDSettings.ChangesToEffectMade  && LEDSettings.PlayPause)
 		DisplayEffectRainbowBeat();
-	else if (LEDSettings.DisplayMode == ColorPalBeat && LEDSettings.ChangesToEffectMade)
+	else if (LEDSettings.DisplayMode == ColorPalBeat && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
 		DisplayEffectColorPalBeat();
 
 	

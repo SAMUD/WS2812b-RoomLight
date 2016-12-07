@@ -1,7 +1,8 @@
 
 
 
-
+//defines
+#define DEBUGMODE
 
 //In Out Pins used on my Arduino
 #define PINValueChanged 36
@@ -123,6 +124,6 @@ static struct Settings
 	uint8_t Hue;					//used in Temperature Settings
 	uint8_t Saturation;				//used in Temperature Settings
 	uint8_t ChangesToEffectMade;		//when the LEDS need to be redrwan, cause there were changes to the effects 
-	
+	bool PlayPause;
 }LEDSettings;
 

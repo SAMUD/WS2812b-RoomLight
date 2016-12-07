@@ -42,6 +42,7 @@ void setup()
 	LEDSettings.DisplayModeOld = None;
 	LEDSettings.ChangesToEffectMade = 1;
 	LEDSettings.Temperature = Tungsten100W2;
+	LEDSettings.PlayPause = 1;
 }
 
 // the loop function runs over and over again until power down or reset
@@ -87,7 +88,7 @@ void loop()
 		BrightnessMain();
 
 		//Change Colors
-		HueSaturationMain();
+		TempPlayPauseMain();
 
 		//print out
 		FastLED.show();

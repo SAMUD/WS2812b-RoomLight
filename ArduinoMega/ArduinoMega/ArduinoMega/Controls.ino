@@ -1,6 +1,6 @@
 
 
-void HueSaturationMain()
+void TempPlayPauseMain()
 {
 	
 	EVERY_N_MILLISECONDS(50)
@@ -50,7 +50,8 @@ void HueSaturationMain()
 			}
 			else
 			{
-
+					//when not in White Modes Play Pause for the Effects
+				LEDSettings.PlayPause = !LEDSettings.PlayPause;
 			}
 			
 			ReadValues.newValues = 0;
