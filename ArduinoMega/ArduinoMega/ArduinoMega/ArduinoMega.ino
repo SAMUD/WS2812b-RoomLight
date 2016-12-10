@@ -4,13 +4,16 @@
  Author:	sdaur
 */
 
-#include "GlobalVar.h"
 #include <FastLED.h>
+#include "GlobalVar.h"
+
+
 
 //FastLed-library
 #define NUM_LEDS 291
 #define DATA_PIN 51
 CRGB leds[NUM_LEDS];
+
 
 
 // the setup function runs once when you press reset or power the board
@@ -22,9 +25,10 @@ void setup()
 	set_max_power_in_volts_and_milliamps(5, 200);
 
 	//Setup serial
-	Serial.begin(9600);
+	#if defined(DEBUGMODE)
+	Serial.begin(115200);
 	Serial.println("Started - Waiting - V1.0");
-
+	#endif
 	//Setting Pin-Modes
 	pinMode(PINValueChanged, INPUT);
 	pinMode(PINMultiplePresses, INPUT);
@@ -43,6 +47,7 @@ void setup()
 	LEDSettings.ChangesToEffectMade = 1;
 	LEDSettings.Temperature = Tungsten100W2;
 	LEDSettings.PlayPause = 1;
+	LEDSettings.SpeedMultiplikator = 4;
 }
 
 // the loop function runs over and over again until power down or reset
@@ -60,13 +65,17 @@ void loop()
 			LEDSettings.PowerState = !LEDSettings.PowerState;
 			if (!LEDSettings.PowerState)
 			{
+				#if defined(DEBUGMODE)
 				Serial.println("Power button pressed - Turning off");
+				#endif
 				BrightnessTurnOff();
 				
 			}
 			else
 			{
+				#if defined(DEBUGMODE)
 				Serial.println("Power button pressed - Turning on");
+				#endif
 				BrightnessTurnOn();
 				LEDSettings.ChangesToEffectMade = 1;
 			}
@@ -81,6 +90,9 @@ void loop()
 	{
 		//LEDs are on
 		
+		//ChangeSpeed
+		ForwardBackwardMain();
+
 		//Display Effect
 		DisplayEffectMain();
 
@@ -106,6 +118,5 @@ void loop()
 
 	//no new values anymore.
 		
-	
 }
 

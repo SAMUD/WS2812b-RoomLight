@@ -1,6 +1,4 @@
 
-
-
 //defines
 #define DEBUGMODE
 
@@ -19,25 +17,25 @@
 #define NumberLEDTransition 10
 #define ValueLEDDarkside 75
 
+
 //The Buttons which are availaible on my Transmitter
-/*	Zero=
-	Zero= 
+/*	Zero= 
 	One= 
-	Two=
+	Two=		effect modes like Confetti
 	Three=
 	Four=
-	Five=
+	Five=		fading, butt all leds have the same color
 	Six=
 	Seven=
-	Eight=
+	Eight=		fading modes with different colors for each LED
 	Nine=		turn all leds on at full brightness even when other settings where specified before
 	Power=		Turn the strip on/off
 	VolUp=		Brightness+
 	FuncStop=	change Between White Modes --> White All, WhiteLeft, WhiteRight
-	Reward=		in all White-Modes: Temperature-
-	PlayPause=
-	Forward=	in all White-Modes: Temperature+
-	Down=
+	Reward=		Speed up effects
+	PlayPause=	in WhiteModes: Temperature | else: PlayPause
+	Forward=	Speed down effects
+	Down=		
 	VolDown=	Brightness-
 	Up=
 	Eq=
@@ -71,13 +69,7 @@ enum Buttons
 	OvercastSky2 = 0xC9E2FF /* 7000 K, 201, 226, 255 */,
 	/// 20000 Kelvin
 	ClearBlueSky2 = 0x409CFF /* 20000 K, 64, 156, 255 */,
-	///@}
 
-	/// @name Gaseous light sources
-	/// Gaseous light sources emit discrete spectral bands, and while we can
-	/// approximate their aggregate hue with RGB values, they don't actually
-	/// have a proper Kelvin temperature.
-	///@{
 	WarmFluorescent2 = 0xFFF4E5 /* 0 K, 255, 244, 229 */,
 	StandardFluorescent2 = 0xF4FFFA /* 0 K, 244, 255, 250 */,
 	CoolWhiteFluorescent2 = 0xD4EBFF /* 0 K, 212, 235, 255 */,
@@ -88,10 +80,6 @@ enum Buttons
 	SodiumVapor2 = 0xFFD1B2 /* 0 K, 255, 209, 178 */,
 	MetalHalide2 = 0xF2FCFF /* 0 K, 242, 252, 255 */,
 	HighPressureSodium2 = 0xFFB74C /* 0 K, 255, 183, 76 */,
-	///@}
-
-	/// Uncorrected temperature 0xFFFFFF
-	Normal2 = 0xFFFFFF
 };
 
 //enum with the actual Mode
@@ -99,8 +87,9 @@ enum Mode
 {
 	None,
 	WhiteLeft,WhiteRight,WhiteAll,
-	Confetti, RainbowMarch, RainbowBeat, ColorPalBeat,
-	Fade
+	Heat, RainbowMarch, RainbowBeat, ColorPalBeat,
+	Fade,
+	Confetti,ConfettiColorfull
 };
 
 //structure with the values read from the other Arduino
@@ -122,9 +111,10 @@ static struct Settings
 	bool PowerState;				//true=On False=off
 	Mode DisplayMode;				//the Actual Mode
 	Mode DisplayModeOld;			//the Old mode
-	uint8_t Hue;					//used in Temperature Settings
-	uint8_t Saturation;				//used in Temperature Settings
-	uint8_t ChangesToEffectMade;		//when the LEDS need to be redrwan, cause there were changes to the effects 
+	//uint8_t Hue;					//used in Temperature Settings
+	//uint8_t Saturation;				//used in Temperature Settings
+	uint8_t ChangesToEffectMade;	//when the LEDS need to be redrwan, cause there were changes to the effects 
+	uint16_t SpeedMultiplikator;		//speed setting (in ms for now)
 	bool PlayPause;
 }LEDSettings;
 

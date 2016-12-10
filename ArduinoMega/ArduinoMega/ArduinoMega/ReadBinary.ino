@@ -8,7 +8,9 @@ void ReadBinaryMain()
 		if (digitalRead(PINValueChanged) != ValueChanged)
 		{
 			//there is something new at the input pins
+			#if defined(DEBUGMODE)
 			Serial.println("Reading new values from other Arduino");
+			#endif
 			ValueChanged = !ValueChanged;
 			ReadButton();
 			ReadValues.newValues = 1;
@@ -23,10 +25,7 @@ void ReadBinaryMain()
  void ReadButton()
 {
 	 if (digitalRead(PINInput5) == 0 && digitalRead(PINInput4) == 0 && digitalRead(PINInput3) == 0 && digitalRead(PINInput2) == 0 && digitalRead(PINInput1) == 0)
-	 {
 		 ReadValues.ButtonPressed = Power;
-		 Serial.println("Power");
-	 }
 
 	 if (digitalRead(PINInput5) == 0 && digitalRead(PINInput4) == 0 && digitalRead(PINInput3) == 0 && digitalRead(PINInput2) == 0 && digitalRead(PINInput1) == 1)
 		 ReadValues.ButtonPressed = VolUp;
@@ -48,7 +47,6 @@ void ReadBinaryMain()
 
 	 if (digitalRead(PINInput5) == 0 && digitalRead(PINInput4) == 0 && digitalRead(PINInput3) == 1 && digitalRead(PINInput2) == 1 && digitalRead(PINInput1) == 1)
 		 ReadValues.ButtonPressed = VolDown;
-
 
 	 if (digitalRead(PINInput5) == 0 && digitalRead(PINInput4) == 1 && digitalRead(PINInput3) == 0 && digitalRead(PINInput2) == 0 && digitalRead(PINInput1) == 0)
 		 ReadValues.ButtonPressed = Up;

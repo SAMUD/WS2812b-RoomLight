@@ -9,12 +9,16 @@ void BrightnessMain()
 				if (LEDSettings.BrightnessSetpoint > 10)
 				{
 					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 10;
+					#if defined(DEBUGMODE)
 					Serial.print("----  ");
+					#endif
 				}
 				else
 				{
 					LEDSettings.BrightnessSetpoint = 5;
-					Serial.print("oo  ");
+					#if defined(DEBUGMODE)
+					Serial.print("oo    ");
+					#endif			
 				}
 			}
 			else //Slow scaling
@@ -22,21 +26,26 @@ void BrightnessMain()
 				if (LEDSettings.BrightnessSetpoint > 5)
 				{
 					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 5;
+					#if defined(DEBUGMODE)
 					Serial.print("--    ");
+					#endif
 				}
 				else
 				{
 					LEDSettings.BrightnessSetpoint = 5;
+					#if defined(DEBUGMODE)
 					Serial.print("oo    ");
+					#endif
 				}
 			}
 
 			LEDSettings.ChangesToEffectMade = 1;
-
-			Serial.print("BrightnessDown [Setpoint  Actual]");
+			#if defined(DEBUGMODE)
+			Serial.print("BrightnessMain | Down [Setpoint  Actual]");
 			Serial.print(LEDSettings.BrightnessSetpoint);
 			Serial.print(" ");
 			Serial.println(FastLED.getBrightness());
+			#endif
 			ReadValues.newValues = 0;
 		}
 		if (ReadValues.ButtonPressed == VolUp && (ReadValues.newValues || ReadValues.Repeat))
@@ -47,12 +56,16 @@ void BrightnessMain()
 				if (LEDSettings.BrightnessSetpoint < 246)
 				{
 					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 10;
+					#if defined(DEBUGMODE)
 					Serial.print("++++  ");
+					#endif
 				}
 				else
 				{
 					LEDSettings.BrightnessSetpoint = 255;
+					#if defined(DEBUGMODE)
 					Serial.print("oo    ");
+					#endif
 				}
 			}
 			else
@@ -60,22 +73,27 @@ void BrightnessMain()
 				if (LEDSettings.BrightnessSetpoint < 240)
 				{
 					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 5; //Slow scaling
+					#if defined(DEBUGMODE)
 					Serial.print("++    ");
+					#endif
 				}
 				else
 				{
 					LEDSettings.BrightnessSetpoint = 255; //Slow scaling
+					#if defined(DEBUGMODE)
 					Serial.print("oo    ");
+					#endif
 				}
 				
 			}
 
 			LEDSettings.ChangesToEffectMade = 1;
-			
-			Serial.print("BrightnessUp Setpoint  Actual");
+			#if defined(DEBUGMODE)
+			Serial.print("BrightnessMain | Up Setpoint  Actual");
 			Serial.print(LEDSettings.BrightnessSetpoint);
 			Serial.print(" ");
 			Serial.println(FastLED.getBrightness());
+			#endif
 			ReadValues.newValues = 0;
 		}
 	}
@@ -88,7 +106,7 @@ void BrightnessMain()
 //Fading the Brightness to the Value specified in LEDSettings.BrightnessSetpoint
 void BrightnessFade(uint8_t Setpoint)
 {
-	EVERY_N_MILLISECONDS(15) //run at 66Hz to have seamles blending
+	EVERY_N_MILLISECONDS(20) //run at 66Hz to have seamles blending
 	{
 		uint8_t incrementor = 0;
 
@@ -128,7 +146,9 @@ void BrightnessTurnOff()
 		}
 		BlinkLed(100, 10);
 	}
-	Serial.println("Powered down now");
+	#if defined(DEBUGMODE)
+	Serial.println("BrightnessTurnOff | Powered down now");
+	#endif
 }
 
 //Turning on the LED-Strip
@@ -137,7 +157,7 @@ void BrightnessTurnOn()
 	while (FastLED.getBrightness() != LEDSettings.BrightnessSetpoint)
 	{
 		//run BrightnessFade until brightness is = Setpoint
-		EVERY_N_MILLISECONDS(30)
+		EVERY_N_MILLISECONDS(40)
 		{
 			BrightnessFade(LEDSettings.BrightnessSetpoint);
 			//show_at_max_brightness_for_power();
@@ -145,6 +165,8 @@ void BrightnessTurnOn()
 		}
 		BlinkLed(10, 100);
 	}
-	Serial.println("Powered on now");
+	#if defined(DEBUGMODE)
+	Serial.println("BrightnessTurnOn | Powered on now");
+	#endif
 }
 
