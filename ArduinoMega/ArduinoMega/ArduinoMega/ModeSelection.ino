@@ -85,6 +85,12 @@ void ModeSelectionMain()
 			//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
 			switch (LEDSettings.DisplayMode)
 			{
+			case Fade:
+				LEDSettings.DisplayMode = RGBFade;
+				#if defined(DEBUGMODE)
+				Serial.println("ModeSelectionMain | Changed to RGBFade");
+				#endif
+				break;
 			default:
 				LEDSettings.DisplayMode = Fade;
 				#if defined(DEBUGMODE)
@@ -107,6 +113,12 @@ void ModeSelectionMain()
 			//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
 			switch (LEDSettings.DisplayMode)
 			{
+			case ConfettiColorfull:
+				LEDSettings.DisplayMode = Strobe;
+				#if defined(DEBUGMODE)
+				Serial.println("ModeSelectionMain | Changed to Strobe");
+				#endif
+				break;
 			case Confetti:
 				LEDSettings.DisplayMode = ConfettiColorfull;
 				#if defined(DEBUGMODE)
@@ -117,6 +129,29 @@ void ModeSelectionMain()
 				LEDSettings.DisplayMode = Confetti;
 				#if defined(DEBUGMODE)
 				Serial.println("ModeSelectionMain | Changed to Confetti");
+				#endif
+				break;
+			}
+
+			LEDSettings.ChangesToEffectMade = 1;
+			LEDSettings.PlayPause = 1;
+			ReadValues.newValues = 0;
+		}
+
+		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Three)
+		{
+			//If LEDS are off, turn them on with the last mode. else get the new one
+			if (!LEDSettings.PowerState)
+				ModeSelectionTurnOn();
+
+			//switching to the next mode (WhiteAll --> WhiteLeft --> WhiteRight -->)
+			switch (LEDSettings.DisplayMode)
+			{
+			default:
+				LEDSettings.DisplayMode = Night;
+				LEDSettings.BrightnessSetpoint = 60;
+				#if defined(DEBUGMODE)
+				Serial.println("ModeSelectionMain | Changed to Night");
 				#endif
 				break;
 			}

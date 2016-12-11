@@ -88,8 +88,9 @@ enum Mode
 	None,
 	WhiteLeft,WhiteRight,WhiteAll,
 	Heat, RainbowMarch, RainbowBeat, ColorPalBeat,
-	Fade,
-	Confetti,ConfettiColorfull
+	Fade,RGBFade,
+	Confetti,ConfettiColorfull,Strobe,
+	Night
 };
 
 //structure with the values read from the other Arduino

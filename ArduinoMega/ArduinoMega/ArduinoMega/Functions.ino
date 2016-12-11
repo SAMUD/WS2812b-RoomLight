@@ -17,64 +17,49 @@ void BlinkLed(uint16_t LEDdelay, uint16_t LEDTimeOn)
 	}
 }
 
-/*CRGB ExtractColor(uint16_t index)
+
+//index can be a value from 0 to 765
+//function will then extract an appropriate value around all the possible values
+CRGB ExtractColor(uint16_t index)
 {
-	static bool initdone = false;
-	uint8_t paletteCounter = 1;
+	CRGB temp;
 
-	static CRGBPalette256 firstPalette;
-	static CRGBPalette256 secondPalette;
-	static CRGBPalette256 thirdPalette;
-	static CRGBPalette256 fourPalette;
-	static CRGBPalette256 fivePalette;
+	while (index > 764)
+		//index is to big. trimming index
+		index = index - 764;
 
-	if (!initdone)
+
+	if (index < 256)
 	{
-		//do init
-		initdone = true;
-
-		CHSV one;
-		CHSV two;
-
-		fill_gradient_RGB(firstPalette, 256, CHSV(0, 255, 255), CHSV(50, 255, 255));
-		fill_gradient_RGB(secondPalette, 256, CHSV(51, 255, 255), CHSV(101, 255, 255));
-		fill_gradient_RGB(thirdPalette, 256, CHSV(102, 255, 255), CHSV(152, 255, 255));
-		//fill_gradient_RGB(firstPalette, 255, CHSV(0, 255, 255), CHSV(50, 255, 255), SHORTEST_HUES);
-		//fill_gradient_RGB(secondPalette, 255, CHSV(51, 255, 255), CHSV(101, 255, 255), SHORTEST_HUES);
-		//fill_gradient_RGB(thirdPalette, 255, CHSV(102, 255, 255), CHSV(152, 255, 255), SHORTEST_HUES);
-		fill_gradient_RGB(fourPalette, 256, CHSV(153, 255, 255), CHSV(203, 255, 255));
-		fill_gradient_RGB(fivePalette, 256, CHSV(204, 255, 255), CHSV(255, 255, 255));
+		//first Part of extracting. 
+		//index=0 --> 255 0 0 index=255 --> 0 255 0
+		temp.r = 255 - index;
+		temp.g = index;
+		temp.b = 0;
 	}
-
-	if (index > (256 * 5))
-		index = index - (256 * 5);
-
-	paletteCounter = 1;
-	while (index > 255)
+	else if (index < 511)
 	{
-		++paletteCounter;
+		//second part
+		//trim index
 		index = index - 255;
+		//index=0 --> 0 254 1 index=255 --> 0 0 255
+		temp.r = 0;
+		temp.g = 255 - index;
+		temp.b = index;
+	}
+	else
+	{
+		//third part
+		//trim index
+		index = index - 510;
+		//index=0 --> 1 0 254 index=254 --> 254 0 1
+		temp.r = index;
+		temp.g = 0;
+		temp.b = 255-index;
 	}
 
-	switch (paletteCounter)
-	{
-	case 1: 
-		//Serial.print("from 1   ");
-		return ColorFromPalette(firstPalette, index, 255);
-	case 2: 
-		//Serial.print("from 2   ");
-		return ColorFromPalette(secondPalette, index, 255);
-	case 3: 
-		//Serial.print("from 3   ");
-		return ColorFromPalette(thirdPalette, index, 255);
-	case 4: 
-		//Serial.print("from 4   ");
-		return ColorFromPalette(fourPalette, index, 255);
-	case 5: 
-		//Serial.print("from 5   ");
-		return ColorFromPalette(fivePalette, index, 255);
-	}
-}*/
+	return temp;
+}
 
 CHSV ExtractColorCHSV(uint16_t index)
 {

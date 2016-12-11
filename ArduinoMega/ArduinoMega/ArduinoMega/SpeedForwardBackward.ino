@@ -12,7 +12,7 @@ void ForwardBackwardMain()
 			if (LEDSettings.DisplayMode == WhiteAll || LEDSettings.DisplayMode == WhiteLeft || LEDSettings.DisplayMode == WhiteRight)
 			{
 				//set next color temp
-				SetColorTemp();
+				//SetColorTemp();
 				LEDSettings.ChangesToEffectMade = 1;
 			}
 			else
@@ -58,6 +58,7 @@ void ForwardBackwardMain()
 			Serial.println(LEDSettings.SpeedMultiplikator);
 			#endif
 			ReadValues.newValues = 0;
+			LEDSettings.ChangesToEffectMade = 1;
 		}
 
 		if ((ReadValues.newValues == 1 || ReadValues.Repeat == 1) && ReadValues.ButtonPressed == Forward)
@@ -65,7 +66,7 @@ void ForwardBackwardMain()
 			if (LEDSettings.DisplayMode == WhiteAll || LEDSettings.DisplayMode == WhiteLeft || LEDSettings.DisplayMode == WhiteRight)
 			{
 				//set next color temp
-				SetColorTemp();
+				//SetColorTemp();
 				LEDSettings.ChangesToEffectMade = 1;
 			}
 			else
@@ -111,6 +112,7 @@ void ForwardBackwardMain()
 			Serial.println(LEDSettings.SpeedMultiplikator);
 			#endif
 			ReadValues.newValues = 0;
+			LEDSettings.ChangesToEffectMade = 1;
 		}
 	}
 }

@@ -26,8 +26,14 @@ void DisplayEffectMain()
 		DisplayEffectColorPalBeat();
 	else if (LEDSettings.DisplayMode == Fade && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
 		DisplayEffectFade();
+	else if (LEDSettings.DisplayMode == RGBFade && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
+		DisplayEffectRGBFade();
 	else if (LEDSettings.DisplayMode == ConfettiColorfull && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
 		DisplayEffectConfettiColorfull();
+	else if (LEDSettings.DisplayMode == Strobe && LEDSettings.ChangesToEffectMade && LEDSettings.PlayPause)
+		DisplayEffectStrobe();
+	else if (LEDSettings.DisplayMode == Night && LEDSettings.ChangesToEffectMade)
+		DisplayEffectNight();
 
 	
 }
@@ -75,29 +81,29 @@ void DisplayEffectWhiteRight()
 //displaying Confetti-Effect
 void DisplayEffectConfetti()
 {
-	static uint8_t		thisfade = 0;								// How quickly does it fade? Lower = slower fade rate.
-	static int			thishue = 0;                                // Starting hue.
+	#define huediff 510													
+	static int					thishue = 0;                               // Starting hue.
 	static int8_t				thisinc = 3;                               // Incremental value for rotating hues
-	static int					huediff = 1024;                              // Range of random #'s to use for hue
-	uint8_t secondHand = (millis() / 1000) % 15;					// IMPORTANT!!! Change '15' to a different value to change duration of the loop.
-	static uint8_t lastSecond = 99;									// Static variable, means it's only defined once. This is our 'debounce' variable.
+	
+	uint8_t secondHand = (millis() / 1000) % 15;							// Change '15' to a different value to change duration of the loop.
+	static uint8_t lastSecond = 99;								
 	
 	if (lastSecond != secondHand) 
 	{							
 		lastSecond = secondHand;
 		switch (secondHand) {
-		case  0: thisinc = 0; thisfade = LEDSettings.SpeedMultiplikator;		huediff = 0; break;  // You can change values here, one at a time , or altogether.
-		case  5: thisinc = 2; thisfade = LEDSettings.SpeedMultiplikator;		huediff = 100; break;
-		case 10: thisinc = 1; thisfade = LEDSettings.SpeedMultiplikator/2;	huediff = 100; break;      // Only gets called once, and not continuously for the next several seconds. Therefore, no rainbows.
-		case 15: thisinc = 1; thisfade = LEDSettings.SpeedMultiplikator / 2;	huediff = 30;;																		// Here's the matching 15 for the other one.
+		case  0: thisinc = 0; break; 
+		case  5: thisinc = 3; break;
+		case 10: thisinc = 1; break;      
+		case 15: thisinc = 1; break;																	
 		}
 	}
 
 	EVERY_N_MILLISECONDS(40) 
-	{								// FastLED based non-blocking delay to update/display the sequence.
-		fadeToBlackBy(leds, NUM_LEDS, thisfade);                    // Low values = slower fade.
-		int pos = random16(NUM_LEDS);                               // Pick an LED at random.
-		leds[pos] += CHSV((thishue+random16(huediff))/4, 255, 255);  // I use 12 bits for hue so that the hue increment isn't too quick.
+	{								
+		fadeToBlackBy(leds, NUM_LEDS, beatsin8(5,LEDSettings.SpeedMultiplikator/2,LEDSettings.SpeedMultiplikator*2));         
+		int pos = random16(NUM_LEDS);									// Pick an LED at random.
+		leds[pos] += CHSV((thishue+random16(huediff))/4, 255, 255);		
 		thishue = thishue + thisinc;
 	}
 
@@ -106,31 +112,31 @@ void DisplayEffectConfetti()
 
 void DisplayEffectConfettiColorfull()
 {
-	static uint8_t		thisfade = LEDSettings.SpeedMultiplikator;        // How quickly does it fade? Lower = slower fade rate.
-	static int			thishue = 0;                                       // Starting hue.
-	static uint8_t		thissat = 255;                                      // The saturation, where 255 = brilliant colours. 
-	uint8_t secondHand = (millis() / 1000) % 15;					// IMPORTANT!!! Change '15' to a different value to change duration of the loop.
-	static uint8_t lastSecond = 99;									// Static variable, means it's only defined once. This is our 'debounce' variable.
+	#define huediff 255														
+	static int					thissat = 255;                               // Starting hue.
+
+	uint8_t secondHand = (millis() / 1000) % 15;							// Change '15' to a different value to change duration of the loop.
+	static uint8_t lastSecond = 99;
 
 	if (lastSecond != secondHand)
 	{
 		lastSecond = secondHand;
 		switch (secondHand) {
-		case  0: thishue = 0;				thissat = 0;	thisfade = LEDSettings.SpeedMultiplikator/3; break;  // You can change values here, one at a time , or altogether.
-		case  5: thishue = random16(255);	thissat = 255;	thisfade = LEDSettings.SpeedMultiplikator; ; break;
-		case 10: thishue = random16(255);	thissat = 255;	thisfade = LEDSettings.SpeedMultiplikator/2; break;      // Only gets called once, and not continuously for the next several seconds. Therefore, no rainbows.
-		case 15: thishue = random16(255);	thissat = 255;	thisfade = LEDSettings.SpeedMultiplikator; break;																		// Here's the matching 15 for the other one.
+		case  0: thissat = 50; break;
+		case  5: thissat = 255; break;
+		case 10: thissat = 255; break;
+		case 15: thissat = 170; break;
 		}
 	}
 
 	EVERY_N_MILLISECONDS(40)
-	{																// FastLED based non-blocking delay to update/display the sequence.
-		fadeToBlackBy(leds, NUM_LEDS, thisfade);                    // Low values = slower fade.
-		int pos = random16(NUM_LEDS);                               // Pick an LED at random.
-		leds[pos] += CHSV(random16(255), thissat, 255);  
+	{
+		fadeToBlackBy(leds, NUM_LEDS, beatsin8(5, LEDSettings.SpeedMultiplikator / 2, LEDSettings.SpeedMultiplikator * 2));
+		int pos = random16(NUM_LEDS);									// Pick an LED at random.
+		leds[pos] += CHSV(random16(huediff), thissat, 255);
 	}
 
-	LEDSettings.ChangesToEffectMade = 1; //periodic update needed
+	LEDSettings.ChangesToEffectMade = 1;								//periodic update needed
 }
 
 //display a marching rainbow
@@ -200,12 +206,67 @@ void DisplayEffectColorPalBeat()
 void DisplayEffectFade()
 {
 	static uint16_t Counter = 0;
+	EVERY_N_MILLISECONDS(2)
+	{
+		fill_solid(leds, NUM_LEDS, ExtractColor(Counter));
+		Counter = Counter + (LEDSettings.SpeedMultiplikator-1);
+		if (Counter > 764)
+			Counter = Counter-764;
+	}
+	LEDSettings.ChangesToEffectMade = 1;
+}
+
+void DisplayEffectRGBFade()
+{
+	static int16_t Counter = 0;
+	static uint8_t state = 0;
+	CRGB temp;
 	EVERY_N_MILLISECONDS(40)
 	{
-		fill_solid(leds, NUM_LEDS, ExtractColorCHSV(Counter));
-		Counter = Counter + (LEDSettings.SpeedMultiplikator/2);
-		if (Counter > 1023)
-			Counter = Counter-1024;
+		
+		switch (state)
+		{
+		case 0: 
+			temp.setRGB(Counter, 0, 0);
+			Counter = Counter + (LEDSettings.SpeedMultiplikator-1);
+			break;
+		case 1:
+			temp.setRGB(Counter, 0, 0);
+			Counter = Counter - (LEDSettings.SpeedMultiplikator - 1);
+			break;
+		case 2:
+			temp.setRGB(0, Counter, 0);
+			Counter = Counter + (LEDSettings.SpeedMultiplikator - 1);
+			break;
+		case 3:
+			temp.setRGB(0, Counter, 0);
+			Counter = Counter - (LEDSettings.SpeedMultiplikator - 1);
+			break;
+		case 4:
+			temp.setRGB(0, 0, Counter);
+			Counter = Counter + (LEDSettings.SpeedMultiplikator - 1);
+			break;
+		case 5:
+			temp.setRGB(0, 0, Counter);
+			Counter = Counter - (LEDSettings.SpeedMultiplikator - 1);
+			break;
+		}
+
+		if (Counter > 255)
+		{
+			Counter = 255;
+			++state;
+		}
+		if (Counter < 0)
+		{
+			Counter = 0;
+			++state;
+		}
+		if (state >= 6)
+			state = 0;
+
+		fill_solid(leds, NUM_LEDS, temp);
+
 	}
 	LEDSettings.ChangesToEffectMade = 1;
 }
@@ -213,5 +274,59 @@ void DisplayEffectFade()
 //Display a fire effect
 void DisplayEffectFire()
 {
-	CRGB HeatColor(uint8_t temperature);
+	leds[random16(NUM_LEDS)]= HeatColor(random8(255));
+
+	LEDSettings.ChangesToEffectMade = 1;
+}
+
+void DisplayEffectStrobe()
+{
+	static uint8_t counter = 0;
+
+	if (counter < 12)
+	{
+		if (counter == 0 || counter == 2 || counter == 4 || counter == 6 || counter == 8 || counter == 10 || counter == 12)
+		{
+			EVERY_N_MILLISECONDS(50)
+			{
+				fill_solid(leds, NUM_LEDS, CRGB::White);
+				++counter;
+			}
+		}
+		else
+		{
+			EVERY_N_MILLISECONDS(50)
+			{
+				fill_solid(leds, NUM_LEDS, CRGB::Black);
+				++counter;
+			}
+		}
+	}
+	else
+	{
+		EVERY_N_MILLISECONDS(50)
+		{
+			counter=counter+random16(255);
+			if (counter > 200)
+				counter = 0;
+			else
+				counter = 15;
+		}
+	}
+	
+
+}
+
+//Showing only the right side in white
+void DisplayEffectNight()
+{
+	for (int dot = 0; dot <= NUM_LEDS; dot++)
+	{
+		if (dot%LEDSettings.SpeedMultiplikator)
+			leds[dot] = CHSV(60, 128, 0);
+		else
+			leds[dot] = CHSV(255, 165, 255);
+	}
+	LEDSettings.ChangesToEffectMade = 0; //no periodically changes needed
+
 }
