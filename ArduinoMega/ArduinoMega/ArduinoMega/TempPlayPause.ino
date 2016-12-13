@@ -2,7 +2,7 @@
 
 void TempPlayPauseMain()
 {
-	EVERY_N_MILLISECONDS(50)
+	EVERY_N_MILLISECONDS(54)
 	{
 		if (ReadValues.newValues == 1 && ReadValues.Repeat == 0 && ReadValues.ButtonPressed == PlayPause)
 		{

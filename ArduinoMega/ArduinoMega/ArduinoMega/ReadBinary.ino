@@ -3,7 +3,7 @@ static bool ValueChanged = 0;
 
 void ReadBinaryMain()
 {
-	EVERY_N_MILLISECONDS(50) //run only each 50ms = 20Hz
+	EVERY_N_MILLISECONDS(25) //run only each 50ms = 20Hz
 	{
 		if (digitalRead(PINValueChanged) != ValueChanged)
 		{

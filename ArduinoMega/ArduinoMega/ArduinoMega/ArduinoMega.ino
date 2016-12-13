@@ -48,6 +48,7 @@ void setup()
 	LEDSettings.Temperature = Tungsten100W2;
 	LEDSettings.PlayPause = 1;
 	LEDSettings.SpeedMultiplikator = 4;
+	LEDSettings.Saturation = 255;
 }
 
 // the loop function runs over and over again until power down or reset
@@ -92,6 +93,9 @@ void loop()
 		
 		//ChangeSpeed
 		ForwardBackwardMain();
+
+		//Change Saturation
+		//SaturationMain();
 
 		//Display Effect
 		DisplayEffectMain();

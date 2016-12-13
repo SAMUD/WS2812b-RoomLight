@@ -1,6 +1,6 @@
 void BrightnessMain()
 {
-	//EVERY_N_MILLISECONDS(50)
+	EVERY_N_MILLISECONDS(50)
 	{
 		if (ReadValues.ButtonPressed == VolDown && (ReadValues.newValues || ReadValues.Repeat))
 		{

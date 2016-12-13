@@ -83,6 +83,7 @@
     <None Include="Brightness.ino" />
     <None Include="DisplayEffect.ino" />
     <None Include="Functions.ino" />
+    <None Include="Saturation.ino" />
     <None Include="SpeedForwardBackward.ino" />
     <None Include="TempPlayPause.ino" />
     <None Include="ModeSelection.ino" />

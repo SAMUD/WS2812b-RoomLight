@@ -64,17 +64,17 @@ CRGB ExtractColor(uint16_t index)
 CHSV ExtractColorCHSV(uint16_t index)
 {
 	static bool initdone = false;
-	static CHSV Palette[1024];
+	static CHSV Palette[764];
 
 	if (!initdone)
 	{
 		//do init
 		initdone = true;
-		fill_gradient(Palette, 0, CHSV(100, 255, 255),1023, CHSV(99, 255, 255), FORWARD_HUES);
+		fill_gradient(Palette, 0, CHSV(100, 255, 255),763, CHSV(99, 255, 255), FORWARD_HUES);
 	}
 
-	if (index > 1023)
-		index = index - 1023;
+	if (index > 764)
+		index = index - 764;
 
 	return Palette[index];
 }

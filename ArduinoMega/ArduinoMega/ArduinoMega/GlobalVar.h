@@ -117,5 +117,6 @@ static struct Settings
 	uint8_t ChangesToEffectMade;	//when the LEDS need to be redrwan, cause there were changes to the effects 
 	uint16_t SpeedMultiplikator;		//speed setting (in ms for now)
 	bool PlayPause;
+	uint8_t Saturation;
 }LEDSettings;
 

@@ -5,7 +5,7 @@ void SpeedMain()
 
 void ForwardBackwardMain()
 {
-	EVERY_N_MILLISECONDS(50)
+	EVERY_N_MILLISECONDS(53)
 	{
 		if ((ReadValues.newValues == 1 || ReadValues.Repeat == 1) && ReadValues.ButtonPressed == Reward)
 		{

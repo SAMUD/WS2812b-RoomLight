@@ -143,19 +143,19 @@ void DisplayEffectConfettiColorfull()
 void DisplayEffectRainbowMarch()
 {                                       
 	static uint16_t start = 0;  
-	static uint16_t start2 = 500; // Hue change between pixels.
+	static uint16_t start2 = NUM_LEDS; // Hue change between pixels.
 
 	EVERY_N_MILLISECONDS(40)
 	{
 		fill_gradient(leds, NUM_LEDS, ExtractColorCHSV(start), ExtractColorCHSV(start2),FORWARD_HUES);            // Use FastLED's fill_rainbow routine.
 		
 		start= start + (LEDSettings.SpeedMultiplikator/2);
-		if (start > 1023)
-			start = start-1023;
+		if (start > 763)
+			start = start-764;
 		
 		start2 = start2 + (LEDSettings.SpeedMultiplikator/2);
-		if (start2 > 1023)
-			start2 = start2-1023;
+		if (start2 > 763)
+			start2 = start2-764;
 	}
 	LEDSettings.ChangesToEffectMade = 1;	//periodic update needed
 }
@@ -164,19 +164,19 @@ void DisplayEffectRainbowMarch()
 void DisplayEffectRainbowBeat()
 {
 	static uint16_t start = 0;
-	static uint16_t start2 = 500; // Hue change between pixels.
+	static uint16_t start2 = NUM_LEDS; // Hue change between pixels.
 
 	EVERY_N_MILLISECONDS(40)
 	{
 		fill_gradient(leds, NUM_LEDS, ExtractColorCHSV(start), ExtractColorCHSV(start2), FORWARD_HUES);            // Use FastLED's fill_rainbow routine.
 
 		start = start + beatsin16(5,LEDSettings.SpeedMultiplikator/2,LEDSettings.SpeedMultiplikator*2);
-		if (start > 1023)
-			start = start - 1023;
+		if (start > 763)
+			start = start - 764;
 
 		start2 = start2 + beatsin16(5, LEDSettings.SpeedMultiplikator / 2, LEDSettings.SpeedMultiplikator * 2);
-		if (start2 > 1023)
-			start2 = start2 - 1023;
+		if (start2 > 763)
+			start2 = start2 - 764;
 	}
 	LEDSettings.ChangesToEffectMade = 1;	//periodic update needed
 }

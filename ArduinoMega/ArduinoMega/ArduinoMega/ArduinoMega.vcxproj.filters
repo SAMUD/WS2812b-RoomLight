@@ -23,6 +23,7 @@
     <None Include="Functions.ino" />
     <None Include="TempPlayPause.ino" />
     <None Include="SpeedForwardBackward.ino" />
+    <None Include="Saturation.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">

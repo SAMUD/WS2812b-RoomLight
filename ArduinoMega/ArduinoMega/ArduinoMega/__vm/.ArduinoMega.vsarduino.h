@@ -51,6 +51,7 @@ extern "C" void __cxa_pure_virtual() {;}
 #include "Functions.ino"
 #include "ModeSelection.ino"
 #include "ReadBinary.ino"
+#include "Saturation.ino"
 #include "SpeedForwardBackward.ino"
 #include "TempPlayPause.ino"
 #endif

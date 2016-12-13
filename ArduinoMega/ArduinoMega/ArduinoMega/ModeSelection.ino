@@ -2,7 +2,7 @@ void ModeSelectionMain()
 {
 	
 	//needs only to be run every 50ms because values from other Arduino are also only read each 50ms
-	EVERY_N_MILLISECONDS(50)
+	EVERY_N_MILLISECONDS(75)
 	{
 		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == FuncStop)
 		{
