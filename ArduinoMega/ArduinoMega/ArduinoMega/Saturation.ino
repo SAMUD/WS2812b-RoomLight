@@ -7,45 +7,49 @@ void SaturationMain()
 		{
 			if (ReadValues.Repeat == 1)  //Fast scaling
 			{
-				if (LEDSettings.Saturation > 20)
+				if (Settings.Current.Saturation > 20)
 				{
-					LEDSettings.Saturation = LEDSettings.Saturation - 10;
-#if defined(DEBUGMODE)
+					Settings.Current.Saturation = Settings.Current.Saturation - 10;
+					#if defined(DEBUGMODE)
 					Serial.print("----  ");
-#endif
+					#endif
 				}
 				else
 				{
-					LEDSettings.Saturation = 10;
-#if defined(DEBUGMODE)
+					Settings.Current.Saturation = 10;
+					#if defined(DEBUGMODE)
 					Serial.print("oo    ");
-#endif			
+					#endif			
 				}
 			}
 			else //Slow scaling
 			{
-				if (LEDSettings.Saturation > 15)
+				if (Settings.Current.Saturation > 15)
 				{
-					LEDSettings.Saturation = LEDSettings.Saturation - 5;
-#if defined(DEBUGMODE)
+					Settings.Current.Saturation = Settings.Current.Saturation - 5;
+					#if defined(DEBUGMODE)
 					Serial.print("--    ");
-#endif
+					#endif
 				}
 				else
 				{
-					LEDSettings.Saturation = 10;
-#if defined(DEBUGMODE)
+					Settings.Current.Saturation = 10;
+					#if defined(DEBUGMODE)
 					Serial.print("oo    ");
-#endif
+					#endif
 				}
 			}
 
-			LEDSettings.ChangesToEffectMade = 1;
-#if defined(DEBUGMODE)
+			Settings.ChangesToEffectMade = 1;
+			#if defined(DEBUGMODE)
 			Serial.print("SaturationMain | Down :");
-			Serial.println(LEDSettings.Saturation);
+			Serial.println(Settings.Current.Saturation);
 
-#endif
+			//show status update
+			DisplayInfo.ShowACK = 1;
+			DisplayInfo.ShowPercentage = Settings.Current.Saturation;
+
+			#endif
 			ReadValues.newValues = 0;
 		}
 		if (ReadValues.ButtonPressed == Up && (ReadValues.newValues || ReadValues.Repeat))
@@ -53,16 +57,16 @@ void SaturationMain()
 			if (ReadValues.Repeat == 1) //Fast scaling
 			{
 
-				if (LEDSettings.Saturation < 246)
+				if (Settings.Current.Saturation < 246)
 				{
-					LEDSettings.Saturation = LEDSettings.Saturation + 10;
+					Settings.Current.Saturation = Settings.Current.Saturation + 10;
 #if defined(DEBUGMODE)
 					Serial.print("++++  ");
 #endif
 				}
 				else
 				{
-					LEDSettings.Saturation = 255;
+					Settings.Current.Saturation = 255;
 #if defined(DEBUGMODE)
 					Serial.print("oo    ");
 #endif
@@ -70,33 +74,35 @@ void SaturationMain()
 			}
 			else
 			{
-				if (LEDSettings.Saturation < 240)
+				if (Settings.Current.Saturation < 240)
 				{
-					LEDSettings.Saturation = LEDSettings.Saturation + 5; //Slow scaling
+					Settings.Current.Saturation = Settings.Current.Saturation + 5; //Slow scaling
 #if defined(DEBUGMODE)
 					Serial.print("++    ");
 #endif
 				}
 				else
 				{
-					LEDSettings.Saturation = 255; //Slow scaling
-#if defined(DEBUGMODE)
+					Settings.Current.Saturation = 255; //Slow scaling
+					#if defined(DEBUGMODE)
 					Serial.print("oo    ");
-#endif
+					#endif
 				}
 
 			}
 
-			LEDSettings.ChangesToEffectMade = 1;
-#if defined(DEBUGMODE)
+			Settings.ChangesToEffectMade = 1;
+			#if defined(DEBUGMODE)
 			Serial.print("SaturationMain | Up  ");
-			Serial.println(LEDSettings.Saturation);
-#endif
+			Serial.println(Settings.Current.Saturation);
+			#endif
 			ReadValues.newValues = 0;
+
+			//show status update
+			DisplayInfo.ShowACK = 1;
+			DisplayInfo.ShowPercentage = Settings.Current.Saturation;
 		}
 	}
-
-	BrightnessFade(LEDSettings.Saturation);
 
 
 }

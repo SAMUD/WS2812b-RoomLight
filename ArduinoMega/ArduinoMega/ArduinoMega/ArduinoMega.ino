@@ -3,16 +3,17 @@
  Created:	19.11.2016 15:37:27
  Author:	sdaur
 */
+# define Version "2.1"
+#define DMemoryVersion 6
 
 #include <FastLED.h>
 #include "GlobalVar.h"
 
-
-
 //FastLed-library
 #define NUM_LEDS 291
 #define DATA_PIN 51
-CRGB leds[NUM_LEDS];
+static CRGB leds[NUM_LEDS];
+static CRGB ledstemp[NUM_LEDS];
 
 
 
@@ -22,13 +23,16 @@ void setup()
 	//Setup LEDS
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	FastLED.setBrightness(0);
-	set_max_power_in_volts_and_milliamps(5, 200);
 
 	//Setup serial
 	#if defined(DEBUGMODE)
-	Serial.begin(115200);
-	Serial.println("Started - Waiting - V1.0");
+		Serial.begin(115200);
+		Serial.print("Started - Waiting - App: V");
+		Serial.println(Version);
+		Serial.print("LED Library: V");
+		Serial.println(FASTLED_VERSION);
 	#endif
+
 	//Setting Pin-Modes
 	pinMode(PINValueChanged, INPUT);
 	pinMode(PINMultiplePresses, INPUT);
@@ -39,63 +43,71 @@ void setup()
 	pinMode(PINInput5, INPUT);
 	pinMode(13, OUTPUT);
 
-	//[Temp] this part is only needed until I will implement the EEPROM-Code to save settings
-	LEDSettings.BrightnessSetpoint=50;
-	LEDSettings.PowerState = 1;
-	LEDSettings.DisplayMode = WhiteAll;
-	LEDSettings.DisplayModeOld = None;
-	LEDSettings.ChangesToEffectMade = 1;
-	LEDSettings.Temperature = Tungsten100W2;
-	LEDSettings.PlayPause = 1;
-	LEDSettings.SpeedMultiplikator = 4;
-	LEDSettings.Saturation = 255;
+	//Prepare EEPROM
+	EEPROMinit();
+
+	Settings.ChangesToEffectMade = 1;
+	Settings.PowerState = 1;
+
+	FastLED.setDither(1);
+
 }
 
 // the loop function runs over and over again until power down or reset
 void loop()
 {
 	
-	//reading given data
+	//reading given data (25Hz)
 	ReadBinaryMain();
 
 	//turn on/off
-	EVERY_N_MILLISECONDS(50) //only every 50ms because the values from the other arduino are only aquired at this speed
+	EVERY_N_MILLISECONDS(100) //only every 40ms because the values from the other arduino are only aquired at this speed
 	{
 		if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
 		{
-			LEDSettings.PowerState = !LEDSettings.PowerState;
-			if (!LEDSettings.PowerState)
+			Settings.PowerState = !Settings.PowerState;
+			if (!Settings.PowerState)
 			{
 				#if defined(DEBUGMODE)
-				Serial.println("Power button pressed - Turning off");
+					Serial.print("Power button pressed - Turning off: ");
+					Serial.println(Settings.PowerState);
 				#endif
+				EEPROMsave();
 				BrightnessTurnOff();
 				
 			}
 			else
 			{
 				#if defined(DEBUGMODE)
-				Serial.println("Power button pressed - Turning on");
+					Serial.print("Power button pressed - Turning on: ");
+					Serial.println(Settings.PowerState);
 				#endif
 				BrightnessTurnOn();
-				LEDSettings.ChangesToEffectMade = 1;
+				Settings.ChangesToEffectMade = 1;
 			}
 			ReadValues.newValues = 0;
 		}
 	}
+
 	//Select Mode
 	ModeSelectionMain();
 
 	//actual power state
-	if (LEDSettings.PowerState)
+	if (Settings.PowerState)
 	{
 		//LEDs are on
 		
 		//ChangeSpeed
 		ForwardBackwardMain();
 
+		//set night number
+		NightNumberMain();
+
+		//Select Left/Right/Night/all
+		DisplayModeMain();
+
 		//Change Saturation
-		//SaturationMain();
+		SaturationMain();
 
 		//Display Effect
 		DisplayEffectMain();
@@ -107,8 +119,7 @@ void loop()
 		TempPlayPauseMain();
 
 		//print out
-		FastLED.show();
-		//show_at_max_brightness_for_power();
+		OutputToLEDMain();
 
 		//Status LED on Arduino Board
 		BlinkLed(10, 3000);

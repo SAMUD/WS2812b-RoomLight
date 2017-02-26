@@ -3,19 +3,18 @@ static bool ValueChanged = 0;
 
 void ReadBinaryMain()
 {
-	EVERY_N_MILLISECONDS(25) //run only each 50ms = 20Hz
+	EVERY_N_MILLISECONDS(40) //run only each 40ms = 25Hz
 	{
 		if (digitalRead(PINValueChanged) != ValueChanged)
 		{
 			//there is something new at the input pins
 			#if defined(DEBUGMODE)
-			Serial.println("Reading new values from other Arduino");
+				Serial.println("Reading new values from other Arduino");
 			#endif
 			ValueChanged = !ValueChanged;
 			ReadButton();
 			ReadValues.newValues = 1;
 		}
-
 		ReadValues.Repeat = digitalRead(PINMultiplePresses);
 	}
 	

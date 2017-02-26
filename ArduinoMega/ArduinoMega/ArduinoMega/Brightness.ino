@@ -6,99 +6,108 @@ void BrightnessMain()
 		{
 			if (ReadValues.Repeat == 1)  //Fast scaling
 			{
-				if (LEDSettings.BrightnessSetpoint > 10)
+				if (Settings.Current.BrightnessSetpoint > 10)
 				{
-					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 10;
+					Settings.Current.BrightnessSetpoint = Settings.Current.BrightnessSetpoint - 10;
 					#if defined(DEBUGMODE)
-					Serial.print("----  ");
+						Serial.print("----  ");
 					#endif
 				}
 				else
 				{
-					LEDSettings.BrightnessSetpoint = 5;
+					Settings.Current.BrightnessSetpoint = 5;
 					#if defined(DEBUGMODE)
-					Serial.print("oo    ");
+						Serial.print("oo    ");
 					#endif			
 				}
 			}
 			else //Slow scaling
 			{
-				if (LEDSettings.BrightnessSetpoint > 5)
+				if (Settings.Current.BrightnessSetpoint > 5)
 				{
-					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint - 5;
+					Settings.Current.BrightnessSetpoint = Settings.Current.BrightnessSetpoint - 5;
 					#if defined(DEBUGMODE)
-					Serial.print("--    ");
+						Serial.print("--    ");
 					#endif
 				}
 				else
 				{
-					LEDSettings.BrightnessSetpoint = 5;
+					Settings.Current.BrightnessSetpoint = 5;
 					#if defined(DEBUGMODE)
-					Serial.print("oo    ");
+						Serial.print("oo    ");
 					#endif
 				}
 			}
 
-			LEDSettings.ChangesToEffectMade = 1;
+			Settings.ChangesToEffectMade = 1;
 			#if defined(DEBUGMODE)
-			Serial.print("BrightnessMain | Down [Setpoint  Actual]");
-			Serial.print(LEDSettings.BrightnessSetpoint);
-			Serial.print(" ");
-			Serial.println(FastLED.getBrightness());
+				Serial.print("BrightnessMain | Down [Setpoint  Actual]");
+				Serial.print(Settings.Current.BrightnessSetpoint);
+				Serial.print(" ");
+				Serial.println(FastLED.getBrightness());
 			#endif
 			ReadValues.newValues = 0;
+
+			//show status update
+			DisplayInfo.ShowACK = 1;
+			DisplayInfo.ShowPercentage = Settings.Current.BrightnessSetpoint;
+
 		}
 		if (ReadValues.ButtonPressed == VolUp && (ReadValues.newValues || ReadValues.Repeat))
 		{
 			if (ReadValues.Repeat == 1) //Fast scaling
 			{
 				
-				if (LEDSettings.BrightnessSetpoint < 246)
+				if (Settings.Current.BrightnessSetpoint < 246)
 				{
-					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 10;
+					Settings.Current.BrightnessSetpoint = Settings.Current.BrightnessSetpoint + 10;
 					#if defined(DEBUGMODE)
-					Serial.print("++++  ");
+						Serial.print("++++  ");
 					#endif
 				}
 				else
 				{
-					LEDSettings.BrightnessSetpoint = 255;
+					Settings.Current.BrightnessSetpoint = 255;
 					#if defined(DEBUGMODE)
-					Serial.print("oo    ");
+						Serial.print("oo    ");
 					#endif
 				}
 			}
 			else
 			{
-				if (LEDSettings.BrightnessSetpoint < 240)
+				if (Settings.Current.BrightnessSetpoint < 240)
 				{
-					LEDSettings.BrightnessSetpoint = LEDSettings.BrightnessSetpoint + 5; //Slow scaling
+					Settings.Current.BrightnessSetpoint = Settings.Current.BrightnessSetpoint + 5; //Slow scaling
 					#if defined(DEBUGMODE)
-					Serial.print("++    ");
+						Serial.print("++    ");
 					#endif
 				}
 				else
 				{
-					LEDSettings.BrightnessSetpoint = 255; //Slow scaling
+					Settings.Current.BrightnessSetpoint = 255; //Slow scaling
 					#if defined(DEBUGMODE)
-					Serial.print("oo    ");
+						Serial.print("oo    ");
 					#endif
 				}
 				
 			}
 
-			LEDSettings.ChangesToEffectMade = 1;
+			Settings.ChangesToEffectMade = 1;
 			#if defined(DEBUGMODE)
-			Serial.print("BrightnessMain | Up Setpoint  Actual");
-			Serial.print(LEDSettings.BrightnessSetpoint);
-			Serial.print(" ");
-			Serial.println(FastLED.getBrightness());
+				Serial.print("BrightnessMain | Up Setpoint  Actual");
+				Serial.print(Settings.Current.BrightnessSetpoint);
+				Serial.print(" ");
+				Serial.println(FastLED.getBrightness());
 			#endif
 			ReadValues.newValues = 0;
+
+			//show status update
+			DisplayInfo.ShowACK = 1;
+			DisplayInfo.ShowPercentage = Settings.Current.BrightnessSetpoint;
 		}
 	}
 	
-	BrightnessFade(LEDSettings.BrightnessSetpoint);
+	BrightnessFade(Settings.Current.BrightnessSetpoint);
 	
 
 }
@@ -141,32 +150,32 @@ void BrightnessTurnOff()
 		EVERY_N_MILLISECONDS(30)
 		{
 			BrightnessFade(0);
-			//show_at_max_brightness_for_power();
-			FastLED.show();
+			OutputToLEDMain();
 		}
 		BlinkLed(100, 10);
 	}
 	#if defined(DEBUGMODE)
-	Serial.println("BrightnessTurnOff | Powered down now");
+		Serial.println("BrightnessTurnOff | Powered down now");
 	#endif
 }
 
 //Turning on the LED-Strip
 void BrightnessTurnOn()
 {
-	while (FastLED.getBrightness() != LEDSettings.BrightnessSetpoint)
+	while (FastLED.getBrightness() != Settings.Current.BrightnessSetpoint)
 	{
 		//run BrightnessFade until brightness is = Setpoint
 		EVERY_N_MILLISECONDS(40)
 		{
-			BrightnessFade(LEDSettings.BrightnessSetpoint);
+			BrightnessFade(Settings.Current.BrightnessSetpoint);
 			//show_at_max_brightness_for_power();
 			FastLED.show();
 		}
 		BlinkLed(10, 100);
 	}
+	
 	#if defined(DEBUGMODE)
-	Serial.println("BrightnessTurnOn | Powered on now");
+		Serial.println("BrightnessTurnOn | Powered on now");
 	#endif
 }
 

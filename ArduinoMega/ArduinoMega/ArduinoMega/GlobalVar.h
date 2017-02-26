@@ -14,33 +14,32 @@
 //used for WhiteLeft and WhiteRight
 #define NumberLEDLeft 109
 #define NumberLEDRight 96
-#define NumberLEDTransition 10
 #define ValueLEDDarkside 75
 
 
 //The Buttons which are availaible on my Transmitter
 /*	Zero= 
 	One= 
-	Two=		effect modes like Confetti
+	Two=		effect modes like Confetti+Strobe
 	Three=
 	Four=
 	Five=		fading, butt all leds have the same color
-	Six=
-	Seven=
+	Six=		turn on white
+	Seven=		fixed color
 	Eight=		fading modes with different colors for each LED
 	Nine=		turn all leds on at full brightness even when other settings where specified before
 	Power=		Turn the strip on/off
 	VolUp=		Brightness+
-	FuncStop=	change Between White Modes --> White All, WhiteLeft, WhiteRight
-	Reward=		Speed up effects
+	FuncStop=	change Between Modes --> All,Left,Right,Night
+	Reward=		slow down effects / previous color
 	PlayPause=	in WhiteModes: Temperature | else: PlayPause
-	Forward=	Speed down effects
-	Down=		
+	Forward=	Speed up effects / next color
+	Down=		Sturation -
 	VolDown=	Brightness-
-	Up=
-	Eq=
+	Up=			Saturation +
+	Eq=			
 	StRept=
-	Nothing=Enum default state at bootup
+	Nothing=	Enum default state at bootup
 */
 enum Buttons
 {
@@ -86,11 +85,18 @@ enum Buttons
 enum Mode
 {
 	None,
-	WhiteLeft,WhiteRight,WhiteAll,
-	Heat, RainbowMarch, RainbowBeat, ColorPalBeat,
+	White,White2,
+	RainbowMarch, RainbowBeat, ColorPalBeat,
 	Fade,RGBFade,
 	Confetti,ConfettiColorfull,Strobe,
-	Night
+	FixedColor, FixedColor2, FixedColor3,
+	Ball
+};
+
+//enum active LEDs
+enum eDisplay
+{
+	Left,Right,All,Night
 };
 
 //structure with the values read from the other Arduino
@@ -101,22 +107,52 @@ static struct Values
 	bool newValues;
 }ReadValues;
 
-
-
-//All Settings used at the moment
-//will later be saved in the EEPROM
-static struct Settings
+static struct ModeSettings
 {
-	ColTemp Temperature;
-	uint8_t BrightnessSetpoint;		//Setpoint for the Brightness
+	uint8_t BrightnessSetpoint;			//
+	uint8_t Saturation;					//
+	uint8_t SpeedColor;					//
+	eDisplay DisplayMode;				//Left,Right,All,Night
+	ColTemp Temperature;				//ColorTemp --> used in white mode
+	uint8_t NightNumber;				//number of leds to display in night mode
+}ModeSett;
+
+//this one will be saved in EEPROM
+static struct StoreStruct
+{
+	uint8_t MemoryVersion;
+	ModeSettings FixedColor;
+	ModeSettings RainbowMarch;
+	ModeSettings RainbowBeat;
+	ModeSettings ColorPalBeat;
+	ModeSettings Fade;
+	ModeSettings RGBFade;
+	ModeSettings White;
+	ModeSettings Confetti;
+	ModeSettings ConfettiColorfull;
+	ModeSettings Strobe;
+	ModeSettings FixedColor2;
+	ModeSettings FixedColor3;
+	ModeSettings White2;
+	ModeSettings Ball;
+
+	ModeSettings Current;
+
 	bool PowerState;				//true=On False=off
 	Mode DisplayMode;				//the Actual Mode
 	Mode DisplayModeOld;			//the Old mode
-	//uint8_t Hue;					//used in Temperature Settings
-	//uint8_t Saturation;				//used in Temperature Settings
+
 	uint8_t ChangesToEffectMade;	//when the LEDS need to be redrwan, cause there were changes to the effects 
-	uint16_t SpeedMultiplikator;		//speed setting (in ms for now)
 	bool PlayPause;
-	uint8_t Saturation;
-}LEDSettings;
+}Settings;
+
+static struct sDisplayInfo
+{
+	bool ShowACK;
+	uint8_t ShowPercentage;
+}DisplayInfo;
+
+
+static int configAdress = 0;
+static bool memValid = true;
 
