@@ -9,7 +9,7 @@ void DisplayEffectMain()
 	}
 
 	//Select the right effect from the list
-	if (Settings.DisplayMode == (White || White2) && Settings.ChangesToEffectMade)
+	if ((Settings.DisplayMode ==White || Settings.DisplayMode== White2) && Settings.ChangesToEffectMade)
 		DisplayEffectWhite();
 	else if (Settings.DisplayMode == Confetti && Settings.ChangesToEffectMade  && Settings.PlayPause)
 		DisplayEffectConfetti();

@@ -38,9 +38,9 @@ void OutputToLEDDisplayInfo()
 	{
 		counter = 25;
 		DisplayInfo.ShowACK = 0;
-#if defined (DEBUGMODE)
+		#if defined (DEBUGMODE)
 		Serial.println("OutputToLED | DisplayInfo updated ");
-#endif // DEBUG
+		#endif // DEBUG
 
 
 	}
@@ -51,6 +51,7 @@ void OutputToLEDDisplayInfo()
 		if (DisplayInfo.ShowPercentage > 0)
 		{
 			fill_solid(leds, DisplayInfo.ShowPercentage / 10, CRGB::Green);
+			fill_solid(&(leds[DisplayInfo.ShowPercentage / 10]), 25-(DisplayInfo.ShowPercentage / 10) , CRGB::Black);
 			leds[25] = CRGB::Red;
 		}
 		else

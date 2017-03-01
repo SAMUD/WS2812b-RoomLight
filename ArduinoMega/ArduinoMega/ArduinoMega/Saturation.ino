@@ -44,12 +44,10 @@ void SaturationMain()
 			#if defined(DEBUGMODE)
 			Serial.print("SaturationMain | Down :");
 			Serial.println(Settings.Current.Saturation);
-
+			#endif
 			//show status update
 			DisplayInfo.ShowACK = 1;
 			DisplayInfo.ShowPercentage = Settings.Current.Saturation;
-
-			#endif
 			ReadValues.newValues = 0;
 		}
 		if (ReadValues.ButtonPressed == Up && (ReadValues.newValues || ReadValues.Repeat))

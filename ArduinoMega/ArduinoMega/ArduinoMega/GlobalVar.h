@@ -1,6 +1,6 @@
 
 //defines
-#define DEBUGMODE
+//#define DEBUGMODE
 
 //In Out Pins used on my Arduino
 #define PINValueChanged 36
