@@ -2,25 +2,22 @@
 
 void TempPlayPauseMain()
 {
-	EVERY_N_MILLISECONDS(54)
+	if (ReadValues.newValues == 1 && ReadValues.Repeat == 0 && ReadValues.ButtonPressed == PlayPause)
 	{
-		if (ReadValues.newValues == 1 && ReadValues.Repeat == 0 && ReadValues.ButtonPressed == PlayPause)
+		if (Settings.DisplayMode == White || Settings.DisplayMode == White2)
 		{
-			if (Settings.DisplayMode == White || Settings.DisplayMode == White2)
-			{
-				//set next color temp
-				SetColorTemp();
-				Settings.ChangesToEffectMade = 1;
-			}
-			else
-			{
-				//when not in White Modes Play Pause for the Effects
-				Settings.PlayPause = !Settings.PlayPause;
-			}
-			ReadValues.newValues = 0;
-			//show status update
-			DisplayInfo.ShowACK = 1;
+			//set next color temp
+			SetColorTemp();
+			Settings.ChangesToEffectMade = 1;
 		}
+		else
+		{
+			//when not in White Modes Play Pause for the Effects
+			Settings.PlayPause = !Settings.PlayPause;
+		}
+		ReadValues.newValues = 0;
+		//show status update
+		DisplayInfo.ShowACK = 1;
 	}
 }
 

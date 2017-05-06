@@ -22,12 +22,10 @@
     <None Include="DisplayEffect.ino" />
     <None Include="Functions.ino" />
     <None Include="TempPlayPause.ino" />
-    <None Include="SpeedForwardBackward.ino" />
     <None Include="EEPROM.ino" />
     <None Include="OutputToLED.ino" />
     <None Include="DisplayMode.ino" />
-    <None Include="NightNumber.ino" />
-    <None Include="Saturation.ino" />
+    <None Include="ChangeParamFnc.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">

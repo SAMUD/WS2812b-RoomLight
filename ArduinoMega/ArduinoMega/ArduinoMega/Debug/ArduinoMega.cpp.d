@@ -1,5 +1,5 @@
-D:\Win10\Temp\VMBuilds\ArduinoMega\mega_atmega2560\ArduinoMega.cpp.o: \
- D:\Win10\Temp\VMBuilds\ArduinoMega\mega_atmega2560\ArduinoMega.cpp \
+D:\Temp\Temp\VMBuilds\ArduinoMega\mega_atmega2560\Debug\ArduinoMega.cpp.o: \
+ D:\Temp\Temp\VMBuilds\ArduinoMega\mega_atmega2560\Debug\ArduinoMega.cpp \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/arduino.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/binary.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/WCharacter.h \
@@ -46,5 +46,5 @@ D:\Win10\Temp\VMBuilds\ArduinoMega\mega_atmega2560\ArduinoMega.cpp.o: \
  C:\Program\ Files\ (x86)\Arduino\libraries\FastLED/fastspi_bitbang.h \
  C:\Program\ Files\ (x86)\Arduino\libraries\FastLED/fastled_delay.h \
  C:\Program\ Files\ (x86)\Arduino\libraries\FastLED/chipsets.h \
- D:\Win10\Temp\VMBuilds\ArduinoMega\mega_atmega2560\GlobalVar.h \
+ D:\Temp\Temp\VMBuilds\ArduinoMega\mega_atmega2560\Debug\GlobalVar.h \
  C:\Program\ Files\ (x86)\Arduino\libraries\EEPROMEx/EEPROMex.h

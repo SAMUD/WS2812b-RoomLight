@@ -115,6 +115,7 @@ static struct ModeSettings
 	eDisplay DisplayMode;				//Left,Right,All,Night
 	ColTemp Temperature;				//ColorTemp --> used in white mode
 	uint8_t NightNumber;				//number of leds to display in night mode
+	uint8_t Set;						//can be used for various settings. Acessed on the Remote with Set+ and Set-
 }ModeSett;
 
 //this one will be saved in EEPROM

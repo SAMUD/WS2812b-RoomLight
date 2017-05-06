@@ -1,9 +1,10 @@
 
 void DisplayEffectMain()
 {
+	//DisplayMode has changed.
 	if (Settings.DisplayMode != Settings.DisplayModeOld)
 	{
-		DisplayEffectTransition();
+		DisplayEffectTransition();							//show a transition from one to the other effect
 		Settings.DisplayModeOld = Settings.DisplayMode;
 		Settings.ChangesToEffectMade = 1;
 	}
@@ -29,7 +30,7 @@ void DisplayEffectMain()
 		DisplayEffectStrobe();
 	else if ((Settings.DisplayMode == FixedColor || Settings.DisplayMode == FixedColor2 || Settings.DisplayMode == FixedColor3) && Settings.ChangesToEffectMade)
 		DisplayEffectFixedColor();
-	else if (Settings.DisplayMode == Ball && Settings.ChangesToEffectMade && Settings.PlayPause)
+	else if (Settings.DisplayMode == Ball && Settings.ChangesToEffectMade)
 		DisplayEffectBall();
 	
 
@@ -39,7 +40,7 @@ void DisplayEffectMain()
 //Transition
 void DisplayEffectTransition()
 {
-
+	//currently not used
 }
 
 //Showing all LEDs in white
@@ -184,21 +185,24 @@ void DisplayEffectRainbowBeat()
 //testing
 void DisplayEffectColorPalBeat()
 {
-	EVERY_N_MILLISECONDS(400)
+	EVERY_N_MILLISECONDS(20)
 	{
-		static CRGBPalette16 currentPalette;
-		static TBlendType    currentBlending;
-		currentPalette = PartyColors_p;
-		currentBlending = LINEARBLEND;
-		static uint8_t startIndex = 0;
-		static uint8_t colorIndex = 0;
-		startIndex = startIndex + 1; /* motion speed */
-		for (int i = 0; i < NUM_LEDS; i++) {
-			ledstemp[i] = ColorFromPalette(currentPalette, colorIndex, 255, currentBlending);
+		uint8_t CurrentSpeed = Settings.Current.SpeedColor;
 
-			colorIndex += 1;
-		}
+		if (CurrentSpeed < 10)
+			CurrentSpeed = 10;
+
+		/*uint8_t beatA = beatsin16(Settings.Current.SpeedColor/4, 0, 255);								// Starting hue
+		uint8_t beatB = beatsin16(Settings.Current.SpeedColor/6, 0, 255);
+		uint8_t beatC = beatsin16(Settings.Current.SpeedColor/10, 0, 255);
+		fill_rainbow(ledstemp, NUM_LEDS, (beatA + beatB+ beatC) / 3, Settings.Current.Saturation/15);   // Use FastLED's fill_rainbow routine.*/
+		//Simplified to:
+		fill_rainbow(ledstemp, NUM_LEDS, (beatsin16(Settings.Current.SpeedColor / 4, 0, 255) +
+										  beatsin16(Settings.Current.SpeedColor / 6, 0, 255) +
+										  beatsin16(Settings.Current.SpeedColor / 10, 0, 255)) / 3, Settings.Current.Saturation / 15);   // Use FastLED's fill_rainbow routine.
 	}
+	
+	Settings.ChangesToEffectMade = 1;	//periodic update needed
 
 }
 
@@ -357,7 +361,7 @@ void DisplayEffectFixedColor()
 void DisplayEffectBall()
 {
 
-	static CRGBPalette16 currentPalette;
+	/*static CRGBPalette16 currentPalette;
 
 	static uint32_t xscale = 5;                                          // How far apart they are
 	static uint32_t yscale = 1;                                           // How fast they move
@@ -375,6 +379,31 @@ void DisplayEffectBall()
 			index = inoise8(i*xscale, millis()*yscale*NUM_LEDS / 255);                                           // X location is constant, but we move along the Y at the rate of millis()
 			ledstemp[i] = ColorFromPalette(currentPalette, min(i*(index) >> 6, 255), i * 255 / NUM_LEDS, LINEARBLEND);  // With that value, look up the 8 bit colour palette value and assign it to the current LED.
 		}
+	}*/
+
+	EVERY_N_MILLISECONDS(40)
+	{
+		uint8_t CurrentSpeed = Settings.Current.SpeedColor;
+		static uint8_t ColorWheel = 0;
+
+		if (CurrentSpeed < 6)
+			CurrentSpeed = 6;
+
+		EVERY_N_MILLISECONDS(1000)
+		{
+			if(Settings.PlayPause == true)
+				ColorWheel = ColorWheel + beatsin8(CurrentSpeed / 10, 1, 10);
+		}
+
+		uint16_t inner = beatsin16(CurrentSpeed/6, NUM_LEDS / 4, NUM_LEDS / 4 * 3);    // Move 1/4 to 3/4
+		uint16_t outer = beatsin16(CurrentSpeed / 6, 0, NUM_LEDS - 1);               // Move entire length
+		uint16_t middle = beatsin16(CurrentSpeed / 6, NUM_LEDS / 3, NUM_LEDS / 3 * 2);   // Move 1/3 to 2/3
+
+		ledstemp[middle] = CHSV(ColorWheel+40, Settings.Current.Saturation, 255);
+		ledstemp[inner] = CHSV(ColorWheel+20, Settings.Current.Saturation, 255);
+		ledstemp[outer] = CHSV(ColorWheel, Settings.Current.Saturation, 255);
+
+		nscale8(ledstemp, NUM_LEDS, Settings.Current.Set+250);
 	}
 	
 	Settings.ChangesToEffectMade = 1;

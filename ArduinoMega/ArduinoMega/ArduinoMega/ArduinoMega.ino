@@ -3,8 +3,8 @@
  Created:	19.11.2016 15:37:27
  Author:	sdaur
 */
-# define Version "2.1"
-#define DMemoryVersion 6
+#define Version "2.2"
+#define DMemoryVersion 7
 
 #include <FastLED.h>
 #include "GlobalVar.h"
@@ -50,7 +50,6 @@ void setup()
 	Settings.PowerState = 1;
 
 	FastLED.setDither(1);
-
 }
 
 // the loop function runs over and over again until power down or reset
@@ -65,22 +64,21 @@ void loop()
 	{
 		if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
 		{
-			Settings.PowerState = !Settings.PowerState;
+			Settings.PowerState = !Settings.PowerState;			//changing PowerState
 			if (!Settings.PowerState)
 			{
-				#if defined(DEBUGMODE)
-					Serial.print("Power button pressed - Turning off: ");
-					Serial.println(Settings.PowerState);
+				#if defined(DEBUGMODE)							//initiate PowerOff
+				Serial.print("Power button pressed - Turning off: ");
+				Serial.println(Settings.PowerState);
 				#endif
 				EEPROMsave();
-				BrightnessTurnOff();
-				
+				BrightnessTurnOff();	
 			}
 			else
 			{
-				#if defined(DEBUGMODE)
-					Serial.print("Power button pressed - Turning on: ");
-					Serial.println(Settings.PowerState);
+				#if defined(DEBUGMODE)							//initiatePowerOn
+				Serial.print("Power button pressed - Turning on: ");
+				Serial.println(Settings.PowerState);
 				#endif
 				BrightnessTurnOn();
 				Settings.ChangesToEffectMade = 1;
@@ -89,34 +87,35 @@ void loop()
 		}
 	}
 
-	//Select Mode
+	//Select Mode - this has to run all the time so we can turn on the LEDs when changing the Mode
 	ModeSelectionMain();
 
 	//actual power state
 	if (Settings.PowerState)
 	{
-		//LEDs are on
-		
-		//ChangeSpeed
-		ForwardBackwardMain();
+		//reaing data from IR-remote and changing settings
+		EVERY_N_MILLISECONDS(100)
+		{
+			ChangeParamMain(Down, Up, true, &Settings.Current.Saturation, 10, 255, 5, 10);					//Saturation
+			ChangeParamMain(Reward, Forward, true, &Settings.Current.SpeedColor, 1, 255, 1, 2);				//Speed or Color
+			if(Settings.Current.DisplayMode == Night)					//only do this if current Display mode is set to night
+				ChangeParamMain(Zero, StRept, true, &Settings.Current.NightNumber, 2, 25, 1, 1);			//Number of LEDs in NightMode
+			else
+				ChangeParamMain(Zero, StRept, true, &Settings.Current.Set, 1, 255, 5, 10);					//Set on the remote
+			ChangeParamMain(VolDown, VolUp, true, &Settings.Current.BrightnessSetpoint, 5, 255, 5, 10);		//Brightness
+			
+			DisplayModeMain();																				//Select Left/Right/Night/all
+			TempPlayPauseMain();																			//Play Pause and Color-Temp
+				
+		}
 
-		//set night number
-		NightNumberMain();
-
-		//Select Left/Right/Night/all
-		DisplayModeMain();
-
-		//Change Saturation
-		SaturationMain();
+		EVERY_N_MILLISECONDS(40)
+		{
+			BrightnessFade(Settings.Current.BrightnessSetpoint);		//call the fading function for the Brightness
+		}
 
 		//Display Effect
 		DisplayEffectMain();
-
-		//Change Brightness
-		BrightnessMain();
-
-		//Change Colors
-		TempPlayPauseMain();
 
 		//print out
 		OutputToLEDMain();
