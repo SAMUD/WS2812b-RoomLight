@@ -1,6 +1,6 @@
 
 //defines
-//#define DEBUGMODE
+#define DEBUGMODE
 
 //In Out Pins used on my Arduino
 #define PINValueChanged 36
@@ -41,6 +41,9 @@
 	StRept=
 	Nothing=	Enum default state at bootup
 */
+
+
+
 enum Buttons
 {
 	Zero, One, Two, Three, Four, Five, Six,Seven, Eight, Nine,
@@ -152,6 +155,12 @@ static struct sDisplayInfo
 	bool ShowACK;
 	uint8_t ShowPercentage;
 }DisplayInfo;
+
+static struct StatusVariables
+{
+	bool Connected = 0;
+
+} Status;
 
 
 static int configAdress = 0;

@@ -3,17 +3,22 @@
  Created:	19.11.2016 15:37:27
  Author:	sdaur
 */
-#define Version "2.2"
+#define Version "2.3"
 #define DMemoryVersion 7
 
 #include <FastLED.h>
 #include "GlobalVar.h"
+#include <SPI.h>
+#include <Ethernet.h>
+#include <EthernetUdp.h>
 
 //FastLed-library
 #define NUM_LEDS 291
-#define DATA_PIN 51
+#define DATA_PIN 37
 static CRGB leds[NUM_LEDS];
 static CRGB ledstemp[NUM_LEDS];
+
+
 
 
 
@@ -50,17 +55,22 @@ void setup()
 	Settings.PowerState = 1;
 
 	FastLED.setDither(1);
+
+	ConnectEthernet();
 }
 
 // the loop function runs over and over again until power down or reset
 void loop()
 {
 	
+	//Do all the Ethernet stuff
+	MainEthernet();
+
 	//reading given data (25Hz)
 	ReadBinaryMain();
 
 	//turn on/off
-	EVERY_N_MILLISECONDS(100) //only every 40ms because the values from the other arduino are only aquired at this speed
+	EVERY_N_MILLISECONDS(100) //only every 100ms because the values from the other arduino are only aquired at this speed
 	{
 		if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
 		{
