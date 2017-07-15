@@ -1,6 +1,7 @@
 
 //defines
-#define DEBUGMODE
+//#define DEBUGMODE
+//#define ETHERNET
 
 //In Out Pins used on my Arduino
 #define PINValueChanged 36
@@ -10,6 +11,7 @@
 #define PINInput3 26
 #define PINInput4 24
 #define PINInput5 22						//The MSB-Bit coming from the other Arduino
+#define MIC_PIN   5  // Microphone is attached to this analog pin
 
 //used for WhiteLeft and WhiteRight
 #define NumberLEDLeft 109
@@ -93,7 +95,8 @@ enum Mode
 	Fade,RGBFade,
 	Confetti,ConfettiColorfull,Strobe,
 	FixedColor, FixedColor2, FixedColor3,
-	Ball
+	Ball,
+	AudioMeter
 };
 
 //enum active LEDs
@@ -139,8 +142,10 @@ static struct StoreStruct
 	ModeSettings FixedColor3;
 	ModeSettings White2;
 	ModeSettings Ball;
+	ModeSettings AudioMeter;
 
 	ModeSettings Current;
+
 
 	bool PowerState;				//true=On False=off
 	Mode DisplayMode;				//the Actual Mode

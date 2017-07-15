@@ -29,7 +29,7 @@ uint8_t delayMultiple;
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(115200);
 	irrecv.enableIRIn();					// Start the receiver
 	Serial.println("Started - Waiting - V1.2 RC");
 	pinMode(PINLED, OUTPUT);				// set pins to Output

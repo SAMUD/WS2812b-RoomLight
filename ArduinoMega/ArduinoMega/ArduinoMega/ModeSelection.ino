@@ -162,6 +162,37 @@ void ModeSelectionMain()
 			DisplayInfo.ShowPercentage = 0;
 		}
 
+		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == One)
+		{
+			//save current Settings
+			SaveCurrentSettings();
+
+			//If LEDS are off, turn them on with the last mode. else get the new one
+			if (!Settings.PowerState)
+				ModeSelectionTurnOn();
+
+			//switching to the next mode (Audio1)
+			switch (Settings.DisplayMode)
+			{
+			
+			default:
+				Settings.DisplayMode = AudioMeter;
+				Settings.Current = Settings.AudioMeter;
+				#if defined(DEBUGMODE)
+				Serial.println("ModeSelectionMain | Changed to AudioMeter");
+				#endif
+				break;
+			}
+
+			Settings.ChangesToEffectMade = 1;
+			Settings.PlayPause = 1;
+			ReadValues.newValues = 0;
+
+			//show status update
+			DisplayInfo.ShowACK = 1;
+			DisplayInfo.ShowPercentage = 0;
+		}
+
 		if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Two)
 		{
 			//save current Settings
@@ -317,5 +348,7 @@ void SaveCurrentSettings()
 		Settings.FixedColor3 = Settings.Current;
 	if (Settings.DisplayMode == Ball)
 		Settings.Ball = Settings.Current;
+	if (Settings.DisplayMode == AudioMeter)
+		Settings.AudioMeter = Settings.Current;
 
 }
