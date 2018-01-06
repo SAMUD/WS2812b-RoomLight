@@ -1,4 +1,9 @@
+#ifndef EEPROMex.h
 #include <EEPROMex.h>
+#endif // !EEPROMex.h
+
+
+
 
 void EEPROMinit()
 {
@@ -35,16 +40,16 @@ bool EEPROMloadConfig()
 void EEPROMsaveDefaultValues()
 {
 	SetLedBlock.Current.BrightnessSetpoint = 128;
-	SetLedBlock.Current.DisplayMode = All;
+	SetLedBlock.Current.DisplayMode == All;
 	SetLedBlock.Current.NightNumber = 3;
 	SetLedBlock.Current.Saturation = 255;
 	SetLedBlock.Current.SpeedColor = 1;
-	SetLedBlock.Current.Temperature = Halogen2;
+	SetLedBlock.Current.Temperature == Halogen2;
 	
 	//store the stock values into the EEPROM if nothing was there
 	SetLedBlock.ChangesToEffectMade = 1;
-	SetLedBlock.DisplayMode = White;
-	SetLedBlock.DisplayModeOld = None;
+	SetLedBlock.DisplayMode == White;
+	SetLedBlock.DisplayModeOld == None;
 	SetLedBlock.PowerState = 1;
 	SetLedBlock.PlayPause = 1;
 	SetLedBlock.ColorPalBeat = SetLedBlock.Current;

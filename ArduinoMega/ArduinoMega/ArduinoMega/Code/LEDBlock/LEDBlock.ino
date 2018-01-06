@@ -1,16 +1,11 @@
-
-
-#include "GlobalVarLEDBlock.h";
+#ifndef GlobalVarLEDBlock.h
+#include "GlobalVarLEDBlock.h"
+#endif // !"GlobalVarLEDBlock.h"
 
 #if FASTLED_VERSION < 3001000
 #error "Requires FastLED 3.1 or later; check github for latest code."
 #endif
 
-//FastLed-library
-#define NUM_LEDS 290
-#define DATA_PIN 37
-static CRGB leds[NUM_LEDS];
-static CRGB ledstemp[NUM_LEDS];
 
 
 bool LEDBlockSetup()
@@ -149,31 +144,31 @@ void LEDBlockSetNextDisplayMode()
 	switch (SetLedBlock.Current.DisplayMode)
 	{
 	case Left:
-		SetLedBlock.Current.DisplayMode = Right;
+		SetLedBlock.Current.DisplayMode == Right;
 		#if defined(DEBUGMODE)
 		Serial.println("Right");
 		#endif
 		break;
 	case Right:
-		SetLedBlock.Current.DisplayMode = Night;
+		SetLedBlock.Current.DisplayMode == Night;
 		#if defined(DEBUGMODE)
 		Serial.println("Night");
 		#endif
 		break;
 	case Night:
-		SetLedBlock.Current.DisplayMode = All;
+		SetLedBlock.Current.DisplayMode == All;
 		#if defined(DEBUGMODE)
 		Serial.println("All");
 		#endif
 		break;
 	case All:
-		SetLedBlock.Current.DisplayMode = Left;
+		SetLedBlock.Current.DisplayMode == Left;
 		#if defined(DEBUGMODE)
 		Serial.println("Left");
 		#endif
 		break;
 	default:
-		SetLedBlock.Current.DisplayMode = Left;
+		SetLedBlock.Current.DisplayMode == Left;
 		#if defined(DEBUGMODE)
 		Serial.println("Left (default)");
 		#endif

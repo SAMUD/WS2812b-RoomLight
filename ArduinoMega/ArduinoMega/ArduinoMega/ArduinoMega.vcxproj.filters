@@ -33,8 +33,10 @@
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Code\LEDBlock\GlobalVarLEDBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

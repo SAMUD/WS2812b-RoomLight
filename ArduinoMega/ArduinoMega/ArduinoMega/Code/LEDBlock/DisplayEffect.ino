@@ -1,4 +1,10 @@
 
+#ifndef GlobalVarLEDBlock.h
+#include "GlobalVarLEDBlock.h"
+#endif // !"GlobalVarLEDBlock.h"
+
+
+
 void DisplayEffectMain()
 {
 	//DisplayMode has changed.

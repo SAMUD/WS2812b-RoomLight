@@ -1,5 +1,11 @@
 
 
+//FastLed-library
+#define NUM_LEDS 290
+#define DATA_PIN 37
+static CRGB leds[NUM_LEDS];
+static CRGB ledstemp[NUM_LEDS];
+
 //In Out Pins used on my Arduino
 #define PINRelais 53						//Output to the Relais --> enable Power to LEDs
 
