@@ -11,13 +11,13 @@ void ModeSelectionMain()
 			switch (Settings.DisplayMode)
 			{
 			case White:
-				Settings.DisplayMode = White2;
+				Settings.DisplayMode == White2;
 				#if defined(DEBUGMODE)
 					Serial.println("ModeSelectionMain | Changed to White2");
 				#endif
 				break;
 			default:
-				Settings.DisplayMode = White;
+				Settings.DisplayMode == White;
 				#if defined(DEBUGMODE)
 					Serial.println("ModeSelectionMain | Changed to White");
 				#endif

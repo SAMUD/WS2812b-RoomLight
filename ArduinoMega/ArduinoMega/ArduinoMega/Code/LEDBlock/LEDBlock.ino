@@ -197,9 +197,54 @@ void LEDBlockSetSpeed(uint8_t NewValue)
 	SetLedBlock.Current.SpeedColor = NewValue;
 }
 
-void LEDBlockSetSpeed(ColTemp NewValue)
+void LEDBlockSetTemp(ColTemp NewValue)
 {
 	SetLedBlock.Current.Temperature = NewValue;
+}
+
+ColTemp LEDBlockGetTemp()
+{
+	return SetLedBlock.Current.Temperature;
+}
+
+void LEDBlockSetNextTemp()
+{
+	switch (LEDBlockGetTemp())
+	{
+	case Candle2:
+		SetLedBlock.Current.Temperature == Candle3;
+		break;
+	case Candle3:
+		SetLedBlock.Current.Temperature == Tungsten40W2;
+		break;
+	case Tungsten40W2:
+		SetLedBlock.Current.Temperature == Tungsten100W2;
+		break;
+	case Tungsten100W2:
+		SetLedBlock.Current.Temperature == Halogen2;
+		break;
+	case Halogen2:
+		SetLedBlock.Current.Temperature == CarbonArc2;
+		break;
+	case CarbonArc2:
+		SetLedBlock.Current.Temperature == HighNoonSun2;
+		break;
+	case HighNoonSun2:
+		SetLedBlock.Current.Temperature == DirectSunlight2;
+		break;
+	case DirectSunlight2:
+		SetLedBlock.Current.Temperature == OvercastSky2;
+		break;
+	case OvercastSky2:
+		SetLedBlock.Current.Temperature == ClearBlueSky2;
+		break;
+	default:
+		SetLedBlock.Current.Temperature == Candle2;
+	}
+#if defined(DEBUGMODE)
+	Serial.print("SetColorTemp to: ");
+	Serial.println(LEDBlockGetTemp());
+#endif
 }
 
 void LEDBlockSetNewMode(Mode NewValue)

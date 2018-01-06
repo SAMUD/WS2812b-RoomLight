@@ -111,7 +111,7 @@ void loop()
 	ModeSelectionMain();
 
 	//actual power state
-	if (Settings.PowerState)
+	if (LEDBlockGetOnOffState())
 	{
 		//reaing data from IR-remote and changing settings
 		EVERY_N_MILLISECONDS(100)
