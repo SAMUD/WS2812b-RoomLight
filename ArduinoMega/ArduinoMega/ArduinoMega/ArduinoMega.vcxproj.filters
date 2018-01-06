@@ -17,21 +17,25 @@
   <ItemGroup>
     <None Include="ArduinoMega.ino" />
     <None Include="ReadBinary.ino" />
-    <None Include="Brightness.ino" />
     <None Include="ModeSelection.ino" />
-    <None Include="DisplayEffect.ino" />
     <None Include="Functions.ino" />
     <None Include="TempPlayPause.ino" />
-    <None Include="EEPROM.ino" />
-    <None Include="OutputToLED.ino" />
     <None Include="DisplayMode.ino" />
     <None Include="ChangeParamFnc.ino" />
     <None Include="EthernetLED.ino" />
+    <None Include="Code\LEDBlock\LEDBlock.ino" />
+    <None Include="Code\LEDBlock\EEPROM.ino" />
+    <None Include="Code\LEDBlock\Brightness.ino" />
+    <None Include="Code\LEDBlock\DisplayEffect.ino" />
+    <None Include="Code\LEDBlock\OutputToLED.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GlobalVar.h" />
+    <ClInclude Include="Code\LEDBlock\GlobalVarLEDBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

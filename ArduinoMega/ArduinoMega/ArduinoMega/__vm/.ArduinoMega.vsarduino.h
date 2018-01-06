@@ -76,15 +76,16 @@ typedef void *__builtin_va_list;
 #define pgm_read_ptr(address_short)   short()
 
 #include "ArduinoMega.ino"
-#include "Brightness.ino"
+#include "Code\LEDBlock\Brightness.ino"
 #include "ChangeParamFnc.ino"
-#include "DisplayEffect.ino"
+#include "Code\LEDBlock\DisplayEffect.ino"
 #include "DisplayMode.ino"
-#include "EEPROM.ino"
+#include "Code\LEDBlock\EEPROM.ino"
 #include "EthernetLED.ino"
 #include "Functions.ino"
+#include "Code\LEDBlock\LEDBlock.ino"
 #include "ModeSelection.ino"
-#include "OutputToLED.ino"
+#include "Code\LEDBlock\OutputToLED.ino"
 #include "ReadBinary.ino"
 #include "TempPlayPause.ino"
 #endif

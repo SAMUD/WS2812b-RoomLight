@@ -6,21 +6,15 @@
 #define Version "2.3"
 #define DMemoryVersion 8
 
-#include <FastLED.h>
+#include <FastLED.h>;
 #include "GlobalVar.h"
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-#if FASTLED_VERSION < 3001000
-#error "Requires FastLED 3.1 or later; check github for latest code."
-#endif
 
-//FastLed-library
-#define NUM_LEDS 290
-#define DATA_PIN 37
-static CRGB leds[NUM_LEDS];
-static CRGB ledstemp[NUM_LEDS];
+
+
 
 //audiobla
 #define DC_OFFSET  0                                      // DC offset in mic signal - if unusure, leave 0
@@ -46,13 +40,14 @@ maxLvlAvg = 512;
 // the setup function runs once when you press reset or power the board
 void setup()
 {
+	LEDBlockSetup();
+	
 	//Set Audio
 	analogReference(INTERNAL2V56);
 	memset(vol, 0, sizeof(vol));
 	
 	//Setup LEDS
-	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-	FastLED.setBrightness(0);
+	
 
 	//Setup serial
 	#if defined(DEBUGMODE)
@@ -72,15 +67,9 @@ void setup()
 	pinMode(PINInput4, INPUT);
 	pinMode(PINInput5, INPUT);
 	pinMode(13, OUTPUT);
-	pinMode(PINRelais, OUTPUT);
 
-	//Prepare EEPROM
-	EEPROMinit();
 
-	Settings.ChangesToEffectMade = 1;
-	Settings.PowerState = 1;
-
-	FastLED.setDither(1);
+	
 
 	
 #ifdef ETHERNET
@@ -107,29 +96,15 @@ void loop()
 	{
 		if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
 		{
-			Settings.PowerState = !Settings.PowerState;			//changing PowerState
-			if (!Settings.PowerState)
-			{
-				#if defined(DEBUGMODE)							//initiate PowerOff
-				Serial.print("Power button pressed - Turning off: ");
-				Serial.println(Settings.PowerState);
-				#endif
-				EEPROMsave();
-				BrightnessTurnOff();
-				digitalWrite(PINRelais, 0);
-			}
+			#if defined(DEBUGMODE)
+			if (LEDBlockSetOnOffToggle())
+				Serial.print("IR: Turned it on");
 			else
-			{
-				#if defined(DEBUGMODE)							//initiatePowerOn
-				Serial.print("Power button pressed - Turning on: ");
-				Serial.println(Settings.PowerState);
-				#endif
-				digitalWrite(PINRelais, 1);
-				BrightnessTurnOn();
-				Settings.ChangesToEffectMade = 1;
-			}
-			ReadValues.newValues = 0;
-		}
+				Serial.print("IR: Turned it off");
+			#else
+			LEDBlockSetOnOffToggle();
+			#endif
+		}	
 	}
 
 	//Select Mode - this has to run all the time so we can turn on the LEDs when changing the Mode
@@ -154,16 +129,9 @@ void loop()
 				
 		}
 
-		EVERY_N_MILLISECONDS(40)
-		{
-			BrightnessFade(Settings.Current.BrightnessSetpoint);		//call the fading function for the Brightness
-		}
-
-		//Display Effect
-		DisplayEffectMain();
-
-		//print out
-		OutputToLEDMain();
+		
+		LEDBlockLoop();
+		
 
 		//Status LED on Arduino Board
 		BlinkLed(10, 3000);

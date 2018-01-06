@@ -2,37 +2,37 @@
 void DisplayEffectMain()
 {
 	//DisplayMode has changed.
-	if (Settings.DisplayMode != Settings.DisplayModeOld)
+	if (SetLedBlock.DisplayMode != SetLedBlock.DisplayModeOld)
 	{
 		DisplayEffectTransition();							//show a transition from one to the other effect
-		Settings.DisplayModeOld = Settings.DisplayMode;
-		Settings.ChangesToEffectMade = 1;
+		SetLedBlock.DisplayModeOld = SetLedBlock.DisplayMode;
+		SetLedBlock.ChangesToEffectMade = 1;
 	}
 
 	//Select the right effect from the list
-	if ((Settings.DisplayMode ==White || Settings.DisplayMode== White2) && Settings.ChangesToEffectMade)
+	if ((SetLedBlock.DisplayMode ==White || SetLedBlock.DisplayMode== White2) && SetLedBlock.ChangesToEffectMade)
 		DisplayEffectWhite();
-	else if (Settings.DisplayMode == Confetti && Settings.ChangesToEffectMade  && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == Confetti && SetLedBlock.ChangesToEffectMade  && SetLedBlock.PlayPause)
 		DisplayEffectConfetti();
-	else if (Settings.DisplayMode == RainbowMarch && Settings.ChangesToEffectMade  && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == RainbowMarch && SetLedBlock.ChangesToEffectMade  && SetLedBlock.PlayPause)
 		DisplayEffectRainbowMarch();
-	else if (Settings.DisplayMode == RainbowBeat && Settings.ChangesToEffectMade  && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == RainbowBeat && SetLedBlock.ChangesToEffectMade  && SetLedBlock.PlayPause)
 		DisplayEffectRainbowBeat();
-	else if (Settings.DisplayMode == ColorPalBeat && Settings.ChangesToEffectMade && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == ColorPalBeat && SetLedBlock.ChangesToEffectMade && SetLedBlock.PlayPause)
 		DisplayEffectColorPalBeat();
-	else if (Settings.DisplayMode == Fade && Settings.ChangesToEffectMade && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == Fade && SetLedBlock.ChangesToEffectMade && SetLedBlock.PlayPause)
 		DisplayEffectFade();
-	else if (Settings.DisplayMode == RGBFade && Settings.ChangesToEffectMade && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == RGBFade && SetLedBlock.ChangesToEffectMade && SetLedBlock.PlayPause)
 		DisplayEffectRGBFade();
-	else if (Settings.DisplayMode == ConfettiColorfull && Settings.ChangesToEffectMade && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == ConfettiColorfull && SetLedBlock.ChangesToEffectMade && SetLedBlock.PlayPause)
 		DisplayEffectConfettiColorfull();
-	else if (Settings.DisplayMode == Strobe && Settings.ChangesToEffectMade && Settings.PlayPause)
+	else if (SetLedBlock.DisplayMode == Strobe && SetLedBlock.ChangesToEffectMade && SetLedBlock.PlayPause)
 		DisplayEffectStrobe();
-	else if ((Settings.DisplayMode == FixedColor || Settings.DisplayMode == FixedColor2 || Settings.DisplayMode == FixedColor3) && Settings.ChangesToEffectMade)
+	else if ((SetLedBlock.DisplayMode == FixedColor || SetLedBlock.DisplayMode == FixedColor2 || SetLedBlock.DisplayMode == FixedColor3) && SetLedBlock.ChangesToEffectMade)
 		DisplayEffectFixedColor();
-	else if (Settings.DisplayMode == Ball && Settings.ChangesToEffectMade)
+	else if (SetLedBlock.DisplayMode == Ball && SetLedBlock.ChangesToEffectMade)
 		DisplayEffectBall();
-	else if (Settings.DisplayMode == AudioMeter && Settings.ChangesToEffectMade)
+	else if (SetLedBlock.DisplayMode == AudioMeter && SetLedBlock.ChangesToEffectMade)
 		DisplayEffectAudioMeter();
 	
 
@@ -48,8 +48,8 @@ void DisplayEffectTransition()
 //Showing all LEDs in white
 void DisplayEffectWhite()
 {
-	fill_solid(ledstemp, NUM_LEDS, Settings.Current.Temperature);
-	Settings.ChangesToEffectMade = 0;
+	fill_solid(ledstemp, NUM_LEDS, SetLedBlock.Current.Temperature);
+	SetLedBlock.ChangesToEffectMade = 0;
 }
 
 //displaying Confetti-Effect
@@ -75,13 +75,13 @@ void DisplayEffectConfetti()
 
 	EVERY_N_MILLISECONDS(40) 
 	{								
-		fadeToBlackBy(ledstemp, NUM_LEDS, beatsin8(5,Settings.Current.SpeedColor/2,Settings.Current.SpeedColor*2));         
+		fadeToBlackBy(ledstemp, NUM_LEDS, beatsin8(5,SetLedBlock.Current.SpeedColor/2,SetLedBlock.Current.SpeedColor*2));         
 		int pos = random16(NUM_LEDS);									// Pick an LED at random.
 		ledstemp[pos] += CHSV((thishue+random16(huediff))/4, 255, 255);		
 		thishue = thishue + thisinc;
 	}
 
-	Settings.ChangesToEffectMade = 1; //periodic update needed
+	SetLedBlock.ChangesToEffectMade = 1; //periodic update needed
 }
 
 void DisplayEffectConfettiColorfull()
@@ -105,12 +105,12 @@ void DisplayEffectConfettiColorfull()
 
 	EVERY_N_MILLISECONDS(40)
 	{
-		fadeToBlackBy(ledstemp, NUM_LEDS, beatsin8(5, Settings.Current.SpeedColor / 2, Settings.Current.SpeedColor * 2));
+		fadeToBlackBy(ledstemp, NUM_LEDS, beatsin8(5, SetLedBlock.Current.SpeedColor / 2, SetLedBlock.Current.SpeedColor * 2));
 		int pos = random16(NUM_LEDS);									// Pick an LED at random.
 		ledstemp[pos] += CHSV(random16(huediff), thissat, 255);
 	}
 
-	Settings.ChangesToEffectMade = 1;								//periodic update needed
+	SetLedBlock.ChangesToEffectMade = 1;								//periodic update needed
 }
 
 //display a marching rainbow
@@ -123,16 +123,16 @@ void DisplayEffectRainbowMarch()
 	EVERY_N_MILLISECONDS(40)
 	{
 
-		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, Settings.Current.Saturation, 255), CHSV(start2, Settings.Current.Saturation, 255), FORWARD_HUES);
+		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, SetLedBlock.Current.Saturation, 255), CHSV(start2, SetLedBlock.Current.Saturation, 255), FORWARD_HUES);
 		
-		if (Settings.Current.SpeedColor>128)
+		if (SetLedBlock.Current.SpeedColor>128)
 		{
-			start = start + (((Settings.Current.SpeedColor-128) / 10) + 1);
-			start2 = start2 + (((Settings.Current.SpeedColor-128) / 10) + 1);
+			start = start + (((SetLedBlock.Current.SpeedColor-128) / 10) + 1);
+			start2 = start2 + (((SetLedBlock.Current.SpeedColor-128) / 10) + 1);
 		}
 		else
 		{
-			if (counter < Settings.Current.SpeedColor)
+			if (counter < SetLedBlock.Current.SpeedColor)
 			{
 				counter = 129;
 				++start;
@@ -146,7 +146,7 @@ void DisplayEffectRainbowMarch()
 		if (start2 > 255)
 			start2 = start2-255;
 	}
-	Settings.ChangesToEffectMade = 1;	//periodic update needed
+	SetLedBlock.ChangesToEffectMade = 1;	//periodic update needed
 }
 
 //display a Rainbow going back and forth using a sinus curve
@@ -158,16 +158,16 @@ void DisplayEffectRainbowBeat()
 
 	EVERY_N_MILLISECONDS(40)
 	{
-		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, Settings.Current.Saturation, 255), CHSV(start2, Settings.Current.Saturation, 255), FORWARD_HUES);
+		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, SetLedBlock.Current.Saturation, 255), CHSV(start2, SetLedBlock.Current.Saturation, 255), FORWARD_HUES);
 
-		if (Settings.Current.SpeedColor>128)
+		if (SetLedBlock.Current.SpeedColor>128)
 		{
-			start = start + beatsin16(5, (((Settings.Current.SpeedColor - 128) / 10) + 1), (((Settings.Current.SpeedColor - 75) / 10) + 1)); 
-			start2 = start2 + beatsin16(5, (((Settings.Current.SpeedColor - 128) / 10) + 1), (((Settings.Current.SpeedColor - 75) / 10) + 1));
+			start = start + beatsin16(5, (((SetLedBlock.Current.SpeedColor - 128) / 10) + 1), (((SetLedBlock.Current.SpeedColor - 75) / 10) + 1)); 
+			start2 = start2 + beatsin16(5, (((SetLedBlock.Current.SpeedColor - 128) / 10) + 1), (((SetLedBlock.Current.SpeedColor - 75) / 10) + 1));
 		}
 		else
 		{
-			if (counter < Settings.Current.SpeedColor)
+			if (counter < SetLedBlock.Current.SpeedColor)
 			{
 				counter = 129;
 				start=start+ beatsin16(3, 1, 4);
@@ -181,7 +181,7 @@ void DisplayEffectRainbowBeat()
 		if (start2 > 255)
 			start2 = start2 - 255;
 	}
-	Settings.ChangesToEffectMade = 1;	//periodic update needed
+	SetLedBlock.ChangesToEffectMade = 1;	//periodic update needed
 }
 
 //testing
@@ -189,22 +189,22 @@ void DisplayEffectColorPalBeat()
 {
 	EVERY_N_MILLISECONDS(20)
 	{
-		uint8_t CurrentSpeed = Settings.Current.SpeedColor;
+		uint8_t CurrentSpeed = SetLedBlock.Current.SpeedColor;
 
 		if (CurrentSpeed < 10)
 			CurrentSpeed = 10;
 
-		/*uint8_t beatA = beatsin16(Settings.Current.SpeedColor/4, 0, 255);								// Starting hue
-		uint8_t beatB = beatsin16(Settings.Current.SpeedColor/6, 0, 255);
-		uint8_t beatC = beatsin16(Settings.Current.SpeedColor/10, 0, 255);
-		fill_rainbow(ledstemp, NUM_LEDS, (beatA + beatB+ beatC) / 3, Settings.Current.Saturation/15);   // Use FastLED's fill_rainbow routine.*/
+		/*uint8_t beatA = beatsin16(SetLedBlock.Current.SpeedColor/4, 0, 255);								// Starting hue
+		uint8_t beatB = beatsin16(SetLedBlock.Current.SpeedColor/6, 0, 255);
+		uint8_t beatC = beatsin16(SetLedBlock.Current.SpeedColor/10, 0, 255);
+		fill_rainbow(ledstemp, NUM_LEDS, (beatA + beatB+ beatC) / 3, SetLedBlock.Current.Saturation/15);   // Use FastLED's fill_rainbow routine.*/
 		//Simplified to:
-		fill_rainbow(ledstemp, NUM_LEDS, (beatsin16(Settings.Current.SpeedColor / 4, 0, 255) +
-										  beatsin16(Settings.Current.SpeedColor / 6, 0, 255) +
-										  beatsin16(Settings.Current.SpeedColor / 10, 0, 255)) / 3, Settings.Current.Saturation / 15);   // Use FastLED's fill_rainbow routine.
+		fill_rainbow(ledstemp, NUM_LEDS, (beatsin16(SetLedBlock.Current.SpeedColor / 4, 0, 255) +
+										  beatsin16(SetLedBlock.Current.SpeedColor / 6, 0, 255) +
+										  beatsin16(SetLedBlock.Current.SpeedColor / 10, 0, 255)) / 3, SetLedBlock.Current.Saturation / 15);   // Use FastLED's fill_rainbow routine.
 	}
 	
-	Settings.ChangesToEffectMade = 1;	//periodic update needed
+	SetLedBlock.ChangesToEffectMade = 1;	//periodic update needed
 
 }
 
@@ -217,16 +217,16 @@ void DisplayEffectFade()
 
 	EVERY_N_MILLISECONDS(40)
 	{
-		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, Settings.Current.Saturation, 255), CHSV(start2, Settings.Current.Saturation, 255), FORWARD_HUES);
+		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, SetLedBlock.Current.Saturation, 255), CHSV(start2, SetLedBlock.Current.Saturation, 255), FORWARD_HUES);
 
-		if (Settings.Current.SpeedColor>128)
+		if (SetLedBlock.Current.SpeedColor>128)
 		{
-			start = start + (((Settings.Current.SpeedColor - 128) / 10) + 1);
-			start2 = start2 + (((Settings.Current.SpeedColor - 128) / 10) + 1);
+			start = start + (((SetLedBlock.Current.SpeedColor - 128) / 10) + 1);
+			start2 = start2 + (((SetLedBlock.Current.SpeedColor - 128) / 10) + 1);
 		}
 		else
 		{
-			if (counter < Settings.Current.SpeedColor)
+			if (counter < SetLedBlock.Current.SpeedColor)
 			{
 				counter = 129;
 				++start;
@@ -240,7 +240,7 @@ void DisplayEffectFade()
 		if (start2 > 255)
 			start2 = start2 - 255;
 	}
-	Settings.ChangesToEffectMade = 1;
+	SetLedBlock.ChangesToEffectMade = 1;
 }
 
 void DisplayEffectRGBFade()
@@ -253,11 +253,11 @@ void DisplayEffectRGBFade()
 	EVERY_N_MILLISECONDS(40)
 	{
 		
-		if (Settings.Current.SpeedColor>128)
-			start = start + (((Settings.Current.SpeedColor - 128) / 10) + 1);
+		if (SetLedBlock.Current.SpeedColor>128)
+			start = start + (((SetLedBlock.Current.SpeedColor - 128) / 10) + 1);
 		else
 		{
-			if (counter < Settings.Current.SpeedColor)
+			if (counter < SetLedBlock.Current.SpeedColor)
 			{
 				counter = 129;
 				++start;
@@ -309,7 +309,7 @@ void DisplayEffectRGBFade()
 		fill_solid(ledstemp, NUM_LEDS, temp);
 
 	}
-	Settings.ChangesToEffectMade = 1;
+	SetLedBlock.ChangesToEffectMade = 1;
 }
 
 void DisplayEffectStrobe()
@@ -352,12 +352,12 @@ void DisplayEffectStrobe()
 
 void DisplayEffectFixedColor()
 {
-	fill_solid(ledstemp, NUM_LEDS, CHSV(Settings.Current.SpeedColor,Settings.Current.Saturation,255));
+	fill_solid(ledstemp, NUM_LEDS, CHSV(SetLedBlock.Current.SpeedColor,SetLedBlock.Current.Saturation,255));
 	Serial.print("Color and Saturation:");
-	Serial.print(Settings.Current.SpeedColor);
+	Serial.print(SetLedBlock.Current.SpeedColor);
 	Serial.print("  ");
-	Serial.println(Settings.Current.Saturation);
-	Settings.ChangesToEffectMade = 0;
+	Serial.println(SetLedBlock.Current.Saturation);
+	SetLedBlock.ChangesToEffectMade = 0;
 }
 
 void DisplayEffectBall()
@@ -385,7 +385,7 @@ void DisplayEffectBall()
 
 	EVERY_N_MILLISECONDS(40)
 	{
-		uint8_t CurrentSpeed = Settings.Current.SpeedColor;
+		uint8_t CurrentSpeed = SetLedBlock.Current.SpeedColor;
 		static uint8_t ColorWheel = 0;
 
 		if (CurrentSpeed < 6)
@@ -393,7 +393,7 @@ void DisplayEffectBall()
 
 		EVERY_N_MILLISECONDS(1000)
 		{
-			if(Settings.PlayPause == true)
+			if(SetLedBlock.PlayPause == true)
 				ColorWheel = ColorWheel + beatsin8(CurrentSpeed / 10, 1, 10);
 		}
 
@@ -401,14 +401,14 @@ void DisplayEffectBall()
 		uint16_t outer = beatsin16(CurrentSpeed / 6, 0, NUM_LEDS - 1);               // Move entire length
 		uint16_t middle = beatsin16(CurrentSpeed / 6, NUM_LEDS / 3, NUM_LEDS / 3 * 2);   // Move 1/3 to 2/3
 
-		ledstemp[middle] = CHSV(ColorWheel+40, Settings.Current.Saturation, 255);
-		ledstemp[inner] = CHSV(ColorWheel+20, Settings.Current.Saturation, 255);
-		ledstemp[outer] = CHSV(ColorWheel, Settings.Current.Saturation, 255);
+		ledstemp[middle] = CHSV(ColorWheel+40, SetLedBlock.Current.Saturation, 255);
+		ledstemp[inner] = CHSV(ColorWheel+20, SetLedBlock.Current.Saturation, 255);
+		ledstemp[outer] = CHSV(ColorWheel, SetLedBlock.Current.Saturation, 255);
 
-		nscale8(ledstemp, NUM_LEDS, Settings.Current.Set+250);
+		nscale8(ledstemp, NUM_LEDS, SetLedBlock.Current.Set+250);
 	}
 	
-	Settings.ChangesToEffectMade = 1;
+	SetLedBlock.ChangesToEffectMade = 1;
 }
 
 void DisplayEffectAudioMeter()
@@ -467,6 +467,6 @@ void DisplayEffectAudioMeter()
 	minLvlAvg = (minLvlAvg * 63 + minLvl) >> 6;                 // Dampen min/max levels
 	maxLvlAvg = (maxLvlAvg * 63 + maxLvl) >> 6;                 // (fake rolling average)
 
-	Settings.ChangesToEffectMade = 1;
+	SetLedBlock.ChangesToEffectMade = 1;
 }
 

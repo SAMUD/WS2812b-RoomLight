@@ -12,15 +12,15 @@ void OutputToLEDMain()
 void OutputToLEDDisplayMode()
 {
 	static uint16_t dot = 0;
-	if (Settings.Current.DisplayMode == Left)
+	if (SetLedBlock.Current.DisplayMode == Left)
 		fill_solid(&leds[NumberLEDLeft], NUM_LEDS-NumberLEDLeft, CHSV(0, 0, 0));
-	if (Settings.Current.DisplayMode == Right)
+	if (SetLedBlock.Current.DisplayMode == Right)
 		fill_solid(leds, NUM_LEDS - (NumberLEDRight-1), CHSV(0, 0, 0));
-	if (Settings.Current.DisplayMode == Night)
+	if (SetLedBlock.Current.DisplayMode == Night)
 	{
 		for (dot = 0; dot < NUM_LEDS; dot=dot+1)
 		{
-			if (dot%Settings.Current.NightNumber)
+			if (dot%SetLedBlock.Current.NightNumber)
 				leds[dot] = CRGB::Black;
 		}
 	}

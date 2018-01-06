@@ -80,23 +80,27 @@
     <None Include="ArduinoMega.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="Brightness.ino" />
+    <None Include="Code\LEDBlock\Brightness.ino" />
     <None Include="ChangeParamFnc.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="DisplayEffect.ino" />
+    <None Include="Code\LEDBlock\DisplayEffect.ino" />
     <None Include="DisplayMode.ino" />
-    <None Include="EEPROM.ino" />
+    <None Include="Code\LEDBlock\EEPROM.ino" />
     <None Include="EthernetLED.ino">
       <FileType>CppCode</FileType>
     </None>
     <None Include="Functions.ino" />
-    <None Include="OutputToLED.ino" />
+    <None Include="Code\LEDBlock\LEDBlock.ino">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="Code\LEDBlock\OutputToLED.ino" />
     <None Include="TempPlayPause.ino" />
     <None Include="ModeSelection.ino" />
     <None Include="ReadBinary.ino" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\LEDBlock\GlobalVarLEDBlock.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h" />
   </ItemGroup>
