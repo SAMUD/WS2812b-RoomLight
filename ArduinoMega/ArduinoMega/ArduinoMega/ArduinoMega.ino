@@ -17,18 +17,18 @@
 #endif
 
 //FastLed-library
-#define NUM_LEDS 291
+#define NUM_LEDS 290
 #define DATA_PIN 37
 static CRGB leds[NUM_LEDS];
 static CRGB ledstemp[NUM_LEDS];
 
 //audiobla
 #define DC_OFFSET  0                                      // DC offset in mic signal - if unusure, leave 0
-// I calculated this value by serialprintln lots of mic values
-#define NOISE     30                                         // Noise/hum/interference in mic signal and increased value until it went quiet
-#define SAMPLES   60                                          // Length of buffer for dynamic level adjustment
-#define TOP (NUM_LEDS + 2)                                    // Allow dot to go slightly off scale
-#define PEAK_FALL 10                                          // Rate of peak falling dot
+														  // I calculated this value by serialprintln lots of mic values
+#define NOISE     30                                      // Noise/hum/interference in mic signal and increased value until it went quiet
+#define SAMPLES   60                                      // Length of buffer for dynamic level adjustment
+#define TOP (NUM_LEDS + 2)                                // Allow dot to go slightly off scale
+#define PEAK_FALL 10                                      // Rate of peak falling dot
 
 byte
 peak = 0,                                              // Used for falling dot
@@ -47,7 +47,7 @@ maxLvlAvg = 512;
 void setup()
 {
 	//Set Audio
-	analogReference(DEFAULT);
+	analogReference(INTERNAL2V56);
 	memset(vol, 0, sizeof(vol));
 	
 	//Setup LEDS
@@ -72,6 +72,7 @@ void setup()
 	pinMode(PINInput4, INPUT);
 	pinMode(PINInput5, INPUT);
 	pinMode(13, OUTPUT);
+	pinMode(PINRelais, OUTPUT);
 
 	//Prepare EEPROM
 	EEPROMinit();
@@ -114,7 +115,8 @@ void loop()
 				Serial.println(Settings.PowerState);
 				#endif
 				EEPROMsave();
-				BrightnessTurnOff();	
+				BrightnessTurnOff();
+				digitalWrite(PINRelais, 0);
 			}
 			else
 			{
@@ -122,6 +124,7 @@ void loop()
 				Serial.print("Power button pressed - Turning on: ");
 				Serial.println(Settings.PowerState);
 				#endif
+				digitalWrite(PINRelais, 1);
 				BrightnessTurnOn();
 				Settings.ChangesToEffectMade = 1;
 			}

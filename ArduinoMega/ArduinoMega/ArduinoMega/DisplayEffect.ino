@@ -418,7 +418,7 @@ void DisplayEffectAudioMeter()
 	static uint16_t      n, height;
 
 	n = analogRead(MIC_PIN);                                    // Raw reading from mic
-	n = abs(n - DC_OFFSET);                               // Center on zero
+	n = abs(n - DC_OFFSET);                                     // Center on zero
 
 	Serial.println(n);
 

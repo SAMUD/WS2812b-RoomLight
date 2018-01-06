@@ -20,7 +20,7 @@ EthernetUDP Udp;
 void EthernetUDPHandling(IPAddress remoteIP, int packetSize)
 {
 	bool sendAnswer = false;
-	if (strncmp(packetBuffer,"LED On",packetSize)==0)
+	if (strncmp(packetBuffer,"LED on",packetSize)==0)
 	{
 		if (Settings.PowerState == false)
 		{
@@ -95,7 +95,7 @@ void MainEthernet()
 				Serial.print(", port ");
 				Serial.println(Udp.remotePort());
 
-				Serial.println("Contents:");
+				Serial.print("Contents:");
 				Serial.println(packetBuffer);
 			#endif
 			
