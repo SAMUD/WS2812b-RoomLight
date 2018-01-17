@@ -47,7 +47,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\ArduinoMega;$(ProjectDir)..\..\..\..\..\Arduino\libraries\EEPROMEx;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Ethernet\src;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries\Ethernet\src\utility;$(ProjectDir)..\..\..\..\..\Arduino\libraries\FastLED;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\..\..\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr\;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\ArduinoMega;$(ProjectDir)..\..\..\..\..\Arduino\libraries\FastLED;$(ProjectDir)..\..\..\..\..\Arduino\libraries\EEPROMEx;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\..\..\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr\;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ProjectDir)__vm\.ArduinoMega.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>__AVR_ATmega2560__;F_CPU=16000000L;ARDUINO=10805;ARDUINO_AVR_MEGA2560;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -80,29 +80,27 @@
     <None Include="ArduinoMega.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="Code\LEDBlock\Brightness.ino" />
-    <None Include="ChangeParamFnc.ino">
+    <None Include="Code\LEDClass\Brightness.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="Code\LEDBlock\DisplayEffect.ino" />
-    <None Include="DisplayMode.ino" />
-    <None Include="Code\LEDBlock\EEPROM.ino" />
-    <None Include="EthernetLED.ino">
+    <None Include="Code\LEDClass\DisplayEffect.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="Functions.ino" />
-    <None Include="Code\LEDBlock\LEDBlock.ino">
+    <None Include="Code\LEDClass\OutputToLED.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="Code\LEDBlock\OutputToLED.ino" />
-    <None Include="TempPlayPause.ino" />
-    <None Include="ModeSelection.ino" />
-    <None Include="ReadBinary.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\LEDBlock\GlobalVarLEDBlock.h" />
+    <ClInclude Include="Code\LEDClass\MyTypesLEDControl.h" />
+    <ClInclude Include="Code\LEDClass\GlobalVarLEDControl.h" />
+    <ClInclude Include="Code\EEPROM\EEPROMLib.h" />
     <ClInclude Include="GlobalVar.h" />
+    <ClInclude Include="Code\LEDClass\LEDControl.h" />
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Code\LEDClass\LEDControl.cpp" />
+    <ClCompile Include="Code\EEPROM\EEPROMLib.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

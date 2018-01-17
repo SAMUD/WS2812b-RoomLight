@@ -16,28 +16,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ArduinoMega.ino" />
-    <None Include="ReadBinary.ino" />
-    <None Include="ModeSelection.ino" />
-    <None Include="Functions.ino" />
-    <None Include="TempPlayPause.ino" />
-    <None Include="DisplayMode.ino" />
-    <None Include="ChangeParamFnc.ino" />
-    <None Include="EthernetLED.ino" />
-    <None Include="Code\LEDBlock\LEDBlock.ino" />
-    <None Include="Code\LEDBlock\EEPROM.ino" />
-    <None Include="Code\LEDBlock\Brightness.ino" />
-    <None Include="Code\LEDBlock\DisplayEffect.ino" />
-    <None Include="Code\LEDBlock\OutputToLED.ino" />
+    <None Include="Code\LEDClass\OutputToLED.ino" />
+    <None Include="Code\LEDClass\DisplayEffect.ino" />
+    <None Include="Code\LEDClass\Brightness.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.ArduinoMega.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Code\LEDBlock\GlobalVarLEDBlock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalVar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Code\LEDClass\GlobalVarLEDControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\LEDClass\MyTypesLEDControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\LEDClass\LEDControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\EEPROM\EEPROMLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Code\LEDClass\LEDControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EEPROM\EEPROMLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
