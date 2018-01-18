@@ -5,34 +5,34 @@ void DisplayModeMain()
 		#if defined(DEBUGMODE)
 			Serial.print("DisplayMode | Changed to: ");
 		#endif
-		switch (Settings.Current.DisplayMode)
+		switch (Settings.LedEffects[Settings.EffectNumber].DisplayMode)
 		{
 		case Left:
-			Settings.Current.DisplayMode = Right;
+			Settings.LedEffects[Settings.EffectNumber].DisplayMode = Right;
 			#if defined(DEBUGMODE)
 				Serial.println("Right");
 			#endif
 			break;
 		case Right :
-			Settings.Current.DisplayMode = Night;
+			Settings.LedEffects[Settings.EffectNumber].DisplayMode = Night;
 			#if defined(DEBUGMODE)
 				Serial.println("Night");
 			#endif
 			break;
 		case Night:
-			Settings.Current.DisplayMode = All;
+			Settings.LedEffects[Settings.EffectNumber].DisplayMode = All;
 			#if defined(DEBUGMODE)
 				Serial.println("All");
 			#endif
 			break;
 		case All:
-			Settings.Current.DisplayMode = Left;
+			Settings.LedEffects[Settings.EffectNumber].DisplayMode = Left;
 			#if defined(DEBUGMODE)
 				Serial.println("Left");
 			#endif
 			break;
 		default:
-			Settings.Current.DisplayMode = Left;
+			Settings.LedEffects[Settings.EffectNumber].DisplayMode = Left;
 			#if defined(DEBUGMODE)
 				Serial.println("Left (default)");
 			#endif
@@ -41,10 +41,10 @@ void DisplayModeMain()
 
 			
 		ReadValues.newValues = 0;
-		Settings.ChangesToEffectMade = 1;
+		SettingsNow.ChangesToEffectMade = true;
 
 		//show status update
-		DisplayInfo.ShowACK = 1;
-		DisplayInfo.ShowPercentage = 0;
+		SettingsNow.ShowACK = 1;
+		SettingsNow.ShowPercentage = 0;
 	}
 }

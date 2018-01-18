@@ -1,8 +1,6 @@
 //Fading the Brightness to the Value specified in LEDSettings.BrightnessSetpoint
 void BrightnessFade(uint8_t Setpoint)
 {
-	EVERY_N_MILLISECONDS(20) //run at 66Hz to have seamles blending
-	{
 		uint8_t incrementor = 0;
 
 		//when Setpoint is not the same as actual brightness
@@ -23,19 +21,18 @@ void BrightnessFade(uint8_t Setpoint)
 
 		if (FastLED.getBrightness() > Setpoint)
 			FastLED.setBrightness(FastLED.getBrightness() - incrementor);
-	}
 }
 
 //Turning off the LED-Strip
 void BrightnessTurnOff()
 {
-	
 	while (FastLED.getBrightness() > 0)
 	{
 		//run BrightnessFade until brightness is 0
 		EVERY_N_MILLISECONDS(30)
 		{
 			BrightnessFade(0);
+			DisplayEffectMain();
 			OutputToLEDMain();
 		}
 		BlinkLed(100, 10);
@@ -52,17 +49,17 @@ void BrightnessTurnOn()
 {
 	digitalWrite(PIN_RELAIS, 0);
 	delay(50);
-	while (FastLED.getBrightness() != Settings.Current.BrightnessSetpoint)
+	/*while (FastLED.getBrightness() != Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint)
 	{
 		//run BrightnessFade until brightness is = Setpoint
 		EVERY_N_MILLISECONDS(40)
 		{
-			BrightnessFade(Settings.Current.BrightnessSetpoint);
-			//show_at_max_brightness_for_power();
-			FastLED.show();
+			BrightnessFade(Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint);
+			DisplayEffectMain();
+			OutputToLEDMain();
 		}
 		BlinkLed(10, 100);
-	}
+	}*/
 	
 	#if defined(DEBUGMODE)
 		Serial.println("BrightnessTurnOn | Powered on now");

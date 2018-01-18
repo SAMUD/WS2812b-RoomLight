@@ -22,15 +22,15 @@ void EthernetUDPHandling(IPAddress remoteIP, int packetSize)
 	bool sendAnswer = false;
 	if (strncmp(packetBuffer,"LED On",packetSize)==0)
 	{
-		if (Settings.PowerState == false)
+		if (SettingsNow.PowerState == false)
 		{
 			//theLEDs are currently off. Turning on
-			Settings.PowerState = true;
+			SettingsNow.PowerState = true;
 			#if defined(DEBUGMODE)
 				Serial.println("LAN: Cmd: Led On");
 			#endif
 			BrightnessTurnOn();
-			Settings.ChangesToEffectMade = 1;
+			SettingsNow.ChangesToEffectMade = true;
 		}
 		
 		sendAnswer = true;
@@ -38,10 +38,10 @@ void EthernetUDPHandling(IPAddress remoteIP, int packetSize)
 	}
 	else if (strncmp(packetBuffer, "LED Off",packetSize)==0)
 	{
-		if (Settings.PowerState == true)
+		if (SettingsNow.PowerState == true)
 		{
 			//theLEDs are currently off. Turning on
-			Settings.PowerState = false;
+			SettingsNow.PowerState = false;
 			#if defined(DEBUGMODE)
 			Serial.println("LAN: Cmd: Led Off");
 			#endif

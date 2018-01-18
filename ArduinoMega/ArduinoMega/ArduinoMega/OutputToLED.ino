@@ -12,15 +12,15 @@ void OutputToLEDMain()
 void OutputToLEDDisplayMode()
 {
 	static uint16_t dot = 0;
-	if (Settings.Current.DisplayMode == Left)
+	if (Settings.LedEffects[Settings.EffectNumber].DisplayMode == Left)
 		fill_solid(&leds[NumberLEDLeft], NUM_LEDS-NumberLEDLeft, CHSV(0, 0, 0));
-	if (Settings.Current.DisplayMode == Right)
+	if (Settings.LedEffects[Settings.EffectNumber].DisplayMode == Right)
 		fill_solid(leds, NUM_LEDS - (NumberLEDRight-1), CHSV(0, 0, 0));
-	if (Settings.Current.DisplayMode == Night)
+	if (Settings.LedEffects[Settings.EffectNumber].DisplayMode == Night)
 	{
 		for (dot = 0; dot < NUM_LEDS; dot=dot+1)
 		{
-			if (dot%Settings.Current.NightNumber)
+			if (dot%Settings.LedEffects[Settings.EffectNumber].NightNumber)
 				leds[dot] = CRGB::Black;
 		}
 	}
@@ -32,10 +32,10 @@ void OutputToLEDDisplayInfo()
 	static uint8_t counter = 0;
 	
 	//if the state of the variable to show infos on the LEDs went true
-	if (DisplayInfo.ShowACK)
+	if (SettingsNow.ShowACK)
 	{
 		counter = 25;
-		DisplayInfo.ShowACK = 0;
+		SettingsNow.ShowACK = 0;
 		#if defined (DEBUGMODE)
 		Serial.println("OutputToLED | DisplayInfo updated ");
 		#endif // DEBUG
@@ -44,10 +44,10 @@ void OutputToLEDDisplayInfo()
 	if (counter > 0)
 	{
 		//display info
-		if (DisplayInfo.ShowPercentage > 0)
+		if (SettingsNow.ShowPercentage > 0)
 		{
-			fill_solid(leds, DisplayInfo.ShowPercentage / 10, CRGB::Green);
-			fill_solid(&(leds[DisplayInfo.ShowPercentage / 10]), 25-(DisplayInfo.ShowPercentage / 10) , CRGB::Black);
+			fill_solid(leds, SettingsNow.ShowPercentage / 10, CRGB::Green);
+			fill_solid(&(leds[SettingsNow.ShowPercentage / 10]), 25-(SettingsNow.ShowPercentage / 10) , CRGB::Black);
 			leds[25] = CRGB::Red;
 		}
 		else
@@ -62,7 +62,7 @@ void OutputToLEDDisplayInfo()
 		{
 			counter = counter - 1;
 			if (counter == 0)
-				DisplayInfo.ShowPercentage = 0;
+				SettingsNow.ShowPercentage = 0;
 		}
 
 	}

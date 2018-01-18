@@ -3,7 +3,7 @@ void BlinkLed(uint16_t LEDdelay, uint16_t LEDTimeOn)
 	static unsigned long millistemp;
 	static bool state;
 	
-	if (DisplayInfo.ShowACK == 1 || DisplayInfo.ShowPercentage > 0)
+	if (SettingsNow.ShowACK == 1 || SettingsNow.ShowPercentage > 0)
 	{
 		//blink very fast
 		LEDdelay = 50;

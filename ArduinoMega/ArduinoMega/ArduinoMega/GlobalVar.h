@@ -19,6 +19,8 @@
 #define NumberLEDRight 96
 #define ValueLEDDarkside 75
 
+#define NUMBEREFFECTS 15
+
 
 //The Buttons which are availaible on my Transmitter
 /*	Zero= 
@@ -54,26 +56,30 @@ enum Buttons
 	Nothing
 };
 
- enum ColTemp{
-	/// 1900 Kelvin
-	Candle2 = 0xFF9329 /* 1900 K, 255, 147, 41 */,
+/// <summary>
+/// Different Color Temperatures for displaying White on the LEDs
+/// </summary>
+enum ColTemp {
+	///<summary>1900K</summary>
+	Candle2 = 0xFF9329						/* 1900 K, 255, 147, 41 */,
+	///<summary>ca. 2300 Kelvin</summary>
 	Candle3 = 0xFFAC5C,
-	/// 2600 Kelvin
-	Tungsten40W2 = 0xFFC58F /* 2600 K, 255, 197, 143 */,
-	/// 2850 Kelvin
-	Tungsten100W2 = 0xFFD6AA /* 2850 K, 255, 214, 170 */,
-	/// 3200 Kelvin
-	Halogen2 = 0xFFF1E0 /* 3200 K, 255, 241, 224 */,
-	/// 5200 Kelvin
-	CarbonArc2 = 0xFFFAF4 /* 5200 K, 255, 250, 244 */,
-	/// 5400 Kelvin
-	HighNoonSun2 = 0xFFFFFB /* 5400 K, 255, 255, 251 */,
-	/// 6000 Kelvin
-	DirectSunlight2 = 0xFFFFFF /* 6000 K, 255, 255, 255 */,
-	/// 7000 Kelvin
-	OvercastSky2 = 0xC9E2FF /* 7000 K, 201, 226, 255 */,
-	/// 20000 Kelvin
-	ClearBlueSky2 = 0x409CFF /* 20000 K, 64, 156, 255 */,
+	///<summary>2600 Kelvin</summary>
+	Tungsten40W2 = 0xFFC58F					/* 255, 197, 143 */,
+	///<summary>2850 Kelvin</summary>
+	Tungsten100W2 = 0xFFD6AA				/* 255, 214, 170 */,
+	///<summary>3200 Kelvin</summary>
+	Halogen2 = 0xFFF1E0						/* 255, 241, 224 */,
+	///<summary>5200 Kelvin</summary>
+	CarbonArc2 = 0xFFFAF4					/* 255, 250, 244 */,
+	///<summary>5400 Kelvin</summary>
+	HighNoonSun2 = 0xFFFFFB					/* 255, 255, 251 */,
+	///<summary>6000 Kelvin. The maximum possible Brightness.</summary>
+	DirectSunlight2 = 0xFFFFFF				/* 255, 255, 255 */,
+	///<summary>7000 Kelvin</summary>
+	OvercastSky2 = 0xC9E2FF					/* 201, 226, 255 */,
+	///<summary>20 000 Kelvin</summary>
+	ClearBlueSky2 = 0x409CFF				/* 64, 156, 255 */,
 
 	WarmFluorescent2 = 0xFFF4E5 /* 0 K, 255, 244, 229 */,
 	StandardFluorescent2 = 0xF4FFFA /* 0 K, 244, 255, 250 */,
@@ -90,20 +96,28 @@ enum Buttons
 //enum with the actual Mode
 enum Mode
 {
-	None,
-	White,White2,
+	White0, White1, White2,
+	FixedColor0, FixedColor1, FixedColor2, FixedColor3,
+	Confetti0, Confetti1,
 	RainbowMarch, RainbowBeat, ColorPalBeat,
-	Fade,RGBFade,
-	Confetti,ConfettiColorfull,Strobe,
-	FixedColor, FixedColor2, FixedColor3,
-	Ball,
-	AudioMeter
+	Fade, RGBFade,
+	Strobe,
+	Ball
 };
 
-//enum active LEDs
+/// <summary>
+/// Active Displaying-Mode
+/// </summary>
 enum eDisplay
 {
-	Left,Right,All,Night
+	///<summary>Show LEDs only from start of the strip until NumberLEDLeft </summary>
+	Left,
+	///<summary>Show LEDs only at the end of the Strip for NumberLEDRight </summary>
+	Right,
+	///<summary>Turn on all LEDs </summary>
+	All,
+	///<summary>Only turn on each ModeSetLEDBlock.NightNumber LED  </summary>
+	Night
 };
 
 //structure with the values read from the other Arduino
@@ -114,53 +128,44 @@ static struct Values
 	bool newValues;
 }ReadValues;
 
-static struct ModeSettings
+/// <summary>
+/// Saving all relevant data for one Display-Mode
+/// </summary>
+static struct ModeSetLedBlock
 {
-	uint8_t BrightnessSetpoint;			//
-	uint8_t Saturation;					//
-	uint8_t SpeedColor;					//
-	eDisplay DisplayMode;				//Left,Right,All,Night
-	ColTemp Temperature;				//ColorTemp --> used in white mode
-	uint8_t NightNumber;				//number of leds to display in night mode
-	uint8_t Set;						//can be used for various settings. Acessed on the Remote with Set+ and Set-
-}ModeSett;
+	///<summary>Target Brightness for LEDs  </summary>
+	uint8_t BrightnessSetpoint;
+	///<summary>Setup Color Saturation (for example in rainbow mode)</summary>
+	uint8_t Saturation;
+	///<summary>Setting up Speed of animation</summary>
+	uint8_t Speed;
+	///<summary>Current Color (in fixed color mode for example)</summary>
+	uint8_t Color;
+	///<summary>Select which LEDs to use for Displaying</summary>
+	eDisplay DisplayMode;
+	///<summary>Temperature of LEDs (in White-Mode)</summary>
+	ColTemp Temperature;
+	///<summary>When DisplayMode is set to "Night", we can select which LEDs to turn on</summary>
+	uint8_t NightNumber;
+	///<summary>Different Settings</summary>
+	uint8_t Set;
+	///<summary>EffectNumber corresponding to the enum</summary>
+	int NumberEffect;
+} ModeSetLedBlock2;
 
-//this one will be saved in EEPROM
+
+/// <summary>
+/// All Settings for LEDs. This one will also be saved in EEPROM.
+/// </summary>
 static struct StoreStruct
 {
 	uint8_t MemoryVersion;
-	ModeSettings FixedColor;
-	ModeSettings RainbowMarch;
-	ModeSettings RainbowBeat;
-	ModeSettings ColorPalBeat;
-	ModeSettings Fade;
-	ModeSettings RGBFade;
-	ModeSettings White;
-	ModeSettings Confetti;
-	ModeSettings ConfettiColorfull;
-	ModeSettings Strobe;
-	ModeSettings FixedColor2;
-	ModeSettings FixedColor3;
-	ModeSettings White2;
-	ModeSettings Ball;
-	ModeSettings AudioMeter;
+	ModeSetLedBlock LedEffects[NUMBEREFFECTS];
 
-	ModeSettings Current;
+	uint8_t EffectNumber = 0;
+	uint8_t EffectNumberOld = 127;
 
-
-	bool PowerState;				//true=On False=off
-	Mode DisplayMode;				//the Actual Mode
-	Mode DisplayModeOld;			//the Old mode
-
-	uint8_t ChangesToEffectMade;	//when the LEDS need to be redrwan, cause there were changes to the effects 
-	bool PlayPause;
 }Settings;
-
-static struct sDisplayInfo
-{
-	bool ShowACK;
-	uint8_t ShowPercentage;
-}DisplayInfo;
 
 static struct StatusVariables
 {
@@ -169,6 +174,15 @@ static struct StatusVariables
 } Status;
 
 
-static int configAdress = 0;
-static bool memValid = true;
+/// <summary>
+/// Volatile Settings and Information Bytes
+/// </summary>
+static struct sDisplayInfo
+{
+	bool ShowACK;				//Turning on the ACK-Light
+	uint8_t ShowPercentage;		//Show setting Percentage
+	bool PowerState;			//true=On False=off
+	bool ChangesToEffectMade;	//when the LEDS need to be redrwan, cause there were changes to the effects 
+	bool PlayPause;
+}SettingsNow;
 

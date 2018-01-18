@@ -52,14 +52,14 @@ void ChangeParamMain(uint8_t PassedPressedButton, uint8_t PassedPressedButtonPlu
 			}
 		}
 
-		Settings.ChangesToEffectMade = 1;
+		SettingsNow.ChangesToEffectMade = true;
 		#if defined(DEBUGMODE)
 		Serial.print("ChangeParam | :");
 		Serial.println(*PassedValueToChange);
 		#endif
 		//show status update
-		DisplayInfo.ShowACK = 1;
-		DisplayInfo.ShowPercentage = *PassedValueToChange * (255/PassedMaxAllowed);
+		SettingsNow.ShowACK = 1;
+		SettingsNow.ShowPercentage = *PassedValueToChange * (255/PassedMaxAllowed);
 		ReadValues.newValues = 0;
 	}
 
@@ -102,14 +102,14 @@ void ChangeParamMain(uint8_t PassedPressedButton, uint8_t PassedPressedButtonPlu
 			}
 		}
 
-		Settings.ChangesToEffectMade = 1;
+		SettingsNow.ChangesToEffectMade = true;
 		#if defined(DEBUGMODE)
 		Serial.print("ChangeParam | :");
 		Serial.println(*PassedValueToChange);
 		#endif
 		//show status update
-		DisplayInfo.ShowACK = 1;
-		DisplayInfo.ShowPercentage = *PassedValueToChange * (255 / PassedMaxAllowed);
+		SettingsNow.ShowACK = 1;
+		SettingsNow.ShowPercentage = *PassedValueToChange * (255 / PassedMaxAllowed);
 		ReadValues.newValues = 0;
 	}
 }

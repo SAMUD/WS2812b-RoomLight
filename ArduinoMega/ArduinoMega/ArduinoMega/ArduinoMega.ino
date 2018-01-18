@@ -4,7 +4,7 @@
  Author:	sdaur
 */
 #define Version "2.3"
-#define DMemoryVersion 8
+#define DMemoryVersion 9
 
 #include <FastLED.h>
 #include "GlobalVar.h"
@@ -22,6 +22,8 @@
 static CRGB leds[NUM_LEDS];
 static CRGB ledstemp[NUM_LEDS];
 
+static int i = 0;
+
 // the setup function runs once when you press reset or power the board
 void setup()
 {
@@ -29,11 +31,12 @@ void setup()
 	//Setup LEDS
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	FastLED.setBrightness(0);
+	FastLED.setDither(1);
 
 	//Setup serial
 	#if defined(DEBUGMODE)
 		Serial.begin(115200);
-		Serial.print("Started - Waiting - App: V");
+		Serial.print("Starting - App: V");
 		Serial.println(Version);
 		Serial.print("LED Library: V");
 		Serial.println(FASTLED_VERSION);
@@ -47,112 +50,115 @@ void setup()
 	pinMode(PINInput3, INPUT);
 	pinMode(PINInput4, INPUT);
 	pinMode(PINInput5, INPUT);
-	pinMode(13, OUTPUT);
-	//setup Relais for main Power supply
-	pinMode(PIN_RELAIS, OUTPUT);
+	pinMode(13, OUTPUT);					//Status-Led
+	pinMode(PIN_RELAIS, OUTPUT);			//Relais for main power supply
 	
-
 	//Prepare EEPROM
 	EEPROMinit();
 
-	Settings.ChangesToEffectMade = 1;
-	Settings.PowerState = 1;
-
-	FastLED.setDither(1);
+	//Now start the LEDs
 	digitalWrite(PIN_RELAIS, 0);
+	delay(250);
+	SettingsNow.ChangesToEffectMade = true;
+	SettingsNow.PowerState = true;
 
-	
-#ifdef ETHERNET
-	ConnectEthernet();
-#endif // ETHERNET
-
-	
+	#ifdef ETHERNET
+		ConnectEthernet();
+	#endif // ETHERNET
 }
 
 // the loop function runs over and over again until power down or reset
 void loop()
 {
-	
-	//Do all the Ethernet stuff
-#ifdef ETHERNET
-	MainEthernet();
-#endif // ETHERNET
-
-	//reading given data (25Hz)
+	//reading given IR data (25Hz)
 	ReadBinaryMain();
 
-	//turn on/off
-	EVERY_N_MILLISECONDS(100) //only every 100ms because the values from the other arduino are only aquired at this speed
+	//we have the Display-Module which runs at full speed and the other Modules which are running one after another.
+	EVERY_N_MILLISECONDS(10)
 	{
-		if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
+		switch (i)
 		{
-			Settings.PowerState = !Settings.PowerState;			//changing PowerState
-			if (!Settings.PowerState)
+		case 0:
+			//Do all the Ethernet stuff
+			#ifdef ETHERNET
+			MainEthernet();
+			#endif // ETHERNET
+			break;
+		case 1:
+			ReadBinaryMain();
+		break;
+		case 2:
+			if (ReadValues.ButtonPressed == Power && ReadValues.newValues)
 			{
-				#if defined(DEBUGMODE)							//initiate PowerOff
-				Serial.print("Power button pressed - Turning off: ");
-				Serial.println(Settings.PowerState);
-				#endif
-				EEPROMsave();
-				BrightnessTurnOff();	
+				SettingsNow.PowerState = !SettingsNow.PowerState;			//changing PowerState
+				if (!SettingsNow.PowerState)
+				{
+					#if defined(DEBUGMODE)							//initiate PowerOff
+					Serial.print("Power button pressed - Turning off: ");
+					Serial.println(SettingsNow.PowerState);
+					#endif
+					EEPROMsave();
+					BrightnessTurnOff();
+				}
+				else
+				{
+					#if defined(DEBUGMODE)							//initiatePowerOn
+					Serial.print("Power button pressed - Turning on: ");
+					Serial.println(SettingsNow.PowerState);
+					#endif
+					BrightnessTurnOn();
+					SettingsNow.ChangesToEffectMade = true;
+				}
+				ReadValues.newValues = 0;
 			}
+			break;
+		case 3:
+			//Select Mode - this has to run all the time so we can turn on the LEDs when changing the Mode
+			ModeSelectionMain();
+			break;
+		case 4:
+			ChangeParamMain(Down, Up, true, &Settings.LedEffects[Settings.EffectNumber].Saturation, 10, 255, 5, 10);		//Saturation
+			break;
+		case 5:
+			ChangeParamMain(Reward, Forward, true, &Settings.LedEffects[Settings.EffectNumber].Speed, 1, 255, 1, 2);	//SpeedColor
+			break;
+		case 6:
+			ChangeParamMain(VolDown, VolUp, true, &Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint, 5, 255, 5, 10);		//Brightness
+			break;
+		case 7:
+			if (Settings.LedEffects[Settings.EffectNumber].DisplayMode == Night)					//only do this if current Display mode is set to night
+				ChangeParamMain(Zero, StRept, true, &Settings.LedEffects[Settings.EffectNumber].NightNumber, 2, 25, 1, 1);			//Number of LEDs in NightMode
 			else
-			{
-				#if defined(DEBUGMODE)							//initiatePowerOn
-				Serial.print("Power button pressed - Turning on: ");
-				Serial.println(Settings.PowerState);
-				#endif
-				BrightnessTurnOn();
-				Settings.ChangesToEffectMade = 1;
-			}
-			ReadValues.newValues = 0;
-		}
-	}
-
-	//Select Mode - this has to run all the time so we can turn on the LEDs when changing the Mode
-	ModeSelectionMain();
-
-	//actual power state
-	if (Settings.PowerState)
-	{
-		//reaing data from IR-remote and changing settings
-		EVERY_N_MILLISECONDS(100)
-		{
-			ChangeParamMain(Down, Up, true, &Settings.Current.Saturation, 10, 255, 5, 10);					//Saturation
-			ChangeParamMain(Reward, Forward, true, &Settings.Current.SpeedColor, 1, 255, 1, 2);				//Speed or Color
-			if(Settings.Current.DisplayMode == Night)					//only do this if current Display mode is set to night
-				ChangeParamMain(Zero, StRept, true, &Settings.Current.NightNumber, 2, 25, 1, 1);			//Number of LEDs in NightMode
-			else
-				ChangeParamMain(Zero, StRept, true, &Settings.Current.Set, 1, 255, 5, 10);					//Set on the remote
-			ChangeParamMain(VolDown, VolUp, true, &Settings.Current.BrightnessSetpoint, 5, 255, 5, 10);		//Brightness
-			
-			DisplayModeMain();																				//Select Left/Right/Night/all
+				ChangeParamMain(Zero, StRept, true, &Settings.LedEffects[Settings.EffectNumber].Set, 1, 255, 5, 10);					//Set on the remote
+			break;
+		case 8:
 			TempPlayPauseMain();																			//Play Pause and Color-Temp
-				
+		case 9:
+			DisplayModeMain();																				//Select Left/Right/Night/all
+			break;
+		default:
+			i = 0;
+			break;
 		}
-
-		EVERY_N_MILLISECONDS(40)
-		{
-			BrightnessFade(Settings.Current.BrightnessSetpoint);		//call the fading function for the Brightness
-		}
-
-		//Display Effect
-		DisplayEffectMain();
-
-		//print out
+		
+		i++;
+		if (  (i == 10 && SettingsNow.PowerState)  || (i >= 4 && !SettingsNow.PowerState)  )
+			i = 0;
+	}
+	
+	//actual power state
+	if (SettingsNow.PowerState)
+	{
 		OutputToLEDMain();
-
-		//Status LED on Arduino Board
 		BlinkLed(10, 3000);
+		EVERY_N_MILLISECONDS(20)
+		{
+			BrightnessFade(Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint);		//call the fading function for the Brightness
+			DisplayEffectMain();
+
+		}
 	}
 	else
-	{
-		//LEDs are off
-		//Blink Status LED on Arduino Board
-		BlinkLed(3000,2);
-	}
-
-	//no new values anymore.
-		
+		BlinkLed(3000,2);	
 }
 
