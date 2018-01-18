@@ -1,6 +1,6 @@
 
 //defines
-//#define DEBUGMODE
+#define DEBUGMODE
 //#define ETHERNET
 
 //In Out Pins used on my Arduino
@@ -12,6 +12,7 @@
 #define PINInput4 24
 #define PINInput5 22						//The MSB-Bit coming from the other Arduino
 #define MIC_PIN   5  // Microphone is attached to this analog pin
+#define PIN_RELAIS 53			//Output to the Relais --> enable Power to LEDs
 
 //used for WhiteLeft and WhiteRight
 #define NumberLEDLeft 109

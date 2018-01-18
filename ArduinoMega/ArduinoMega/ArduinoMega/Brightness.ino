@@ -43,11 +43,13 @@ void BrightnessTurnOff()
 	#if defined(DEBUGMODE)
 		Serial.println("BrightnessTurnOff | Powered down now");
 	#endif
+		digitalWrite(PIN_RELAIS, 1);
 }
 
 //Turning on the LED-Strip
 void BrightnessTurnOn()
 {
+	digitalWrite(PIN_RELAIS, 0);
 	while (FastLED.getBrightness() != Settings.Current.BrightnessSetpoint)
 	{
 		//run BrightnessFade until brightness is = Setpoint

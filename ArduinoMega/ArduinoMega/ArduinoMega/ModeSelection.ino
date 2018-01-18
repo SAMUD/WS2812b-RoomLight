@@ -313,6 +313,7 @@ void ModeSelectionTurnOn()
 	#endif
 	Settings.PowerState = 1;
 	Settings.DisplayMode = Settings.DisplayModeOld;
+	digitalWrite(PIN_RELAIS, 0);
 }
 
 //save Current Settings

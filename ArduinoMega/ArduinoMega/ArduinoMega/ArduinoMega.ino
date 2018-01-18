@@ -22,33 +22,9 @@
 static CRGB leds[NUM_LEDS];
 static CRGB ledstemp[NUM_LEDS];
 
-//audiobla
-#define DC_OFFSET  0                                      // DC offset in mic signal - if unusure, leave 0
-// I calculated this value by serialprintln lots of mic values
-#define NOISE     30                                         // Noise/hum/interference in mic signal and increased value until it went quiet
-#define SAMPLES   60                                          // Length of buffer for dynamic level adjustment
-#define TOP (NUM_LEDS + 2)                                    // Allow dot to go slightly off scale
-#define PEAK_FALL 10                                          // Rate of peak falling dot
-
-byte
-peak = 0,                                              // Used for falling dot
-dotCount = 0,                                              // Frame counter for delaying dot-falling speed
-volCount = 0;                                              // Frame counter for storing past volume data
-int
-vol[SAMPLES],                                               // Collection of prior volume samples
-lvl = 10,                                             // Current "dampened" audio level
-minLvlAvg = 0,                                              // For dynamic adjustment of graph low & high
-maxLvlAvg = 512;
-
-
-
-
 // the setup function runs once when you press reset or power the board
 void setup()
 {
-	//Set Audio
-	analogReference(DEFAULT);
-	memset(vol, 0, sizeof(vol));
 	
 	//Setup LEDS
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -72,6 +48,9 @@ void setup()
 	pinMode(PINInput4, INPUT);
 	pinMode(PINInput5, INPUT);
 	pinMode(13, OUTPUT);
+	//setup Relais for main Power supply
+	pinMode(PIN_RELAIS, OUTPUT);
+	
 
 	//Prepare EEPROM
 	EEPROMinit();
@@ -80,6 +59,7 @@ void setup()
 	Settings.PowerState = 1;
 
 	FastLED.setDither(1);
+	digitalWrite(PIN_RELAIS, 0);
 
 	
 #ifdef ETHERNET
