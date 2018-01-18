@@ -43,6 +43,7 @@ void BrightnessTurnOff()
 	#if defined(DEBUGMODE)
 		Serial.println("BrightnessTurnOff | Powered down now");
 	#endif
+		delay(250);
 		digitalWrite(PIN_RELAIS, 1);
 }
 
@@ -50,6 +51,7 @@ void BrightnessTurnOff()
 void BrightnessTurnOn()
 {
 	digitalWrite(PIN_RELAIS, 0);
+	delay(50);
 	while (FastLED.getBrightness() != Settings.Current.BrightnessSetpoint)
 	{
 		//run BrightnessFade until brightness is = Setpoint

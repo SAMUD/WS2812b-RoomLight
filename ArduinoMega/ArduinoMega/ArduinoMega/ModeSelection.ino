@@ -308,12 +308,14 @@ void ModeSelectionMain()
 //used to turn on the LEDs if they are off and I press a mode button
 void ModeSelectionTurnOn()
 {
+	digitalWrite(PIN_RELAIS, 0);
+	delay(50);
 	#if defined(DEBUGMODE)
 		Serial.println("ModeSelectionTurnOn | Turned on LEDs");
 	#endif
 	Settings.PowerState = 1;
 	Settings.DisplayMode = Settings.DisplayModeOld;
-	digitalWrite(PIN_RELAIS, 0);
+	
 }
 
 //save Current Settings
