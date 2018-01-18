@@ -32,6 +32,7 @@ void setup()
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	FastLED.setBrightness(0);
 	FastLED.setDither(1);
+	FastLED.setCorrection(TypicalSMD5050);
 
 	//Setup serial
 	#if defined(DEBUGMODE)
@@ -149,16 +150,28 @@ void loop()
 	//actual power state
 	if (SettingsNow.PowerState)
 	{
-		OutputToLEDMain();
+		#ifdef DEBUGMODE
+		FastLED.countFPS();
+		#endif // DEBUGMODE
 		BlinkLed(10, 3000);
 		EVERY_N_MILLISECONDS(20)
 		{
 			BrightnessFade(Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint);		//call the fading function for the Brightness
 			DisplayEffectMain();
-
+			
 		}
+		OutputToLEDMain();
 	}
 	else
 		BlinkLed(3000,2);	
+
+#ifdef DEBUGMODE
+	EVERY_N_MILLISECONDS(5000)
+	{
+		Serial.print("Current FPS:");
+		Serial.println(FastLED.getFPS());
+	}
+#endif // DEBUGMODE
+
 }
 
