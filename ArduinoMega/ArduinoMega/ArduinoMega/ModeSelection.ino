@@ -24,6 +24,18 @@ void ModeSelectionMain()
 		}
 	}
 
+	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Nine)
+	{
+		//switching to the next mode (White-Full)
+		#if defined(DEBUGMODE)
+		Serial.print("ModeSelectionMain | Changed to TotalWhite");
+		#endif
+		Settings.EffectNumber = TotalWhite;
+		Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint = 255;
+		Settings.LedEffects[Settings.EffectNumber].DisplayMode = All;
+		Settings.LedEffects[Settings.EffectNumber].Temperature = DirectSunlight2;
+	}
+
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Four)
 	{
 		//switching to the next mode (White)

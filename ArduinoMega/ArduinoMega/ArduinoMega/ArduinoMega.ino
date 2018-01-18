@@ -4,7 +4,7 @@
  Author:	sdaur
 */
 #define Version "2.3"
-#define DMemoryVersion 9
+#define DMemoryVersion 10
 
 #include <FastLED.h>
 #include "GlobalVar.h"
@@ -120,14 +120,14 @@ void loop()
 			ChangeParamMain(Down, Up, true, &Settings.LedEffects[Settings.EffectNumber].Saturation, 10, 255, 5, 10);		//Saturation
 			break;
 		case 5:
-			ChangeParamMain(Reward, Forward, true, &Settings.LedEffects[Settings.EffectNumber].Speed, 1, 255, 1, 2);	//SpeedColor
+			ChangeParamMain(Reward, Forward, true, &Settings.LedEffects[Settings.EffectNumber].Speed, 1, 255, 5, 10);	//SpeedColor
 			break;
 		case 6:
 			ChangeParamMain(VolDown, VolUp, true, &Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint, 5, 255, 5, 10);		//Brightness
 			break;
 		case 7:
 			if (Settings.LedEffects[Settings.EffectNumber].DisplayMode == Night)					//only do this if current Display mode is set to night
-				ChangeParamMain(Zero, StRept, true, &Settings.LedEffects[Settings.EffectNumber].NightNumber, 2, 25, 1, 1);			//Number of LEDs in NightMode
+				ChangeParamMain(Zero, StRept, true, &Settings.LedEffects[Settings.EffectNumber].NightNumber, 2, 50, 2, 2);			//Number of LEDs in NightMode
 			else
 				ChangeParamMain(Zero, StRept, true, &Settings.LedEffects[Settings.EffectNumber].Set, 1, 255, 5, 10);					//Set on the remote
 			break;

@@ -19,7 +19,7 @@
 #define NumberLEDRight 96
 #define ValueLEDDarkside 75
 
-#define NUMBEREFFECTS 15
+#define NUMBEREFFECTS 16
 
 
 //The Buttons which are availaible on my Transmitter
@@ -102,7 +102,8 @@ enum Mode
 	RainbowMarch, RainbowBeat, ColorPalBeat,
 	Fade, RGBFade,
 	Strobe,
-	Ball
+	Ball,
+	TotalWhite
 };
 
 /// <summary>

@@ -10,7 +10,7 @@ void DisplayEffectMain()
 	}
 
 	//Select the right effect from the list
-	if (Settings.EffectNumber <= int(White2) && SettingsNow.ChangesToEffectMade)
+	if (Settings.EffectNumber <= White2 && SettingsNow.ChangesToEffectMade)
 		DisplayEffectWhite();
 	else if (Settings.EffectNumber <= FixedColor3 && SettingsNow.ChangesToEffectMade )
 		DisplayEffectFixedColor();
@@ -30,6 +30,8 @@ void DisplayEffectMain()
 		DisplayEffectStrobe();
 	else if (Settings.EffectNumber == Ball && SettingsNow.ChangesToEffectMade && SettingsNow.PlayPause)
 		DisplayEffectBall();
+	else if (Settings.EffectNumber == TotalWhite && SettingsNow.ChangesToEffectMade)
+		DisplayEffectWhite();
 	else if (SettingsNow.ChangesToEffectMade && SettingsNow.PlayPause)
 	{
 #ifdef DEBUGMODE
