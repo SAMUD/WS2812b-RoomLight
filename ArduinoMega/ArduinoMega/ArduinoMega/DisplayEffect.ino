@@ -19,7 +19,7 @@ void DisplayEffectMain()
 	else if (Settings.EffectNumber == RainbowMarch && SettingsNow.ChangesToEffectMade && SettingsNow.PlayPause)
 		DisplayEffectRainbowMarch();
 	else if (Settings.EffectNumber == RainbowBeat && SettingsNow.ChangesToEffectMade && SettingsNow.PlayPause)
-		DisplayEffectRainbowBeat();
+		DisplayEffectRainbowMarch();
 	else if (Settings.EffectNumber == ColorPalBeat && SettingsNow.ChangesToEffectMade && SettingsNow.PlayPause)
 		DisplayEffectColorPalBeat();
 	else if (Settings.EffectNumber == Fade && SettingsNow.ChangesToEffectMade && SettingsNow.PlayPause)
@@ -122,15 +122,18 @@ void DisplayEffectRainbowMarch()
 }
 
 //display a Rainbow going back and forth using a sinus curve
-void DisplayEffectRainbowBeat()
+/*void DisplayEffectRainbowBeat()
 {
 	static uint8_t start = 0;
-	static uint8_t start2 = 150; // Hue change between pixels.
+	static uint8_t start2 = 0; // Hue change between pixels.
 	static uint8_t counter = 0;
 
 	EVERY_N_MILLISECONDS(40)
 	{
-		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, Settings.LedEffects[Settings.EffectNumber].Saturation, 255), CHSV(start2, Settings.LedEffects[Settings.EffectNumber].Saturation, 255), FORWARD_HUES);
+		if(Settings.LedEffects[Settings.EffectNumber].Set < 15)
+			Settings.LedEffects[Settings.EffectNumber].Set = 15;
+
+		fill_gradient(ledstemp, NUM_LEDS, CHSV(start, Settings.LedEffects[Settings.EffectNumber].Set,255), CHSV(start2, Settings.LedEffects[Settings.EffectNumber].Set, 255), FORWARD_HUES);
 
 		if (Settings.LedEffects[Settings.EffectNumber].Speed>128)
 		{
@@ -154,15 +157,24 @@ void DisplayEffectRainbowBeat()
 			start2 = start2 - 255;
 	}
 	SettingsNow.ChangesToEffectMade = true;	//periodic update needed
-}
+}*/
 
 //testing
 void DisplayEffectColorPalBeat()
 {
 	EVERY_N_MILLISECONDS(20)
 	{
+		uint8_t CurrentSet = Settings.LedEffects[Settings.EffectNumber].Set;
 		uint8_t CurrentSpeed = Settings.LedEffects[Settings.EffectNumber].Speed;
+		static uint8_t counter = 0;
 
+		EVERY_N_MILLISECONDS(2500 - (Settings.LedEffects[Settings.EffectNumber].Speed * 8))
+		{
+			counter++;
+		}
+
+		if (CurrentSet < 30)
+			CurrentSet = 30;
 		if (CurrentSpeed < 10)
 			CurrentSpeed = 10;
 
@@ -171,9 +183,10 @@ void DisplayEffectColorPalBeat()
 		uint8_t beatC = beatsin16(Settings.LedEffects[Settings.EffectNumber].Speed/10, 0, 255);
 		fill_rainbow(ledstemp, NUM_LEDS, (beatA + beatB+ beatC) / 3, Settings.LedEffects[Settings.EffectNumber].Saturation/15);   // Use FastLED's fill_rainbow routine.*/
 		//Simplified to:
-		fill_rainbow(ledstemp, NUM_LEDS, (beatsin16(Settings.LedEffects[Settings.EffectNumber].Speed / 4, 0, 255) +
-										  beatsin16(Settings.LedEffects[Settings.EffectNumber].Speed / 6, 0, 255) +
-										  beatsin16(Settings.LedEffects[Settings.EffectNumber].Speed / 10, 0, 255)) / 3, Settings.LedEffects[Settings.EffectNumber].Saturation / 15);   // Use FastLED's fill_rainbow routine.
+		fill_rainbow(ledstemp,
+					 NUM_LEDS,
+					 (   ((beatsin16(CurrentSpeed / 4, 0, 1024)/4) + (beatsin16(CurrentSpeed / 6, 0, 1024)/4) + (beatsin16(CurrentSpeed / 10, 0, 1024)/4)) / 3 ) + counter,
+					 CurrentSet / 15);   // Use FastLED's fill_rainbow routine.
 	}
 	
 	SettingsNow.ChangesToEffectMade = true;	//periodic update needed
