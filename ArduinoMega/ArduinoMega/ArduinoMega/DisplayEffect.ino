@@ -50,7 +50,9 @@ void DisplayEffectTransition()
 //Showing all LEDs in white
 void DisplayEffectWhite()
 {
-	fill_solid(ledstemp, NUM_LEDS, Settings.LedEffects[Settings.EffectNumber].Temperature);
+	fill_solid(ledstemp, NUM_LEDS, CRGB::White);
+
+	//fill_solid(ledstemp, NUM_LEDS, Settings.LedEffects[Settings.EffectNumber].Temperature);
 	SettingsNow.ChangesToEffectMade = false;
 }
 

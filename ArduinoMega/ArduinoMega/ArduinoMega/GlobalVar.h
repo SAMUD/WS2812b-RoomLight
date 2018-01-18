@@ -15,9 +15,8 @@
 #define PIN_RELAIS 53			//Output to the Relais --> enable Power to LEDs
 
 //used for WhiteLeft and WhiteRight
-#define NumberLEDLeft 109
+#define NumberLEDLeft 108
 #define NumberLEDRight 96
-#define ValueLEDDarkside 75
 
 #define NUMBEREFFECTS 16
 

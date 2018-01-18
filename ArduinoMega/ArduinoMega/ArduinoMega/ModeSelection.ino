@@ -11,6 +11,7 @@ void ModeSelectionMain()
 		{
 		case White0:
 			Settings.EffectNumber= White1;
+
 			break;
 		case White1:
 			Settings.EffectNumber= White2;
@@ -22,6 +23,7 @@ void ModeSelectionMain()
 			Settings.EffectNumber= White0;
 			break;
 		}
+		FastLED.setCorrection(TypicalSMD5050);
 	}
 
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Nine)
@@ -34,6 +36,7 @@ void ModeSelectionMain()
 		Settings.LedEffects[Settings.EffectNumber].BrightnessSetpoint = 255;
 		Settings.LedEffects[Settings.EffectNumber].DisplayMode = All;
 		Settings.LedEffects[Settings.EffectNumber].Temperature = DirectSunlight2;
+		FastLED.setCorrection(UncorrectedColor);
 	}
 
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Four)
@@ -43,6 +46,8 @@ void ModeSelectionMain()
 		Serial.print("ModeSelectionMain | Changed to Ball");
 		#endif
 		Settings.EffectNumber= Ball;
+		FastLED.setCorrection(TypicalSMD5050);
+
 	}
 
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Eight)
@@ -66,6 +71,7 @@ void ModeSelectionMain()
 			Settings.EffectNumber= RainbowMarch;
 			break;
 		}
+		FastLED.setCorrection(TypicalSMD5050);
 	}
 
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Five)
@@ -83,6 +89,7 @@ void ModeSelectionMain()
 			Settings.EffectNumber= Fade;
 			break;
 		}
+		FastLED.setCorrection(TypicalSMD5050);
 	}
 
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Two)
@@ -103,6 +110,7 @@ void ModeSelectionMain()
 			Settings.EffectNumber= Confetti0;
 			break;
 		}
+		FastLED.setCorrection(TypicalSMD5050);
 	}
 
 	if (ReadValues.newValues == 1 && ReadValues.ButtonPressed == Seven)
@@ -126,6 +134,7 @@ void ModeSelectionMain()
 			Settings.EffectNumber = FixedColor0;
 			break;
 		}
+		FastLED.setCorrection(TypicalSMD5050);
 	}
 
 	if (Settings.EffectNumber != Settings.EffectNumberOld)
@@ -149,6 +158,7 @@ void ModeSelectionMain()
 		Serial.println(Settings.EffectNumber);
 		#endif
 	}	
+
 }
 
 //used to turn on the LEDs if they are off and I press a mode button
