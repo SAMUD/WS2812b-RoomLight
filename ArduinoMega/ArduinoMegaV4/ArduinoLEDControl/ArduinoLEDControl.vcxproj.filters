@@ -16,6 +16,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ArduinoLEDControl.ino" />
+    <None Include="ReadBinary.ino" />
+    <None Include="ModeSelection.ino" />
+    <None Include="Functions.ino" />
+    <None Include="ChangeParameters.ino" />
+    <None Include="TempPlayPause.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GlobalVar.h">
@@ -36,30 +41,12 @@
     <ClInclude Include="MyEEPROM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Brightness.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayEffect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputToLED.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LedControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyEEPROM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Brightness.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputToLED.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

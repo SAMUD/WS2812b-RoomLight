@@ -20,7 +20,9 @@ public:
 	//Konstructor
 	
 
-	LedControlClass(int NumberLEDs, bool SetDither);
+	LedControlClass();
+
+	void Init(int NumberLEDs, bool SetDither);
 
 	//Running the main Loop
 	void Loop();
@@ -44,14 +46,46 @@ public:
 	//icrease decrease speed
 	void SetTemp(ColTemp NewValue);
 	void SetNextTemp();
-	void SetNewMode(String Mode);
-	void LEDBlockSetBrightness(uint8_t NewValue);
+	void SetNewMode(int Effect);
 	//decrease/increase brightness
 
 	bool GetOnOffState();
 	bool GetPauseState();
-	//get current mode (white/rainbow etc)
+	uint8_t GetBrightness();
+	int GetMode();
+	
 	ColTemp GetTemp();
+
+private:
+	void OutputToLed();
+	void DisplayEffectMain();
+	//Transition
+	void DisplayEffectTransition();
+	//Showing all LEDs in white
+	void DisplayEffectWhite();
+	//displaying Confetti-Effect
+	void DisplayEffectConfetti();
+	void DisplayEffectConfettiColorfull();
+	//display a marching rainbow
+	void DisplayEffectRainbowMarch();
+	//display a Rainbow going back and forth using a sinus curve
+	void DisplayEffectRainbowBeat();
+	//testing
+	void DisplayEffectColorPalBeat();
+	//filling all the leds with the same color and fading between
+	void DisplayEffectFade();
+	void DisplayEffectRGBFade();
+	void DisplayEffectStrobe();
+	void DisplayEffectFixedColor();
+	void DisplayEffectBall();
+	//Fading the Brightness to the Value specified in LEDSetLedBlock.BrightnessSetpoint
+	void BrightnessFade(uint8_t Setpoint);
+
+	//Turning off the LED-Strip
+	void BrightnessTurnOff();
+
+	//Turning on the LED-Strip
+	void BrightnessTurnOn();
 };
 
 extern LedControlClass LedControl;

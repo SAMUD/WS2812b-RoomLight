@@ -76,5 +76,10 @@ typedef void *__builtin_va_list;
 #define pgm_read_ptr(address_short)   short()
 
 #include "ArduinoLEDControl.ino"
+#include "ChangeParameters.ino"
+#include "Functions.ino"
+#include "ModeSelection.ino"
+#include "ReadBinary.ino"
+#include "TempPlayPause.ino"
 #endif
 #endif

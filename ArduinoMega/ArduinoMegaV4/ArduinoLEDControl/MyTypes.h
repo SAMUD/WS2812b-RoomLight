@@ -84,13 +84,21 @@ static struct ModeSetLedBlock
 	uint8_t NightNumber;
 	///<summary>Different Settings</summary>
 	uint8_t Set;
-	///<summary>Name of this mode</summary>
-	String Name;
+	///<summary>EffectNumber corresponding to the enum</summary>
+	int NumberEffect;
 } ModeSetLedBlock2;
 
-
+//enum with the actual Mode
+enum Mode
+{
+	White0, White1, White2,
+	FixedColor0, FixedColor1, FixedColor2, FixedColor3,
+	Confetti0, Confetti1,
+	RainbowMarch, RainbowBeat, ColorPalBeat,
+	Fade, RGBFade,
+	Strobe,
+	Ball
+};
 
 #endif
-
-
 

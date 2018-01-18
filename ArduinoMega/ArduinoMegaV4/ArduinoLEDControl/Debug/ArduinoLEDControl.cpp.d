@@ -11,7 +11,9 @@ C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Deb
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/USBAPI.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Arduino.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\variants\mega/pins_arduino.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\OutputToLED.h \
+ C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\MyEEPROM.h \
+ C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\GlobalVarLEDControl.h \
+ C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\MyTypes.h \
  C:\Program\ Files\ (x86)\Arduino\libraries/FastLED\FastLED.h \
  C:\Program\ Files\ (x86)\Arduino\libraries/FastLED\cpp_compat.h \
  C:\Program\ Files\ (x86)\Arduino\libraries/FastLED\FastLED.h \
@@ -51,9 +53,4 @@ C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Deb
  C:\Program\ Files\ (x86)\Arduino\libraries/FastLED\fastspi_bitbang.h \
  C:\Program\ Files\ (x86)\Arduino\libraries/FastLED\chipsets.h \
  C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\GlobalVar.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\GlobalVarLEDControl.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\MyTypes.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\DisplayEffect.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\MyEEPROM.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\LedControl.h \
- C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\Brightness.h
+ C:\Users\sdaur\AppData\Local\Temp\VMBuilds\ArduinoLEDControl\mega_atmega2560\Debug\LedControl.h
